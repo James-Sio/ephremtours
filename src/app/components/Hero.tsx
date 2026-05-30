@@ -1,6 +1,9 @@
 import { motion } from "motion/react";
 import { ArrowRight, Sparkles, Calendar, Music } from "lucide-react";
+import { Link } from "react-router";
 import companyLogo from "../../imports/image.png";
+
+const MotionLink = motion.create(Link);
 
 export function Hero() {
   return (
@@ -17,33 +20,33 @@ export function Hero() {
           initial={{ opacity: 0, y: -20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.6 }}
-          className="w-full bg-gradient-to-r from-orange-500 via-pink-500 to-purple-600 rounded-2xl p-1 shadow-xl"
+          className="w-full bg-gradient-to-r from-orange-500 via-pink-500 to-purple-600 rounded-2xl p-1 shadow-xl mt-4 sm:mt-0"
         >
           <div className="bg-white/95 backdrop-blur-sm rounded-xl p-4 sm:p-6 flex flex-col sm:flex-row items-center justify-between gap-4">
-            <div className="flex items-center gap-4">
-              <div className="w-12 h-12 rounded-full bg-gradient-to-br from-orange-400 to-pink-500 flex items-center justify-center shrink-0 shadow-inner">
-                <Music className="w-6 h-6 text-white" />
+            <div className="flex items-center gap-4 w-full sm:w-auto">
+              <div className="w-10 h-10 sm:w-12 sm:h-12 rounded-full bg-gradient-to-br from-orange-400 to-pink-500 flex items-center justify-center shrink-0 shadow-inner">
+                <Music className="w-5 h-5 sm:w-6 sm:h-6 text-white" />
               </div>
               <div>
-                <h3 className="font-bold text-gray-900 text-lg sm:text-xl flex items-center gap-2">
-                  SUMMER TIDES IS COMING! <span className="text-orange-500">🔥</span>
+                <h3 className="font-bold text-gray-900 text-sm sm:text-xl flex items-center gap-1 sm:gap-2">
+                  SUMMER TIDES IS COMING! <span className="text-orange-500 text-lg">🔥</span>
                 </h3>
-                <p className="text-gray-600 text-sm sm:text-base">Malindi • 1st - 5th July 2026 • Live Music & Beach Vibes</p>
+                <p className="text-gray-600 text-xs sm:text-base">Malindi • 1st - 5th July 2026 • Live Music</p>
               </div>
             </div>
-            <motion.a
-              href="#contact"
+            <MotionLink
+              to="/contact"
               whileHover={{ scale: 1.05 }}
               whileTap={{ scale: 0.95 }}
-              className="px-6 py-2 bg-gradient-to-r from-orange-500 to-pink-500 text-white font-bold rounded-lg shadow-md whitespace-nowrap flex items-center gap-2"
+              className="w-full sm:w-auto px-6 py-2.5 sm:py-2 bg-gradient-to-r from-orange-500 to-pink-500 text-white font-bold rounded-lg shadow-md flex justify-center items-center gap-2"
             >
               <Calendar className="w-4 h-4" />
               Book Early
-            </motion.a>
+            </MotionLink>
           </div>
         </motion.div>
 
-        <div className="grid md:grid-cols-2 gap-8 md:gap-12 items-center">
+        <div className="grid md:grid-cols-2 gap-12 items-center">
           <motion.div
             initial={{ opacity: 0, x: -50 }}
             animate={{ opacity: 1, x: 0 }}
@@ -67,30 +70,30 @@ export function Hero() {
               <span className="text-gray-800">With Confidence</span>
             </h1>
 
-            <p className="text-lg sm:text-xl text-gray-600 mb-6 sm:mb-8 leading-relaxed max-w-lg">
+            <p className="text-base sm:text-lg md:text-xl text-gray-600 mb-6 sm:mb-8 leading-relaxed max-w-lg">
               Professional transfer services and unforgettable tour experiences across Kenya. 
               Your comfort, safety, and lifetime memories are our top priorities.
             </p>
 
             <div className="flex flex-col sm:flex-row gap-3 sm:gap-4">
-              <motion.a
-                href="#packages"
+              <MotionLink
+                to="/packages"
                 whileHover={{ scale: 1.05 }}
                 whileTap={{ scale: 0.95 }}
-                className="bg-gradient-to-r from-sky-500 to-blue-600 text-white font-semibold px-6 sm:px-8 py-3 sm:py-4 rounded-xl flex items-center justify-center gap-2 shadow-lg shadow-sky-200 hover:shadow-xl transition-all"
+                className="bg-gradient-to-r from-sky-500 to-blue-600 text-white font-semibold px-6 sm:px-8 py-3.5 sm:py-4 rounded-xl flex items-center justify-center gap-2 shadow-lg shadow-sky-200 hover:shadow-xl transition-all"
               >
                 View Safari Packages
                 <ArrowRight className="w-5 h-5" />
-              </motion.a>
+              </MotionLink>
 
-              <motion.a
-                href="#contact"
+              <MotionLink
+                to="/contact"
                 whileHover={{ scale: 1.05 }}
                 whileTap={{ scale: 0.95 }}
-                className="bg-white border-2 border-gray-200 text-gray-700 font-semibold px-6 sm:px-8 py-3 sm:py-4 rounded-xl hover:border-sky-300 hover:bg-sky-50 transition-all text-center"
+                className="bg-white border-2 border-gray-200 text-gray-700 font-semibold px-6 sm:px-8 py-3.5 sm:py-4 rounded-xl hover:border-sky-300 hover:bg-sky-50 transition-all text-center flex items-center justify-center"
               >
                 Contact Us
-              </motion.a>
+              </MotionLink>
             </div>
           </motion.div>
 
@@ -98,7 +101,7 @@ export function Hero() {
             initial={{ opacity: 0, x: 50 }}
             animate={{ opacity: 1, x: 0 }}
             transition={{ duration: 0.8, delay: 0.4 }}
-            className="relative mt-8 md:mt-0 flex justify-center"
+            className="relative flex justify-center"
           >
             <motion.div
               animate={{
@@ -118,18 +121,17 @@ export function Hero() {
                 className="w-full h-auto rounded-2xl shadow-2xl border-4 border-white"
               />
               
-              {/* Decorative Floating Elements */}
               <motion.div 
                 animate={{ y: [0, 10, 0] }} 
                 transition={{ duration: 4, repeat: Infinity, ease: "easeInOut", delay: 1 }}
-                className="absolute -bottom-6 -left-6 bg-white p-4 rounded-xl shadow-xl border border-gray-100 flex items-center gap-3"
+                className="absolute -bottom-4 -left-4 sm:-bottom-6 sm:-left-6 bg-white p-3 sm:p-4 rounded-xl shadow-xl border border-gray-100 flex items-center gap-2 sm:gap-3"
               >
-                <div className="w-10 h-10 bg-green-100 rounded-full flex items-center justify-center">
-                  <span className="text-xl">🌟</span>
+                <div className="w-8 h-8 sm:w-10 sm:h-10 bg-green-100 rounded-full flex items-center justify-center">
+                  <span className="text-lg sm:text-xl">🌟</span>
                 </div>
                 <div>
-                  <p className="text-xs text-gray-500 font-medium uppercase">Rating</p>
-                  <p className="text-sm font-bold text-gray-800">5.0 Top Rated</p>
+                  <p className="text-[10px] sm:text-xs text-gray-500 font-medium uppercase">Rating</p>
+                  <p className="text-xs sm:text-sm font-bold text-gray-800">5.0 Top Rated</p>
                 </div>
               </motion.div>
             </motion.div>

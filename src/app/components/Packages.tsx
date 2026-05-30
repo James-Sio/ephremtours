@@ -1,7 +1,9 @@
 import { motion } from "motion/react";
 import { Check, Star, Map } from "lucide-react";
-// We don't have packageFlyer anymore, we can use a cool image from the remaining gallery like gallery-10 or 15
+import { Link } from "react-router";
 import safariHeroImage from "../../imports/gallery-10.jpg";
+
+const MotionLink = motion.create(Link);
 
 const packages = [
   {
@@ -106,7 +108,7 @@ const packages = [
 
 export function Packages() {
   return (
-    <section id="packages" className="py-12 sm:py-16 md:py-20 px-4 sm:px-6 lg:px-8 bg-gradient-to-br from-gray-50 to-sky-50">
+    <section id="packages" className="py-12 sm:py-16 md:py-20 px-4 sm:px-6 lg:px-8 bg-gradient-to-br from-gray-50 to-sky-50 min-h-screen">
       <div className="max-w-7xl mx-auto">
         <motion.div
           initial={{ opacity: 0, y: 30 }}
@@ -134,7 +136,7 @@ export function Packages() {
             whileInView={{ opacity: 1, x: 0 }}
             viewport={{ once: true }}
             transition={{ duration: 0.8 }}
-            className="sticky top-24"
+            className="sticky top-24 hidden lg:block"
           >
             <div className="relative rounded-2xl overflow-hidden shadow-2xl group">
               <img
@@ -159,7 +161,7 @@ export function Packages() {
                 viewport={{ once: true }}
                 transition={{ duration: 0.6, delay: index * 0.1 }}
                 whileHover={{ scale: 1.02 }}
-                className={`relative bg-white p-5 sm:p-6 rounded-2xl shadow-lg hover:shadow-2xl transition-all border-2 ${
+                className={`relative flex flex-col bg-white p-5 sm:p-6 rounded-2xl shadow-lg hover:shadow-2xl transition-all border-2 ${
                   pkg.popular ? 'border-orange-400' : 'border-transparent'
                 }`}
               >
@@ -204,18 +206,18 @@ export function Packages() {
                   ))}
                 </ul>
 
-                <motion.a
-                  href="#contact"
+                <MotionLink
+                  to="/contact"
                   whileHover={{ scale: 1.05 }}
                   whileTap={{ scale: 0.95 }}
-                  className={`w-full mt-auto py-2.5 rounded-xl text-sm font-semibold transition-all block text-center ${
+                  className={`w-full mt-auto py-3 rounded-xl text-sm font-bold transition-all block text-center ${
                     pkg.popular
                       ? 'bg-gradient-to-r from-orange-500 to-pink-500 text-white shadow-md'
                       : 'bg-sky-50 text-sky-700 hover:bg-sky-100'
                   }`}
                 >
                   Book Now
-                </motion.a>
+                </MotionLink>
               </motion.div>
             ))}
           </div>

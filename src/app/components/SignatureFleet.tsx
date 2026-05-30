@@ -38,8 +38,8 @@ export function SignatureFleet() {
             className="relative"
           >
             <div className="relative rounded-3xl overflow-hidden shadow-2xl">
-              <img src={fleet1} alt="Luxury Van Interior" className="w-full h-[400px] object-cover" />
-              <div className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent flex items-end p-8">
+              <img src={fleet2} alt="Executive Van" className="w-full aspect-[4/3] sm:aspect-video object-cover object-center" />
+              <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent flex items-end p-8">
                 <div>
                   <h3 className="text-2xl font-bold text-white mb-2">Executive Vans</h3>
                   <p className="text-gray-200">Spacious seating for 7-14 passengers with ample luggage room.</p>

@@ -1,6 +1,6 @@
 {
-  "buildCommand": "",
+  "buildCommand": "echo 'Skip build'",
   "outputDirectory": "dist",
-  "installCommand": "",
-  "framework": null
+  "installCommand": "echo 'Skip install'",
+  "framework": "vite"
 }

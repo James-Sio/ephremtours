@@ -2,9 +2,10 @@ import { motion, AnimatePresence } from "motion/react";
 import { useState } from "react";
 import { 
   Plane, Train, Hotel, MapPin, Users, Camera, 
-  ArrowLeft, CheckCircle2, ChevronRight, Star 
+  ArrowLeft, CheckCircle2, Star, Calendar, 
+  Clock, User, Phone, Mail, ShieldCheck, Check,
+  Send
 } from "lucide-react";
-import { Link } from "react-router";
 
 // Gallery image imports
 import gallery10 from "../../imports/gallery-10.jpg";
@@ -182,12 +183,22 @@ const coreServices = [
 
 export function ServicesPage() {
   const [selectedId, setSelectedId] = useState<string | null>(null);
+  const [bookingState, setBookingState] = useState<"idle" | "submitting" | "success">("idle");
 
   const selectedService = coreServices.find(s => s.id === selectedId);
 
+  const handleBookingSubmit = (e: React.FormEvent) => {
+    e.preventDefault();
+    setBookingState("submitting");
+    // Simulate network request
+    setTimeout(() => {
+      setBookingState("success");
+    }, 1500);
+  };
+
   return (
     <div className="pt-24 pb-20 bg-gray-900 min-h-screen relative overflow-hidden">
-      {/* Background Effects */}
+      {/* Dynamic Background Effects */}
       <div className="absolute inset-0 z-0 pointer-events-none">
         <div className="absolute top-0 right-0 w-[800px] h-[800px] bg-sky-900/20 rounded-full blur-[150px]" />
         <div className="absolute bottom-0 left-0 w-[600px] h-[600px] bg-purple-900/20 rounded-full blur-[150px]" />
@@ -195,9 +206,9 @@ export function ServicesPage() {
 
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
         
-        {/* Main Grid View */}
         <AnimatePresence mode="wait">
           {!selectedId ? (
+            // --- MAIN GRID VIEW ---
             <motion.div
               key="grid"
               initial={{ opacity: 0 }}
@@ -214,7 +225,7 @@ export function ServicesPage() {
                   Core <span className="bg-gradient-to-r from-sky-400 to-blue-500 bg-clip-text text-transparent">Services</span>
                 </h1>
                 <p className="text-gray-300 text-lg max-w-2xl mx-auto font-light">
-                  We focus on doing six things exceptionally well. Select a service below to view detailed routes, pricing, and our photo galleries.
+                  We focus on doing six things exceptionally well. Select a service below to view detailed routes, explore galleries, and instantly book your luxury ride.
                 </p>
               </div>
 
@@ -223,12 +234,14 @@ export function ServicesPage() {
                   <motion.div
                     layoutId={`card-container-${service.id}`}
                     key={service.id}
-                    onClick={() => setSelectedId(service.id)}
+                    onClick={() => {
+                      setSelectedId(service.id);
+                      setBookingState("idle");
+                    }}
                     className="cursor-pointer group"
                   >
                     <div className="h-full bg-white/5 backdrop-blur-xl border border-white/10 rounded-3xl overflow-hidden transition-all duration-300 hover:border-white/30 hover:shadow-2xl hover:shadow-sky-900/50 flex flex-col relative">
                       
-                      {/* Thumbnail Image */}
                       <motion.div layoutId={`image-${service.id}`} className="w-full h-48 overflow-hidden relative">
                         <img 
                           src={service.coverImage} 
@@ -254,9 +267,13 @@ export function ServicesPage() {
                           {service.shortDesc}
                         </p>
 
-                        <div className="mt-auto inline-flex items-center gap-2 text-sky-400 font-semibold group-hover:text-white transition-colors">
-                          View Details
-                          <ChevronRight className="w-4 h-4 transform group-hover:translate-x-1 transition-transform" />
+                        <div className="mt-auto inline-flex items-center justify-between w-full">
+                          <span className="inline-flex items-center gap-2 text-sky-400 font-semibold group-hover:text-white transition-colors">
+                            Book Now
+                          </span>
+                          <div className="w-8 h-8 rounded-full bg-white/10 flex items-center justify-center group-hover:bg-sky-500 transition-colors">
+                            <Plane className="w-4 h-4 text-white transform group-hover:translate-x-0.5 group-hover:-translate-y-0.5 transition-transform" />
+                          </div>
                         </div>
                       </div>
                     </div>
@@ -266,25 +283,25 @@ export function ServicesPage() {
             </motion.div>
           ) : (
             
-            // Detailed View
+            // --- DETAILED BOOKING LANDING PAGE ---
             <motion.div
               key="detail"
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               exit={{ opacity: 0, scale: 0.95 }}
               transition={{ duration: 0.4 }}
-              className="max-w-5xl mx-auto"
+              className="max-w-6xl mx-auto"
             >
               <button
                 onClick={() => setSelectedId(null)}
-                className="inline-flex items-center gap-2 text-gray-400 hover:text-white font-medium mb-8 transition-colors bg-white/5 hover:bg-white/10 px-4 py-2 rounded-full border border-white/10"
+                className="inline-flex items-center gap-2 text-gray-400 hover:text-white font-medium mb-6 sm:mb-8 transition-colors bg-white/5 hover:bg-white/10 px-4 py-2 rounded-full border border-white/10"
               >
                 <ArrowLeft className="w-5 h-5" />
                 Back to Services
               </button>
 
               {selectedService && (
-                <motion.div layoutId={`card-container-${selectedService.id}`} className="bg-white/5 backdrop-blur-xl border border-white/10 rounded-3xl overflow-hidden shadow-2xl">
+                <motion.div layoutId={`card-container-${selectedService.id}`} className="bg-gray-900 border border-white/10 rounded-3xl overflow-hidden shadow-2xl">
                   
                   {/* Big Hero Image */}
                   <motion.div layoutId={`image-${selectedService.id}`} className="w-full h-[30vh] sm:h-[40vh] relative">
@@ -297,94 +314,192 @@ export function ServicesPage() {
                   </motion.div>
 
                   <div className="p-6 sm:p-10 lg:p-12 relative -mt-20">
-                    <div className="flex flex-col sm:flex-row sm:items-end gap-4 sm:gap-6 mb-8">
+                    <div className="flex flex-col sm:flex-row sm:items-end gap-4 sm:gap-6 mb-8 lg:mb-12">
                       <motion.div
                         layoutId={`icon-${selectedService.id}`}
                         className={`w-20 h-20 bg-gradient-to-br ${selectedService.color} ${selectedService.shadow} rounded-3xl flex items-center justify-center shadow-xl border border-white/20 shrink-0`}
                       >
                         <selectedService.icon className="w-10 h-10 text-white drop-shadow-md" />
                       </motion.div>
-                      <motion.h2 layoutId={`title-${selectedService.id}`} className="text-3xl sm:text-4xl md:text-5xl font-extrabold text-white">
-                        {selectedService.title}
-                      </motion.h2>
+                      <div>
+                        <motion.h2 layoutId={`title-${selectedService.id}`} className="text-3xl sm:text-4xl md:text-5xl font-extrabold text-white mb-2">
+                          {selectedService.title}
+                        </motion.h2>
+                        <div className="flex flex-wrap items-center gap-4 text-sm font-medium text-sky-400">
+                          <span className="flex items-center gap-1"><ShieldCheck className="w-4 h-4" /> Secure Booking</span>
+                          <span className="flex items-center gap-1"><CheckCircle2 className="w-4 h-4" /> Instant Confirmation</span>
+                        </div>
+                      </div>
                     </div>
 
-                    <div className="grid lg:grid-cols-[2fr_1fr] gap-10 lg:gap-16">
+                    <div className="grid lg:grid-cols-[1fr_400px] gap-10 lg:gap-16 items-start">
                       
-                      {/* Left Column: Description & Features */}
-                      <div>
+                      {/* Left Column: Information */}
+                      <div className="order-2 lg:order-1">
                         <div className="prose prose-invert max-w-none mb-10">
                           <p className="text-lg sm:text-xl text-gray-300 font-light leading-relaxed">
                             {selectedService.longDesc}
                           </p>
                         </div>
 
-                        <h3 className="text-2xl font-bold text-white mb-6 flex items-center gap-2">
-                          <CheckCircle2 className="text-sky-400 w-6 h-6" /> What to Expect
-                        </h3>
-                        <ul className="space-y-4 mb-10">
-                          {selectedService.features.map((feature, idx) => (
-                            <li key={idx} className="flex items-start gap-3 bg-white/5 p-4 rounded-xl border border-white/5">
-                              <CheckCircle2 className="w-5 h-5 text-sky-400 shrink-0 mt-0.5" />
-                              <span className="text-gray-300">{feature}</span>
-                            </li>
-                          ))}
-                        </ul>
+                        {/* Testimonial & Features Grid */}
+                        <div className="grid sm:grid-cols-2 gap-6 mb-10">
+                          <div className="bg-white/5 border border-white/10 rounded-2xl p-6">
+                            <h3 className="text-lg font-bold text-white mb-4 flex items-center gap-2">
+                              <CheckCircle2 className="text-sky-400 w-5 h-5" /> What to Expect
+                            </h3>
+                            <ul className="space-y-3">
+                              {selectedService.features.map((feature, idx) => (
+                                <li key={idx} className="flex items-start gap-2 text-sm text-gray-300">
+                                  <Check className="w-4 h-4 text-emerald-400 shrink-0 mt-0.5" />
+                                  <span>{feature}</span>
+                                </li>
+                              ))}
+                            </ul>
+                          </div>
+
+                          <div className="bg-gradient-to-br from-sky-900/30 to-blue-900/30 border border-sky-400/20 rounded-2xl p-6 relative flex flex-col">
+                            <Star className="absolute top-4 right-4 w-6 h-6 text-yellow-500/50" fill="currentColor" />
+                            <h3 className="text-lg font-bold text-white mb-4">Client Review</h3>
+                            <p className="text-gray-300 italic mb-6 text-sm flex-grow">
+                              "{selectedService.testimonial.text}"
+                            </p>
+                            <div className="flex items-center gap-3 mt-auto">
+                              <div className="w-8 h-8 rounded-full bg-sky-500/20 flex items-center justify-center font-bold text-sky-400 text-sm">
+                                {selectedService.testimonial.author.charAt(0)}
+                              </div>
+                              <span className="font-semibold text-white text-sm">{selectedService.testimonial.author}</span>
+                            </div>
+                          </div>
+                        </div>
 
                         {/* Mini Gallery */}
                         <h3 className="text-2xl font-bold text-white mb-6">Service Gallery</h3>
-                        <div className="grid grid-cols-2 sm:grid-cols-3 gap-4 mb-10">
+                        <div className="grid grid-cols-2 sm:grid-cols-3 gap-4">
                           {selectedService.gallery.map((img, idx) => (
-                            <div key={idx} className="aspect-square rounded-xl overflow-hidden border border-white/10">
-                              <img src={img} alt="Gallery view" className="w-full h-full object-cover hover:scale-110 transition-transform duration-500" />
+                            <div key={idx} className="aspect-square rounded-xl overflow-hidden border border-white/10 group/img">
+                              <img src={img} alt="Gallery view" className="w-full h-full object-cover group-hover/img:scale-110 transition-transform duration-500" />
                             </div>
                           ))}
                         </div>
                       </div>
 
-                      {/* Right Column: Pricing, Testimonial, CTA */}
-                      <div className="space-y-8">
-                        
-                        {/* Pricing Box */}
-                        <div className="bg-gray-900 border border-white/10 rounded-2xl p-6 shadow-xl">
-                          <h3 className="text-xl font-bold text-white mb-6 pb-4 border-b border-white/10">Common Routes & Pricing</h3>
-                          <div className="space-y-4">
-                            {selectedService.pricing.map((route, idx) => (
-                              <div key={idx} className="flex flex-col gap-1">
-                                <span className="text-sm text-gray-400 font-medium">{route.route}</span>
-                                <span className="text-lg font-bold text-sky-400">{route.price}</span>
-                              </div>
-                            ))}
-                          </div>
-                          <p className="text-xs text-gray-500 mt-6 pt-4 border-t border-white/10">
-                            * Prices are indicative and may vary based on vehicle type and season.
-                          </p>
+                      {/* Right Column: Interactive Booking Form */}
+                      <div className="order-1 lg:order-2 sticky top-24">
+                        <div className="bg-gradient-to-b from-white/10 to-white/5 backdrop-blur-2xl border border-white/20 rounded-3xl p-6 sm:p-8 shadow-2xl relative overflow-hidden">
+                          
+                          {/* Form Background Glow */}
+                          <div className={`absolute top-0 right-0 w-64 h-64 bg-gradient-to-bl ${selectedService.color} rounded-full blur-[80px] opacity-20 pointer-events-none`} />
+
+                          <AnimatePresence mode="wait">
+                            {bookingState === "success" ? (
+                              <motion.div 
+                                key="success"
+                                initial={{ opacity: 0, scale: 0.9 }}
+                                animate={{ opacity: 1, scale: 1 }}
+                                className="flex flex-col items-center justify-center py-12 text-center"
+                              >
+                                <div className="w-20 h-20 bg-emerald-500/20 rounded-full flex items-center justify-center mb-6">
+                                  <CheckCircle2 className="w-12 h-12 text-emerald-400" />
+                                </div>
+                                <h3 className="text-2xl font-bold text-white mb-2">Booking Requested!</h3>
+                                <p className="text-gray-300 text-sm mb-6">
+                                  Thank you! We have received your request. A representative will contact you on WhatsApp within 10 minutes to confirm your luxury vehicle.
+                                </p>
+                                <button
+                                  onClick={() => setBookingState("idle")}
+                                  className="text-sky-400 font-semibold hover:text-white transition-colors"
+                                >
+                                  Book another ride
+                                </button>
+                              </motion.div>
+                            ) : (
+                              <motion.form 
+                                key="form"
+                                initial={{ opacity: 0 }}
+                                animate={{ opacity: 1 }}
+                                exit={{ opacity: 0 }}
+                                onSubmit={handleBookingSubmit}
+                                className="relative z-10 space-y-5"
+                              >
+                                <div>
+                                  <h3 className="text-xl font-extrabold text-white mb-1">Book Your Ride</h3>
+                                  <p className="text-xs text-gray-400 font-medium uppercase tracking-widest mb-6">Instantly reserve your spot</p>
+                                </div>
+
+                                {/* Select Route */}
+                                <div className="space-y-1.5">
+                                  <label className="text-xs font-semibold text-gray-300 ml-1">Select Route / Package</label>
+                                  <div className="relative">
+                                    <MapPin className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-sky-400" />
+                                    <select required className="w-full bg-black/20 border border-white/10 rounded-xl py-3 pl-10 pr-4 text-sm text-white appearance-none focus:outline-none focus:border-sky-500 transition-colors">
+                                      <option value="">Choose your destination...</option>
+                                      {selectedService.pricing.map((route, idx) => (
+                                        <option key={idx} value={route.route}>{route.route} ({route.price})</option>
+                                      ))}
+                                      <option value="custom">Custom Route Request</option>
+                                    </select>
+                                  </div>
+                                </div>
+
+                                {/* Date & Time */}
+                                <div className="grid grid-cols-2 gap-4">
+                                  <div className="space-y-1.5">
+                                    <label className="text-xs font-semibold text-gray-300 ml-1">Date</label>
+                                    <div className="relative">
+                                      <Calendar className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-sky-400" />
+                                      <input type="date" required className="w-full bg-black/20 border border-white/10 rounded-xl py-3 pl-10 pr-4 text-sm text-white focus:outline-none focus:border-sky-500 transition-colors [&::-webkit-calendar-picker-indicator]:invert" />
+                                    </div>
+                                  </div>
+                                  <div className="space-y-1.5">
+                                    <label className="text-xs font-semibold text-gray-300 ml-1">Time</label>
+                                    <div className="relative">
+                                      <Clock className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-sky-400" />
+                                      <input type="time" required className="w-full bg-black/20 border border-white/10 rounded-xl py-3 pl-10 pr-4 text-sm text-white focus:outline-none focus:border-sky-500 transition-colors [&::-webkit-calendar-picker-indicator]:invert" />
+                                    </div>
+                                  </div>
+                                </div>
+
+                                {/* Personal Info */}
+                                <div className="space-y-4 pt-2">
+                                  <div className="relative">
+                                    <User className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-gray-400" />
+                                    <input type="text" placeholder="Full Name" required className="w-full bg-black/20 border border-white/10 rounded-xl py-3 pl-10 pr-4 text-sm text-white focus:outline-none focus:border-sky-500 transition-colors placeholder:text-gray-500" />
+                                  </div>
+                                  <div className="relative">
+                                    <Phone className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-gray-400" />
+                                    <input type="tel" placeholder="WhatsApp / Phone Number" required className="w-full bg-black/20 border border-white/10 rounded-xl py-3 pl-10 pr-4 text-sm text-white focus:outline-none focus:border-sky-500 transition-colors placeholder:text-gray-500" />
+                                  </div>
+                                  <div className="relative">
+                                    <Mail className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-gray-400" />
+                                    <input type="email" placeholder="Email Address" required className="w-full bg-black/20 border border-white/10 rounded-xl py-3 pl-10 pr-4 text-sm text-white focus:outline-none focus:border-sky-500 transition-colors placeholder:text-gray-500" />
+                                  </div>
+                                </div>
+
+                                {/* Submit Button */}
+                                <button 
+                                  type="submit" 
+                                  disabled={bookingState === "submitting"}
+                                  className={`w-full mt-4 py-4 rounded-xl text-white font-bold flex items-center justify-center gap-2 transition-all shadow-lg bg-gradient-to-r ${selectedService.color} hover:scale-105 active:scale-95 disabled:opacity-70 disabled:hover:scale-100`}
+                                >
+                                  {bookingState === "submitting" ? (
+                                    <div className="w-6 h-6 border-2 border-white/30 border-t-white rounded-full animate-spin" />
+                                  ) : (
+                                    <>
+                                      Confirm Booking Request
+                                      <Send className="w-4 h-4" />
+                                    </>
+                                  )}
+                                </button>
+                                <p className="text-center text-[10px] text-gray-500 mt-3">
+                                  No payment required to request. We will confirm availability instantly.
+                                </p>
+                              </motion.form>
+                            )}
+                          </AnimatePresence>
                         </div>
-
-                        {/* Testimonial */}
-                        <div className="bg-gradient-to-br from-sky-900/30 to-blue-900/30 border border-sky-400/20 rounded-2xl p-6 relative">
-                          <Star className="absolute top-4 right-4 w-6 h-6 text-yellow-500/50" fill="currentColor" />
-                          <p className="text-gray-300 italic mb-4 leading-relaxed relative z-10">
-                            "{selectedService.testimonial.text}"
-                          </p>
-                          <div className="flex items-center gap-3">
-                            <div className="w-10 h-10 rounded-full bg-sky-500/20 flex items-center justify-center font-bold text-sky-400">
-                              {selectedService.testimonial.author.charAt(0)}
-                            </div>
-                            <span className="font-semibold text-white">{selectedService.testimonial.author}</span>
-                          </div>
-                        </div>
-
-                        {/* CTA */}
-                        <Link 
-                          to="/contact"
-                          className={`w-full py-4 rounded-xl text-white font-bold text-lg flex items-center justify-center gap-2 transition-all shadow-lg hover:scale-105 active:scale-95 bg-gradient-to-r ${selectedService.color}`}
-                        >
-                          Book This Service
-                          <ChevronRight className="w-5 h-5" />
-                        </Link>
-
                       </div>
+
                     </div>
                   </div>
                 </motion.div>

@@ -3,15 +3,7 @@ import { useState, useEffect } from "react";
 import Masonry, { ResponsiveMasonry } from "react-responsive-masonry";
 import { ChevronLeft, ChevronRight, X, Image as ImageIcon } from "lucide-react";
 
-// Imports for all 23 images
-import gallery1 from "../../imports/gallery-1.jpg";
-import gallery2 from "../../imports/gallery-2.jpg";
-import gallery3 from "../../imports/gallery-3.jpg";
-import gallery4 from "../../imports/gallery-4.jpg";
-import gallery5 from "../../imports/gallery-5.jpg";
-import gallery6 from "../../imports/gallery-6.jpg";
-import gallery7 from "../../imports/gallery-7.jpg";
-import gallery8 from "../../imports/gallery-8.jpg";
+// Imports for the remaining real photos
 import gallery9 from "../../imports/gallery-9.jpg";
 import gallery10 from "../../imports/gallery-10.jpg";
 import gallery11 from "../../imports/gallery-11.jpg";
@@ -31,54 +23,6 @@ import gallery23 from "../../imports/gallery-23.jpg";
 const categories = ["All", "Transfers", "Safaris & Wildlife", "Destinations", "Experiences"];
 
 const images = [
-  {
-    url: gallery1,
-    title: "Guided Safari Rides",
-    description: "Spacious and fully equipped custom tour vans.",
-    category: "Safaris & Wildlife"
-  },
-  {
-    url: gallery2,
-    title: "Scenic Views",
-    description: "Beautiful landmarks and viewpoints.",
-    category: "Destinations"
-  },
-  {
-    url: gallery3,
-    title: "Unmatched Comfort",
-    description: "Clean, air-conditioned premium shuttle service.",
-    category: "Transfers"
-  },
-  {
-    url: gallery4,
-    title: "Kenyan Heritage",
-    description: "Experience local culture and historic routes.",
-    category: "Destinations"
-  },
-  {
-    url: gallery5,
-    title: "Happy Tour Groups",
-    description: "Unforgettable memories with friends and family.",
-    category: "Experiences"
-  },
-  {
-    url: gallery6,
-    title: "Professional Drivers",
-    description: "Highly skilled, safe, and certified drivers.",
-    category: "Transfers"
-  },
-  {
-    url: gallery7,
-    title: "Pristine Beaches",
-    description: "Drive along the stunning Kilifi coastlines.",
-    category: "Destinations"
-  },
-  {
-    url: gallery8,
-    title: "Airport Transfers",
-    description: "Punctual arrivals and stress-free pick-ups.",
-    category: "Transfers"
-  },
   {
     url: gallery9,
     title: "Luxury Resorts",
@@ -204,7 +148,6 @@ export function Gallery() {
 
   return (
     <section id="gallery" className="py-12 sm:py-16 md:py-20 px-4 sm:px-6 lg:px-8 bg-white relative overflow-hidden">
-      {/* Decorative background shapes to make it look premium and handcrafted */}
       <div className="absolute top-0 right-0 w-80 h-80 bg-sky-50 rounded-full blur-3xl opacity-50 pointer-events-none -z-10" />
       <div className="absolute bottom-0 left-0 w-80 h-80 bg-purple-50 rounded-full blur-3xl opacity-50 pointer-events-none -z-10" />
 
@@ -228,7 +171,6 @@ export function Gallery() {
           </p>
         </motion.div>
 
-        {/* Filter Categories Tabs */}
         <div className="flex flex-wrap justify-center gap-2 sm:gap-3 mb-10 sm:mb-12 max-w-4xl mx-auto px-2">
           {categories.map((category) => (
             <motion.button
@@ -250,7 +192,6 @@ export function Gallery() {
           ))}
         </div>
 
-        {/* Masonry Layout */}
         <div className="w-full">
           <ResponsiveMasonry columnsCountBreakPoints={{ 350: 1, 640: 2, 1024: 3 }}>
             <Masonry gutter="20px">
@@ -272,10 +213,8 @@ export function Gallery() {
                     className="w-full h-auto object-cover transition-transform duration-500 group-hover:scale-105"
                   />
                   
-                  {/* Subtle border overlay */}
                   <div className="absolute inset-0 rounded-2xl border-2 border-transparent group-hover:border-sky-400/30 transition-colors pointer-events-none" />
 
-                  {/* Gradient Overlay & Content */}
                   <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/35 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex flex-col justify-end p-5">
                     <span className="text-[10px] sm:text-xs font-bold uppercase tracking-wider text-sky-400 mb-1.5 inline-block">
                       {image.category}
@@ -293,7 +232,6 @@ export function Gallery() {
           </ResponsiveMasonry>
         </div>
 
-        {/* Lightbox Modal */}
         <AnimatePresence>
           {selectedImageIndex !== null && (
             <motion.div
@@ -303,7 +241,6 @@ export function Gallery() {
               onClick={() => setSelectedImageIndex(null)}
               className="fixed inset-0 z-50 bg-black/95 flex flex-col items-center justify-center p-4 select-none backdrop-blur-sm"
             >
-              {/* Close Button */}
               <button
                 onClick={() => setSelectedImageIndex(null)}
                 className="absolute top-6 right-6 w-12 h-12 bg-white/10 hover:bg-white/20 hover:scale-105 active:scale-95 rounded-full flex items-center justify-center text-white transition-all z-50 cursor-pointer"
@@ -312,9 +249,7 @@ export function Gallery() {
                 <X className="w-6 h-6" />
               </button>
 
-              {/* Main Lightbox Content wrapper */}
               <div className="relative w-full max-w-5xl flex items-center justify-center" onClick={(e) => e.stopPropagation()}>
-                {/* Previous Button */}
                 <button
                   onClick={handlePrev}
                   className="absolute left-2 sm:left-4 w-12 h-12 bg-white/10 hover:bg-white/25 active:scale-95 rounded-full flex items-center justify-center text-white transition-all z-50 cursor-pointer"
@@ -323,7 +258,6 @@ export function Gallery() {
                   <ChevronLeft className="w-7 h-7" />
                 </button>
 
-                {/* Lightbox Image & Info panel */}
                 <div className="flex flex-col items-center max-w-full">
                   <motion.img
                     key={selectedImageIndex}
@@ -336,7 +270,6 @@ export function Gallery() {
                     className="max-h-[70vh] sm:max-h-[75vh] w-auto max-w-full rounded-xl object-contain shadow-2xl border border-white/10"
                   />
                   
-                  {/* Image info bar under the image */}
                   <motion.div 
                     key={`info-${selectedImageIndex}`}
                     initial={{ opacity: 0, y: 10 }}
@@ -358,7 +291,6 @@ export function Gallery() {
                   </motion.div>
                 </div>
 
-                {/* Next Button */}
                 <button
                   onClick={handleNext}
                   className="absolute right-2 sm:right-4 w-12 h-12 bg-white/10 hover:bg-white/25 active:scale-95 rounded-full flex items-center justify-center text-white transition-all z-50 cursor-pointer"

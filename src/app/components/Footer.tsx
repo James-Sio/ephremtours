@@ -1,8 +1,18 @@
 import { motion } from "motion/react";
 import { Palmtree, Phone, Mail, MapPin, Facebook, Instagram, Twitter } from "lucide-react";
+import { Link } from "react-router";
 
 export function Footer() {
   const currentYear = new Date().getFullYear();
+
+  const quickLinks = [
+    { name: "Home", path: "/" },
+    { name: "Services", path: "/services" },
+    { name: "Packages", path: "/packages" },
+    { name: "Gallery", path: "/gallery" },
+    { name: "About", path: "/about" },
+    { name: "Contact", path: "/contact" }
+  ];
 
   return (
     <footer className="bg-gradient-to-br from-gray-900 to-sky-900 text-white pt-12 sm:pt-16 pb-6">
@@ -35,14 +45,14 @@ export function Footer() {
           >
             <h3 className="font-bold text-lg mb-4">Quick Links</h3>
             <ul className="space-y-2">
-              {["Home", "Services", "Packages", "Gallery", "About", "Contact"].map((item) => (
-                <li key={item}>
-                  <a
-                    href={`#${item.toLowerCase()}`}
+              {quickLinks.map((item) => (
+                <li key={item.name}>
+                  <Link
+                    to={item.path}
                     className="text-sky-200 hover:text-white transition-colors text-sm"
                   >
-                    {item}
-                  </a>
+                    {item.name}
+                  </Link>
                 </li>
               ))}
             </ul>

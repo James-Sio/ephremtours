@@ -2,5 +2,8 @@
   "buildCommand": "echo 'Skip build'",
   "outputDirectory": "dist",
   "installCommand": "echo 'Skip install'",
-  "framework": "vite"
+  "framework": "vite",
+  "rewrites": [
+    { "source": "/(.*)", "destination": "/index.html" }
+  ]
 }

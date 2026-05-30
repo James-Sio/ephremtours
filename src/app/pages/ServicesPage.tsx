@@ -4,7 +4,7 @@ import {
   Plane, Train, Hotel, MapPin, Users, Camera, 
   ArrowLeft, CheckCircle2, Star, Calendar, 
   Clock, User, Phone, Mail, ShieldCheck, Check,
-  Send
+  Send, Navigation, Info
 } from "lucide-react";
 
 // Gallery image imports
@@ -19,7 +19,33 @@ import gallery20 from "../../imports/gallery-20.jpg";
 import gallery21 from "../../imports/gallery-21.jpg";
 import gallery23 from "../../imports/gallery-23.jpg";
 
-const coreServices = [
+type ServiceData = {
+  id: string;
+  title: string;
+  shortDesc: string;
+  icon: any;
+  color: string;
+  shadow: string;
+  coverImage: string;
+  gallery: string[];
+  longDesc: string;
+  features: string[];
+  pricing: { route: string; price: string }[];
+  testimonial: { text: string; author: string };
+  routeTable?: {
+    title: string;
+    note: string;
+    headers: string[];
+    rows: { col1: string; col2: string; col3?: string; col4?: string }[];
+  };
+  scheduleTable?: {
+    title: string;
+    note: string;
+    trains: { time: string; pickups: string[] }[];
+  };
+};
+
+const coreServices: ServiceData[] = [
   {
     id: "sgr",
     title: "SGR Terminus Transfers",
@@ -40,11 +66,33 @@ const coreServices = [
       { route: "SGR to Mombasa Island", price: "KES 500" },
       { route: "SGR to Kilifi", price: "KES 1,000" },
       { route: "SGR to Watamu", price: "KES 1,300" },
-      { route: "SGR to Malindi", price: "KES 1,200" }
+      { route: "SGR to Malindi", price: "KES 1,500" }
     ],
     testimonial: {
       text: "Our train was delayed by an hour, but the driver was patiently waiting with a sign. The van was spotless and the drive to Watamu was smooth.",
       author: "David M., Nairobi"
+    },
+    routeTable: {
+      title: "Fare Chart (To/From SGR Mombasa Terminus)",
+      note: "Prices apply to shared shuttle services. Private transfers available on request.",
+      headers: ["Destination", "Shared Shuttle", "Private Transfer"],
+      rows: [
+        { col1: "Mombasa Island", col2: "KES 500", col3: "On Request" },
+        { col1: "Nyali / Bamburi", col2: "KES 700", col3: "On Request" },
+        { col1: "Kilifi", col2: "KES 1,000", col3: "KES 4,500" },
+        { col1: "Watamu", col2: "KES 1,300", col3: "KES 6,000" },
+        { col1: "Malindi", col2: "KES 1,500", col3: "KES 7,000" },
+        { col1: "Diani Beach", col2: "N/A", col3: "KES 5,500" },
+      ]
+    },
+    scheduleTable: {
+      title: "SGR Train & Departure Schedule",
+      note: "Our departures are carefully timed to guarantee early arrival and stress-free boarding at the SGR terminal.",
+      trains: [
+        { time: "8:00 AM (Morning Train)", pickups: ["Malindi: 4:30 AM", "Watamu: 5:00 AM", "Kilifi: 6:00 AM"] },
+        { time: "3:00 PM (Afternoon Train)", pickups: ["Malindi: 10:30 AM", "Watamu: 11:00 AM", "Kilifi: 12:00 PM"] },
+        { time: "10:00 PM (Night Train)", pickups: ["Malindi: 5:30 PM", "Watamu: 6:00 PM", "Kilifi: 7:00 PM"] },
+      ]
     }
   },
   {
@@ -72,6 +120,18 @@ const coreServices = [
     testimonial: {
       text: "The perfect start to our holiday. The driver helped with our heavy bags and had cold water waiting in the car. Highly professional.",
       author: "Sarah J., UK"
+    },
+    routeTable: {
+      title: "Airport Transfer Routes & Rates",
+      note: "Rates are customized per booking based on vehicle choice (Sedan vs Executive Van).",
+      headers: ["From", "To Destination", "Estimated Rate"],
+      rows: [
+        { col1: "Moi Airport (MBA)", col2: "Mombasa CBD / Nyali", col3: "From KES 1,500" },
+        { col1: "Moi Airport (MBA)", col2: "Diani Beach", col3: "From KES 3,500" },
+        { col1: "Moi Airport (MBA)", col2: "Kilifi / Watamu", col3: "From KES 5,000" },
+        { col1: "Malindi Airport", col2: "Malindi Town", col3: "From KES 800" },
+        { col1: "Malindi Airport", col2: "Watamu Resorts", col3: "From KES 1,500" },
+      ]
     }
   },
   {
@@ -124,6 +184,17 @@ const coreServices = [
     testimonial: {
       text: "Our guide was fantastic. He knew so much about the history of Fort Jesus and took us to a great local spot for Swahili lunch.",
       author: "Elena R., Italy"
+    },
+    routeTable: {
+      title: "Popular Day Tours",
+      note: "Tour prices exclude park/museum entry fees unless stated.",
+      headers: ["Tour Destination", "Duration", "Estimated Price"],
+      rows: [
+        { col1: "Mombasa Old Town & Fort Jesus", col2: "Half Day", col3: "KES 2,500 pp" },
+        { col1: "Haller Park Wildlife Tour", col2: "3 Hours", col3: "KES 1,500 pp" },
+        { col1: "Gede Ruins (Watamu)", col2: "Half Day", col3: "KES 2,000 pp" },
+        { col1: "Marafa Hell's Kitchen Sunset", col2: "Half Day", col3: "KES 2,500 pp" },
+      ]
     }
   },
   {
@@ -336,17 +407,87 @@ export function ServicesPage() {
                       
                       {/* Left Column: Information */}
                       <div className="order-2 lg:order-1">
-                        <div className="prose prose-invert max-w-none mb-10">
+                        <div className="prose prose-invert max-w-none mb-12">
                           <p className="text-lg sm:text-xl text-gray-300 font-light leading-relaxed">
                             {selectedService.longDesc}
                           </p>
                         </div>
 
+                        {/* --- EXTENDED DETAILS: ROUTE TABLES & SCHEDULES --- */}
+                        {selectedService.routeTable && (
+                          <div className="mb-12 bg-white/5 border border-white/10 rounded-2xl overflow-hidden">
+                            <div className="p-6 border-b border-white/10 bg-black/20">
+                              <h3 className="text-xl font-bold text-white flex items-center gap-2">
+                                <Navigation className="w-5 h-5 text-sky-400" />
+                                {selectedService.routeTable.title}
+                              </h3>
+                              <p className="text-sm text-gray-400 mt-2 flex items-center gap-1">
+                                <Info className="w-4 h-4 shrink-0" />
+                                {selectedService.routeTable.note}
+                              </p>
+                            </div>
+                            <div className="overflow-x-auto">
+                              <table className="w-full text-left text-gray-300">
+                                <thead>
+                                  <tr className="bg-white/5 border-b border-white/10">
+                                    {selectedService.routeTable.headers.map((header, idx) => (
+                                      <th key={idx} className="px-6 py-4 font-semibold text-sm uppercase tracking-wider text-sky-400">{header}</th>
+                                    ))}
+                                  </tr>
+                                </thead>
+                                <tbody>
+                                  {selectedService.routeTable.rows.map((row, idx) => (
+                                    <tr key={idx} className="border-b border-white/5 hover:bg-white/5 transition-colors">
+                                      <td className="px-6 py-4 font-medium text-white">{row.col1}</td>
+                                      <td className="px-6 py-4">{row.col2}</td>
+                                      {row.col3 && <td className="px-6 py-4">{row.col3}</td>}
+                                      {row.col4 && <td className="px-6 py-4">{row.col4}</td>}
+                                    </tr>
+                                  ))}
+                                </tbody>
+                              </table>
+                            </div>
+                          </div>
+                        )}
+
+                        {selectedService.scheduleTable && (
+                          <div className="mb-12 bg-white/5 border border-white/10 rounded-2xl overflow-hidden">
+                            <div className="p-6 border-b border-white/10 bg-black/20">
+                              <h3 className="text-xl font-bold text-white flex items-center gap-2">
+                                <Clock className="w-5 h-5 text-amber-400" />
+                                {selectedService.scheduleTable.title}
+                              </h3>
+                              <p className="text-sm text-gray-400 mt-2 flex items-center gap-1">
+                                <Info className="w-4 h-4 shrink-0" />
+                                {selectedService.scheduleTable.note}
+                              </p>
+                            </div>
+                            <div className="grid md:grid-cols-3 gap-1 p-1 bg-white/5">
+                              {selectedService.scheduleTable.trains.map((train, idx) => (
+                                <div key={idx} className="bg-gray-900 p-6 rounded-xl border border-white/5">
+                                  <div className="flex items-center gap-2 text-amber-400 font-bold mb-4">
+                                    <Train className="w-5 h-5" />
+                                    {train.time}
+                                  </div>
+                                  <ul className="space-y-3">
+                                    {train.pickups.map((pickup, i) => (
+                                      <li key={i} className="flex items-start gap-2 text-sm text-gray-300">
+                                        <MapPin className="w-4 h-4 text-sky-400 shrink-0 mt-0.5" />
+                                        <span>Pick up at <strong className="text-white">{pickup}</strong></span>
+                                      </li>
+                                    ))}
+                                  </ul>
+                                </div>
+                              ))}
+                            </div>
+                          </div>
+                        )}
+
                         {/* Testimonial & Features Grid */}
-                        <div className="grid sm:grid-cols-2 gap-6 mb-10">
+                        <div className="grid sm:grid-cols-2 gap-6 mb-12">
                           <div className="bg-white/5 border border-white/10 rounded-2xl p-6">
                             <h3 className="text-lg font-bold text-white mb-4 flex items-center gap-2">
-                              <CheckCircle2 className="text-sky-400 w-5 h-5" /> What to Expect
+                              <CheckCircle2 className="text-emerald-400 w-5 h-5" /> What to Expect
                             </h3>
                             <ul className="space-y-3">
                               {selectedService.features.map((feature, idx) => (
@@ -385,7 +526,7 @@ export function ServicesPage() {
                       </div>
 
                       {/* Right Column: Interactive Booking Form */}
-                      <div className="order-1 lg:order-2 sticky top-24">
+                      <div className="order-1 lg:order-2 lg:sticky lg:top-24 mt-8 lg:mt-0">
                         <div className="bg-gradient-to-b from-white/10 to-white/5 backdrop-blur-2xl border border-white/20 rounded-3xl p-6 sm:p-8 shadow-2xl relative overflow-hidden">
                           
                           {/* Form Background Glow */}

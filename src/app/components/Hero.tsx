@@ -1,148 +1,120 @@
 import { motion } from "motion/react";
-import { ArrowRight, Sparkles, Calendar, Music } from "lucide-react";
+import { Train, Plane, Camera, Hotel, Calendar, ArrowRight } from "lucide-react";
 import { Link } from "react-router";
-import companyLogo from "../../imports/image.png";
 
-const MotionLink = motion.create(Link);
+import heroBg from "../../imports/gallery-14.jpg"; // Using the Van or a nice coastal shot
+
+const quickServices = [
+  { id: "sgr", icon: Train, label: "SGR Transfer", color: "text-orange-400" },
+  { id: "airport", icon: Plane, label: "Airport VIP", color: "text-sky-400" },
+  { id: "safari", icon: Camera, label: "Safaris", color: "text-amber-400" },
+  { id: "hotel", icon: Hotel, label: "Shuttles", color: "text-emerald-400" },
+];
 
 export function Hero() {
   return (
-    <section id="home" className="pt-24 sm:pt-28 pb-12 sm:pb-16 px-4 sm:px-6 lg:px-8 min-h-screen flex items-center relative overflow-hidden">
+    <section id="home" className="relative min-h-[100svh] flex flex-col justify-center items-center overflow-hidden pt-24 pb-16">
       
-      {/* Background decorations */}
-      <div className="absolute top-0 right-0 w-96 h-96 bg-sky-100 rounded-full blur-3xl opacity-50 -z-10" />
-      <div className="absolute bottom-0 left-0 w-96 h-96 bg-pink-50 rounded-full blur-3xl opacity-50 -z-10" />
+      {/* Immersive Full-Screen Background */}
+      <div 
+        className="absolute inset-0 z-0"
+        style={{
+          backgroundImage: `url(${heroBg})`,
+          backgroundSize: "cover",
+          backgroundPosition: "center",
+          backgroundAttachment: "fixed"
+        }}
+      />
+      
+      {/* Cinematic Dark Overlay */}
+      <div className="absolute inset-0 z-0 bg-gradient-to-b from-gray-900/90 via-gray-900/60 to-gray-900/90 backdrop-blur-[2px]" />
 
-      <div className="max-w-7xl mx-auto w-full flex flex-col gap-8 md:gap-12">
+      <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 w-full flex flex-col items-center text-center">
         
-        {/* Summer Tides Promo Banner */}
+        {/* VIP Event Banner (Restyled for dark theme) */}
         <motion.div
           initial={{ opacity: 0, y: -20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.6 }}
-          className="w-full bg-gradient-to-r from-orange-500 via-pink-500 to-purple-600 rounded-2xl p-1 shadow-xl mt-4 sm:mt-0"
+          className="mb-8 sm:mb-12"
         >
-          <div className="bg-white/95 backdrop-blur-sm rounded-xl p-4 sm:p-6 flex flex-col sm:flex-row items-center justify-between gap-4">
-            <div className="flex items-center gap-4 w-full sm:w-auto">
-              <div className="w-10 h-10 sm:w-12 sm:h-12 rounded-full bg-gradient-to-br from-orange-400 to-pink-500 flex items-center justify-center shrink-0 shadow-inner">
-                <Music className="w-5 h-5 sm:w-6 sm:h-6 text-white" />
-              </div>
-              <div>
-                <h3 className="font-bold text-gray-900 text-sm sm:text-xl flex items-center gap-1 sm:gap-2">
-                  SUMMER TIDES IS COMING! <span className="text-orange-500 text-lg">🔥</span>
-                </h3>
-                <p className="text-gray-600 text-xs sm:text-base">Malindi • 1st - 5th July 2026 • Live Music</p>
-              </div>
-            </div>
-            <MotionLink
-              to="/contact"
-              whileHover={{ scale: 1.05 }}
-              whileTap={{ scale: 0.95 }}
-              className="w-full sm:w-auto px-6 py-2.5 sm:py-2 bg-gradient-to-r from-orange-500 to-pink-500 text-white font-bold rounded-lg shadow-md flex justify-center items-center gap-2"
-            >
-              <Calendar className="w-4 h-4" />
-              Book Early
-            </MotionLink>
+          <Link to="/contact" className="inline-flex items-center gap-3 bg-white/5 hover:bg-white/10 border border-white/10 backdrop-blur-md px-4 py-2 sm:px-6 sm:py-3 rounded-full transition-colors group">
+            <span className="flex h-3 w-3 relative">
+              <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-orange-400 opacity-75"></span>
+              <span className="relative inline-flex rounded-full h-3 w-3 bg-orange-500"></span>
+            </span>
+            <span className="text-xs sm:text-sm font-medium text-gray-200">
+              <strong className="text-white">Summer Tides Event:</strong> July 1st - 5th
+            </span>
+            <ArrowRight className="w-4 h-4 text-gray-400 group-hover:text-white group-hover:translate-x-1 transition-all" />
+          </Link>
+        </motion.div>
+
+        {/* High-End Typography */}
+        <motion.h1 
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.8, delay: 0.2 }}
+          className="text-5xl sm:text-6xl md:text-7xl lg:text-8xl font-extrabold text-white mb-6 tracking-tight leading-[1.1]"
+        >
+          Discerning Travel.<br />
+          <span className="bg-gradient-to-r from-sky-400 to-blue-500 bg-clip-text text-transparent">Impeccable Service.</span>
+        </motion.h1>
+        
+        <motion.p 
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.8, delay: 0.3 }}
+          className="text-lg sm:text-xl md:text-2xl text-gray-300 mb-12 max-w-3xl mx-auto font-light leading-relaxed"
+        >
+          Executive transfers from SGR, premium airport meet & greets, and curated luxury safaris across the Kenyan Coast.
+        </motion.p>
+
+        {/* Quick-Scan Service Bar (Mobile Optimized) */}
+        <motion.div
+          initial={{ opacity: 0, y: 30 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.8, delay: 0.5 }}
+          className="w-full max-w-4xl mx-auto"
+        >
+          <p className="text-xs font-bold text-gray-400 uppercase tracking-widest mb-4">Quick Service Select</p>
+          
+          <div className="grid grid-cols-2 md:grid-cols-4 gap-3 sm:gap-4">
+            {quickServices.map((service, idx) => (
+              <Link 
+                key={service.id}
+                to="/services"
+                className="bg-white/10 hover:bg-white/20 backdrop-blur-lg border border-white/20 p-4 sm:p-5 rounded-2xl flex flex-col items-center justify-center gap-3 transition-all hover:-translate-y-1 hover:shadow-xl group"
+              >
+                <service.icon className={`w-8 h-8 sm:w-10 sm:h-10 ${service.color} transform group-hover:scale-110 transition-transform`} />
+                <span className="text-white font-semibold text-sm sm:text-base">{service.label}</span>
+              </Link>
+            ))}
           </div>
         </motion.div>
 
-        <div className="grid md:grid-cols-2 gap-12 items-center">
-          <motion.div
-            initial={{ opacity: 0, x: -50 }}
-            animate={{ opacity: 1, x: 0 }}
-            transition={{ duration: 0.8, delay: 0.2 }}
+        {/* Main Action Buttons */}
+        <motion.div
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          transition={{ duration: 1, delay: 0.8 }}
+          className="mt-12 flex flex-col sm:flex-row gap-4"
+        >
+          <Link 
+            to="/packages" 
+            className="px-8 py-4 bg-sky-600 hover:bg-sky-500 text-white font-bold rounded-full transition-colors flex items-center justify-center gap-2 shadow-lg shadow-sky-900/50"
           >
-            <motion.div
-              initial={{ opacity: 0, scale: 0.8 }}
-              animate={{ opacity: 1, scale: 1 }}
-              transition={{ delay: 0.4 }}
-              className="inline-flex items-center gap-2 bg-sky-100 px-3 sm:px-4 py-2 rounded-full mb-4 sm:mb-6"
-            >
-              <Sparkles className="w-4 h-4 text-sky-600" />
-              <span className="text-xs sm:text-sm font-semibold text-sky-700 uppercase tracking-wider">Your Journey Begins Here</span>
-            </motion.div>
-
-            <h1 className="text-4xl sm:text-5xl md:text-6xl font-extrabold mb-4 sm:mb-6 leading-tight tracking-tight">
-              <span className="bg-gradient-to-r from-sky-600 to-blue-600 bg-clip-text text-transparent">
-                Explore Kenya
-              </span>
-              <br />
-              <span className="text-gray-800">With Confidence</span>
-            </h1>
-
-            <p className="text-base sm:text-lg md:text-xl text-gray-600 mb-6 sm:mb-8 leading-relaxed max-w-lg">
-              Professional transfer services and unforgettable tour experiences across Kenya. 
-              Your comfort, safety, and lifetime memories are our top priorities.
-            </p>
-
-            <div className="flex flex-col sm:flex-row gap-3 sm:gap-4">
-              <MotionLink
-                to="/packages"
-                whileHover={{ scale: 1.05 }}
-                whileTap={{ scale: 0.95 }}
-                className="bg-gradient-to-r from-sky-500 to-blue-600 text-white font-semibold px-6 sm:px-8 py-3.5 sm:py-4 rounded-xl flex items-center justify-center gap-2 shadow-lg shadow-sky-200 hover:shadow-xl transition-all"
-              >
-                View Safari Packages
-                <ArrowRight className="w-5 h-5" />
-              </MotionLink>
-
-              <MotionLink
-                to="/contact"
-                whileHover={{ scale: 1.05 }}
-                whileTap={{ scale: 0.95 }}
-                className="bg-white border-2 border-gray-200 text-gray-700 font-semibold px-6 sm:px-8 py-3.5 sm:py-4 rounded-xl hover:border-sky-300 hover:bg-sky-50 transition-all text-center flex items-center justify-center"
-              >
-                Contact Us
-              </MotionLink>
-            </div>
-          </motion.div>
-
-          <motion.div
-            initial={{ opacity: 0, x: 50 }}
-            animate={{ opacity: 1, x: 0 }}
-            transition={{ duration: 0.8, delay: 0.4 }}
-            className="relative flex justify-center"
+            <Calendar className="w-5 h-5" />
+            Book a Safari
+          </Link>
+          <Link 
+            to="/contact" 
+            className="px-8 py-4 bg-transparent border border-white/30 hover:bg-white/10 text-white font-bold rounded-full transition-colors flex items-center justify-center"
           >
-            <motion.div
-              animate={{
-                y: [0, -15, 0],
-                rotate: [0, 3, 0, -3, 0]
-              }}
-              transition={{
-                duration: 8,
-                repeat: Infinity,
-                ease: "easeInOut"
-              }}
-              className="relative z-10 w-full max-w-[280px] sm:max-w-sm md:max-w-md"
-            >
-              <img
-                src={companyLogo}
-                alt="Ephream Tours Business Card"
-                className="w-full h-auto rounded-2xl shadow-2xl border-4 border-white"
-              />
-              
-              <motion.div 
-                animate={{ y: [0, 10, 0] }} 
-                transition={{ duration: 4, repeat: Infinity, ease: "easeInOut", delay: 1 }}
-                className="absolute -bottom-4 -left-4 sm:-bottom-6 sm:-left-6 bg-white p-3 sm:p-4 rounded-xl shadow-xl border border-gray-100 flex items-center gap-2 sm:gap-3"
-              >
-                <div className="w-8 h-8 sm:w-10 sm:h-10 bg-green-100 rounded-full flex items-center justify-center">
-                  <span className="text-lg sm:text-xl">🌟</span>
-                </div>
-                <div>
-                  <p className="text-[10px] sm:text-xs text-gray-500 font-medium uppercase">Rating</p>
-                  <p className="text-xs sm:text-sm font-bold text-gray-800">5.0 Top Rated</p>
-                </div>
-              </motion.div>
-            </motion.div>
+            Request Custom Quote
+          </Link>
+        </motion.div>
 
-            <motion.div
-              animate={{ scale: [1, 1.1, 1], opacity: [0.3, 0.6, 0.3] }}
-              transition={{ duration: 5, repeat: Infinity }}
-              className="absolute inset-0 bg-gradient-to-tr from-sky-400 to-purple-400 rounded-full blur-[80px] -z-10"
-            />
-          </motion.div>
-        </div>
       </div>
     </section>
   );

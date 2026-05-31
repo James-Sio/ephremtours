@@ -164,6 +164,19 @@ export function Packages() {
   const [favorites, setFavorites] = useState<string[]>([]);
   const [selectedPackage, setSelectedPackage] = useState<typeof packages[0] | null>(null);
 
+  // Form State
+  const [isInquiryMode, setIsInquiryMode] = useState(false);
+  const [adultsCount, setAdultsCount] = useState(2);
+  const [childrenCount, setChildrenCount] = useState(0);
+  const [travelDate, setTravelDate] = useState("");
+  const [luggage, setLuggage] = useState("Standard");
+  const [needsPickup, setNeedsPickup] = useState(false);
+  const [fullName, setFullName] = useState("");
+  const [phone, setPhone] = useState("");
+  const [email, setEmail] = useState("");
+  const [isSubmitting, setIsSubmitting] = useState(false);
+  const [isSubmitted, setIsSubmitted] = useState(false);
+
   // Toggle favorite helper
   const toggleFavorite = (id: string, e: React.MouseEvent) => {
     e.stopPropagation();
@@ -171,6 +184,47 @@ export function Packages() {
     setFavorites(prev => 
       prev.includes(id) ? prev.filter(favId => favId !== id) : [...prev, id]
     );
+  };
+
+  // Reset form states
+  const openPackage = (pkg: typeof packages[0], directEnquiry = false) => {
+    setSelectedPackage(pkg);
+    setIsInquiryMode(directEnquiry);
+    setAdultsCount(2);
+    setChildrenCount(0);
+    setTravelDate("");
+    setLuggage("Standard");
+    setNeedsPickup(false);
+    setFullName("");
+    setPhone("");
+    setEmail("");
+    setIsSubmitting(false);
+    setIsSubmitted(false);
+  };
+
+  // Live Auto-Calculator Calculations
+  const calculatedCost = useMemo(() => {
+    if (!selectedPackage) return { adults: 0, children: 0, pickup: 0, total: 0 };
+    const adultsSubtotal = selectedPackage.price * adultsCount;
+    const childrenSubtotal = Math.round(selectedPackage.price * 0.5) * childrenCount;
+    const pickupSubtotal = needsPickup ? 2000 : 0; // KES 2,000 for VIP transfer
+    return {
+      adults: adultsSubtotal,
+      children: childrenSubtotal,
+      pickup: pickupSubtotal,
+      total: adultsSubtotal + childrenSubtotal + pickupSubtotal
+    };
+  }, [selectedPackage, adultsCount, childrenCount, needsPickup]);
+
+  // Handle inquiry submit
+  const handleInquirySubmit = (e: React.FormEvent) => {
+    e.preventDefault();
+    if (!fullName || !phone || !travelDate) return;
+    setIsSubmitting(true);
+    setTimeout(() => {
+      setIsSubmitting(false);
+      setIsSubmitted(true);
+    }, 1500);
   };
 
   // Filter & Sort Logic
@@ -298,7 +352,7 @@ export function Packages() {
                   className={`group relative flex flex-col bg-white rounded-2xl shadow-sm hover:shadow-xl transition-all duration-300 overflow-hidden border border-gray-100 cursor-pointer ${
                     pkg.popular ? 'ring-2 ring-[#F9A03F]' : ''
                   }`}
-                  onClick={() => setSelectedPackage(pkg)}
+                  onClick={() => openPackage(pkg, false)}
                 >
                   
                   {/* Card Image Header with skeleton background & lazy loading */}
@@ -408,6 +462,10 @@ export function Packages() {
                       </div>
 
                       <button
+                        onClick={(e) => {
+                          e.stopPropagation();
+                          openPackage(pkg, true);
+                        }}
                         className={`px-4 py-2.5 rounded-xl text-xs font-bold transition-all ${
                           pkg.popular
                             ? 'bg-[#003B73] hover:bg-[#002a52] text-white shadow-sm'
@@ -492,66 +550,301 @@ export function Packages() {
                   </div>
                 </div>
 
-                {/* Right Side: Information & Customizable Details */}
-                <div className="p-6 sm:p-8 flex flex-col justify-between">
-                  <div>
-                    <div className="flex items-center gap-3 mb-6">
-                      <div className="flex items-center text-amber-500">
-                        <Star className="w-4 h-4 fill-current" />
-                        <span className="text-sm font-bold text-gray-900 ml-1">{selectedPackage.rating}</span>
-                      </div>
-                      <span className="text-xs text-gray-400 font-medium">({selectedPackage.reviews})</span>
-                      <div className="w-1.5 h-1.5 rounded-full bg-gray-200" />
-                      <span className="text-xs font-bold text-sky-600 uppercase tracking-widest">{selectedPackage.duration}</span>
-                    </div>
-
-                    <h4 className="text-xs font-extrabold text-gray-400 uppercase tracking-widest mb-4">Tour Features & Inclusions</h4>
-                    
-                    <ul className="space-y-3.5 mb-8">
-                      {selectedPackage.features.map((feature) => (
-                        <li key={feature} className="flex items-start gap-3 text-xs sm:text-sm text-gray-700">
-                          <div className="w-5 h-5 rounded-full bg-emerald-50 flex items-center justify-center shrink-0 mt-0.5">
-                            <Check className="w-3.5 h-3.5 text-emerald-600 font-bold" />
+                {/* Right Side: Information & Customizable Details / Dynamic Form */}
+                <div className="p-6 sm:p-8 flex flex-col justify-between min-h-[480px]">
+                  <AnimatePresence mode="wait">
+                    {!isInquiryMode ? (
+                      <motion.div
+                        key="details"
+                        initial={{ opacity: 0, x: 20 }}
+                        animate={{ opacity: 1, x: 0 }}
+                        exit={{ opacity: 0, x: -20 }}
+                        transition={{ duration: 0.3 }}
+                        className="flex flex-col h-full justify-between flex-grow"
+                      >
+                        <div>
+                          <div className="flex items-center gap-3 mb-6">
+                            <div className="flex items-center text-amber-500">
+                              <Star className="w-4 h-4 fill-current" />
+                              <span className="text-sm font-bold text-gray-900 ml-1">{selectedPackage.rating}</span>
+                            </div>
+                            <span className="text-xs text-gray-400 font-medium">({selectedPackage.reviews})</span>
+                            <div className="w-1.5 h-1.5 rounded-full bg-gray-200" />
+                            <span className="text-xs font-bold text-sky-600 uppercase tracking-widest">{selectedPackage.duration}</span>
                           </div>
-                          <span>{feature}</span>
-                        </li>
-                      ))}
-                    </ul>
 
-                    {/* Booking Safety Guarantees */}
-                    <div className="flex gap-4 p-4 bg-sky-50/50 rounded-2xl border border-sky-100/40 mb-6">
-                      <Shield className="w-5 h-5 text-sky-600 shrink-0 mt-0.5" />
-                      <div>
-                        <h5 className="text-xs font-bold text-gray-800 mb-0.5">Ephream Tours Guarantee</h5>
-                        <p className="text-[11px] text-gray-500">Premium fully-guided experience, high-spec fully equipped 4x4, and custom transfers guaranteed.</p>
-                      </div>
-                    </div>
-                  </div>
+                          <h4 className="text-xs font-extrabold text-gray-400 uppercase tracking-widest mb-4">Tour Features & Inclusions</h4>
+                          
+                          <ul className="space-y-3 mb-6">
+                            {selectedPackage.features.map((feature) => (
+                              <li key={feature} className="flex items-start gap-3 text-xs sm:text-sm text-gray-700">
+                                <div className="w-5 h-5 rounded-full bg-emerald-50 flex items-center justify-center shrink-0 mt-0.5">
+                                  <Check className="w-3.5 h-3.5 text-emerald-600 font-bold" />
+                                </div>
+                                <span>{feature}</span>
+                              </li>
+                            ))}
+                          </ul>
 
-                  {/* Actions & Price Footer */}
-                  <div className="pt-6 border-t border-gray-100 flex items-center justify-between">
-                    <div>
-                      <span className="text-[10px] uppercase font-bold text-gray-400 tracking-wider">Estimated Base Cost</span>
-                      <div className="flex items-baseline gap-1">
-                        <span className="text-2xl sm:text-3xl font-black text-[#003B73]">
-                          KES {selectedPackage.price.toLocaleString()}
-                        </span>
-                        <span className="text-gray-400 text-xs font-bold">/ p.p</span>
-                      </div>
-                    </div>
+                          {/* Booking Safety Guarantees */}
+                          <div className="flex gap-4 p-4 bg-sky-50/50 rounded-2xl border border-sky-100/40 mb-6">
+                            <Shield className="w-5 h-5 text-sky-600 shrink-0 mt-0.5" />
+                            <div>
+                              <h5 className="text-xs font-bold text-gray-800 mb-0.5">Ephream Tours Guarantee</h5>
+                              <p className="text-[11px] text-gray-500">Premium fully-guided experience, high-spec fully equipped 4x4, and custom transfers guaranteed.</p>
+                            </div>
+                          </div>
+                        </div>
 
-                    <MotionLink
-                      to="/contact"
-                      onClick={() => setSelectedPackage(null)}
-                      whileHover={{ scale: 1.05 }}
-                      whileTap={{ scale: 0.95 }}
-                      className="px-6 py-4 bg-[#003B73] hover:bg-[#002a52] text-white font-extrabold rounded-2xl text-xs sm:text-sm shadow-lg shadow-blue-900/10 transition-all flex items-center gap-2"
-                    >
-                      Instant Inquiry
-                      <ChevronRight className="w-4 h-4" />
-                    </MotionLink>
-                  </div>
+                        {/* Actions & Price Footer */}
+                        <div className="pt-6 border-t border-gray-100 flex items-center justify-between">
+                          <div>
+                            <span className="text-[10px] uppercase font-bold text-gray-400 tracking-wider">Estimated Base Cost</span>
+                            <div className="flex items-baseline gap-1">
+                              <span className="text-2xl sm:text-3xl font-black text-[#003B73]">
+                                KES {selectedPackage.price.toLocaleString()}
+                              </span>
+                              <span className="text-gray-400 text-xs font-bold">/ p.p</span>
+                            </div>
+                          </div>
 
+                          <button
+                            onClick={() => setIsInquiryMode(true)}
+                            className="px-6 py-4 bg-[#003B73] hover:bg-[#002a52] text-white font-extrabold rounded-2xl text-xs sm:text-sm shadow-lg shadow-blue-900/10 transition-all flex items-center gap-2"
+                          >
+                            Instant Inquiry
+                            <ChevronRight className="w-4 h-4" />
+                          </button>
+                        </div>
+                      </motion.div>
+                    ) : (
+                      <motion.div
+                        key="inquiryForm"
+                        initial={{ opacity: 0, x: 20 }}
+                        animate={{ opacity: 1, x: 0 }}
+                        exit={{ opacity: 0, x: -20 }}
+                        transition={{ duration: 0.3 }}
+                        className="flex flex-col h-full justify-between flex-grow"
+                      >
+                        {!isSubmitted ? (
+                          <form onSubmit={handleInquirySubmit} className="space-y-4">
+                            <div className="flex justify-between items-center pb-2 border-b border-gray-100">
+                              <h4 className="text-sm font-black text-gray-900 uppercase tracking-wider">VIP Instant Inquiry</h4>
+                              <button
+                                type="button"
+                                onClick={() => setIsInquiryMode(false)}
+                                className="text-xs text-[#003B73] font-bold hover:underline"
+                              >
+                                ← Back to Features
+                              </button>
+                            </div>
+
+                            {/* Row 1: Guest Selection Counters */}
+                            <div className="grid grid-cols-2 gap-4">
+                              <div className="bg-gray-50 border border-gray-100 rounded-xl p-3 flex justify-between items-center">
+                                <div>
+                                  <p className="text-[10px] font-bold text-gray-400 uppercase">Adults</p>
+                                  <p className="text-xs text-gray-500">12+ years</p>
+                                </div>
+                                <div className="flex items-center gap-2.5">
+                                  <button
+                                    type="button"
+                                    onClick={() => setAdultsCount(Math.max(1, adultsCount - 1))}
+                                    className="w-6 h-6 rounded-full bg-white border border-gray-200 flex items-center justify-center font-bold text-gray-700 hover:bg-gray-100"
+                                  >
+                                    -
+                                  </button>
+                                  <span className="text-sm font-bold text-gray-800">{adultsCount}</span>
+                                  <button
+                                    type="button"
+                                    onClick={() => setAdultsCount(Math.min(10, adultsCount + 1))}
+                                    className="w-6 h-6 rounded-full bg-white border border-gray-200 flex items-center justify-center font-bold text-gray-700 hover:bg-gray-100"
+                                  >
+                                    +
+                                  </button>
+                                </div>
+                              </div>
+
+                              <div className="bg-gray-50 border border-gray-100 rounded-xl p-3 flex justify-between items-center">
+                                <div>
+                                  <p className="text-[10px] font-bold text-gray-400 uppercase">Children</p>
+                                  <p className="text-xs text-gray-500">2-11 years (50% off)</p>
+                                </div>
+                                <div className="flex items-center gap-2.5">
+                                  <button
+                                    type="button"
+                                    onClick={() => setChildrenCount(Math.max(0, childrenCount - 1))}
+                                    className="w-6 h-6 rounded-full bg-white border border-gray-200 flex items-center justify-center font-bold text-gray-700 hover:bg-gray-100"
+                                  >
+                                    -
+                                  </button>
+                                  <span className="text-sm font-bold text-gray-800">{childrenCount}</span>
+                                  <button
+                                    type="button"
+                                    onClick={() => setChildrenCount(Math.min(10, childrenCount + 1))}
+                                    className="w-6 h-6 rounded-full bg-white border border-gray-200 flex items-center justify-center font-bold text-gray-700 hover:bg-gray-100"
+                                  >
+                                    +
+                                  </button>
+                                </div>
+                              </div>
+                            </div>
+
+                            {/* Row 2: Travel Date & VIP Transfer options */}
+                            <div className="grid grid-cols-2 gap-4">
+                              <div>
+                                <label className="block text-[10px] font-bold text-gray-400 uppercase mb-1.5">Travel Date</label>
+                                <input
+                                  type="date"
+                                  required
+                                  value={travelDate}
+                                  onChange={(e) => setTravelDate(e.target.value)}
+                                  className="w-full px-3 py-2.5 border border-gray-200 rounded-xl text-xs focus:outline-none focus:ring-1 focus:ring-sky-500 font-semibold text-gray-800"
+                                />
+                              </div>
+
+                              <div className="flex flex-col justify-end">
+                                <label className="flex items-center gap-2.5 bg-gray-50 border border-gray-100 rounded-xl p-3 cursor-pointer select-none">
+                                  <input
+                                    type="checkbox"
+                                    checked={needsPickup}
+                                    onChange={(e) => setNeedsPickup(e.target.checked)}
+                                    className="rounded border-gray-300 text-sky-600 focus:ring-sky-500 w-4 h-4 cursor-pointer"
+                                  />
+                                  <div>
+                                    <p className="text-[10px] font-bold text-gray-700 uppercase">Add VIP Pickup</p>
+                                    <p className="text-[9px] text-gray-400">+ KES 2,000</p>
+                                  </div>
+                                </label>
+                              </div>
+                            </div>
+
+                            {/* Row 3: Customer Details */}
+                            <div className="space-y-3">
+                              <div>
+                                <label className="block text-[10px] font-bold text-gray-400 uppercase mb-1">Full Name</label>
+                                <input
+                                  type="text"
+                                  required
+                                  placeholder="John Doe"
+                                  value={fullName}
+                                  onChange={(e) => setFullName(e.target.value)}
+                                  className="w-full px-3 py-2.5 border border-gray-200 rounded-xl text-xs focus:outline-none focus:ring-1 focus:ring-sky-500 font-semibold text-gray-800"
+                                />
+                              </div>
+
+                              <div className="grid grid-cols-2 gap-4">
+                                <div>
+                                  <label className="block text-[10px] font-bold text-gray-400 uppercase mb-1">WhatsApp / Phone</label>
+                                  <input
+                                    type="tel"
+                                    required
+                                    placeholder="+254 700 000 000"
+                                    value={phone}
+                                    onChange={(e) => setPhone(e.target.value)}
+                                    className="w-full px-3 py-2.5 border border-gray-200 rounded-xl text-xs focus:outline-none focus:ring-1 focus:ring-sky-500 font-semibold text-gray-800"
+                                  />
+                                </div>
+                                <div>
+                                  <label className="block text-[10px] font-bold text-gray-400 uppercase mb-1">Email Address</label>
+                                  <input
+                                    type="email"
+                                    placeholder="john@example.com"
+                                    value={email}
+                                    onChange={(e) => setEmail(e.target.value)}
+                                    className="w-full px-3 py-2.5 border border-gray-200 rounded-xl text-xs focus:outline-none focus:ring-1 focus:ring-sky-500 font-semibold text-gray-800"
+                                  />
+                                </div>
+                              </div>
+                            </div>
+
+                            {/* Interactive Cost Breakdown Summary */}
+                            <div className="bg-sky-50/70 rounded-2xl p-4 border border-sky-100/50">
+                              <p className="text-[10px] font-bold text-sky-800 uppercase tracking-widest mb-2">Price Estimation</p>
+                              <div className="space-y-1.5 text-xs text-gray-600 font-medium">
+                                <div className="flex justify-between">
+                                  <span>{adultsCount} Adults</span>
+                                  <span>KES {calculatedCost.adults.toLocaleString()}</span>
+                                </div>
+                                {childrenCount > 0 && (
+                                  <div className="flex justify-between text-gray-500">
+                                    <span>{childrenCount} Children (50% Off)</span>
+                                    <span>KES {calculatedCost.children.toLocaleString()}</span>
+                                  </div>
+                                )}
+                                {needsPickup && (
+                                  <div className="flex justify-between text-gray-500">
+                                    <span>VIP Airport/SGR Private Chauffeur Pickup</span>
+                                    <span>KES {calculatedCost.pickup.toLocaleString()}</span>
+                                  </div>
+                                )}
+                                <div className="w-full h-px bg-sky-200/50 my-2" />
+                                <div className="flex justify-between text-sm font-black text-gray-900">
+                                  <span>Estimated Total</span>
+                                  <span className="text-emerald-700">KES {calculatedCost.total.toLocaleString()}</span>
+                                </div>
+                              </div>
+                            </div>
+
+                            {/* Submit Button */}
+                            <button
+                              type="submit"
+                              disabled={isSubmitting}
+                              className="w-full py-4 bg-[#003B73] hover:bg-[#002a52] disabled:bg-gray-400 text-white font-extrabold rounded-2xl text-xs sm:text-sm shadow-md transition-all flex items-center justify-center gap-2"
+                            >
+                              {isSubmitting ? (
+                                <>
+                                  <div className="w-4 h-4 border-2 border-white border-t-transparent rounded-full animate-spin" />
+                                  Sending VIP Booking Inquiry...
+                                </>
+                              ) : (
+                                <>
+                                  Submit VIP Inquiry Request
+                                  <ChevronRight className="w-4 h-4" />
+                                </>
+                              )}
+                            </button>
+                          </form>
+                        ) : (
+                          <motion.div
+                            initial={{ scale: 0.9, opacity: 0 }}
+                            animate={{ scale: 1, opacity: 1 }}
+                            className="flex flex-col items-center justify-center text-center py-10 flex-grow"
+                          >
+                            <div className="w-16 h-16 bg-emerald-50 rounded-full flex items-center justify-center text-3xl mb-6 shadow-md shadow-emerald-100 animate-bounce">
+                              🎉
+                            </div>
+                            <h3 className="text-xl font-black text-gray-900 mb-2">VIP Inquiry Successfully Sent!</h3>
+                            <p className="text-sm text-gray-500 max-w-sm mb-8 leading-relaxed">
+                              Thank you, <span className="font-bold text-gray-800">{fullName}</span>! Your inquiry for <span className="font-bold text-[#003B73]">{selectedPackage.name}</span> has been securely transmitted.
+                            </p>
+
+                            <div className="bg-sky-50 border border-sky-100 rounded-2xl p-4 max-w-md w-full text-left mb-8 space-y-2">
+                              <p className="text-xs font-bold text-sky-800 uppercase tracking-widest mb-1.5">What Happens Next?</p>
+                              <div className="flex items-start gap-2.5 text-xs text-gray-600">
+                                <div className="w-1.5 h-1.5 rounded-full bg-sky-600 mt-1.5 shrink-0" />
+                                <p>Our VIP Travel Concierge will review your custom KES {calculatedCost.total.toLocaleString()} quote.</p>
+                              </div>
+                              <div className="flex items-start gap-2.5 text-xs text-gray-600">
+                                <div className="w-1.5 h-1.5 rounded-full bg-sky-600 mt-1.5 shrink-0" />
+                                <p>We will contact you via WhatsApp / Phone at <span className="font-bold text-gray-800">{phone}</span> within 15 minutes to finalize details.</p>
+                              </div>
+                            </div>
+
+                            <button
+                              onClick={() => {
+                                setSelectedPackage(null);
+                                setIsSubmitted(false);
+                              }}
+                              className="px-6 py-3 bg-[#003B73] hover:bg-[#002a52] text-white font-extrabold rounded-2xl text-xs sm:text-sm shadow-sm"
+                            >
+                              Close Portal
+                            </button>
+                          </motion.div>
+                        )}
+                      </motion.div>
+                    )}
+                  </AnimatePresence>
                 </div>
 
               </motion.div>

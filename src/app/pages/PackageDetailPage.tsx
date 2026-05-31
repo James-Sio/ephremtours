@@ -43,6 +43,17 @@ export function PackageDetailPage() {
   const [activeGalleryIndex, setActiveGalleryIndex] = useState(0);
   const [isGalleryOpen, setIsGalleryOpen] = useState(false);
 
+  // Cinematic Hero Auto-Slide state
+  const [heroImageIndex, setHeroImageIndex] = useState(0);
+
+  useEffect(() => {
+    if (!pkg || pkg.images.length <= 1) return;
+    const interval = setInterval(() => {
+      setHeroImageIndex((prev) => (prev + 1) % pkg.images.length);
+    }, 6000); // Cinematic transition every 6 seconds
+    return () => clearInterval(interval);
+  }, [pkg]);
+
   // Scroll tracking to make sub-navigation sticky
   const [isSticky, setIsSticky] = useState(false);
   const subNavRef = useRef<HTMLDivElement>(null);
@@ -136,15 +147,22 @@ export function PackageDetailPage() {
       <section className="relative h-[80vh] w-full bg-gray-900 overflow-hidden flex items-end">
         
         {/* Massive full screen dynamic background image */}
-        <div className="absolute inset-0">
-          <img 
-            src={pkg.images[0]} 
-            alt={pkg.name} 
-            className="w-full h-full object-cover transform scale-105 animate-[kenburns_40s_ease-out_infinite]"
-          />
+        <div className="absolute inset-0 bg-gray-950">
+          <AnimatePresence mode="wait">
+            <motion.img 
+              key={heroImageIndex}
+              src={pkg.images[heroImageIndex]} 
+              alt={pkg.name} 
+              initial={{ opacity: 0.3 }}
+              animate={{ opacity: 1 }}
+              exit={{ opacity: 0.3 }}
+              transition={{ duration: 1.5, ease: "easeInOut" }}
+              className="absolute inset-0 w-full h-full object-cover transform scale-105"
+            />
+          </AnimatePresence>
           {/* Elite dual-gradient backdrop mapping */}
-          <div className="absolute inset-0 bg-gradient-to-t from-gray-950 via-gray-950/20 to-black/35" />
-          <div className="absolute inset-0 bg-gradient-to-r from-gray-950/80 via-transparent to-transparent pointer-events-none" />
+          <div className="absolute inset-0 bg-gradient-to-t from-gray-950 via-gray-950/20 to-black/35 z-10 pointer-events-none" />
+          <div className="absolute inset-0 bg-gradient-to-r from-gray-950/80 via-transparent to-transparent z-10 pointer-events-none" />
         </div>
 
         {/* Back navigation button */}

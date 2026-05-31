@@ -1,4 +1,4 @@
-import { useState, useMemo } from "react";
+import { useState, useMemo, useEffect } from "react";
 import { motion, AnimatePresence } from "motion/react";
 import { 
   Check, Star, Map, Calendar, Eye, Search, ArrowUpDown, ChevronRight, X, Heart, Shield, HelpCircle, 
@@ -353,6 +353,14 @@ export const packages = [
 function CardImageCarousel({ images, name, onClick }: { images: string[], name: string, onClick: () => void }) {
   const [currentIndex, setCurrentIndex] = useState(0);
   const [isHovered, setIsHovered] = useState(false);
+
+  useEffect(() => {
+    if (isHovered || images.length <= 1) return;
+    const interval = setInterval(() => {
+      setCurrentIndex((prev) => (prev + 1) % images.length);
+    }, 3500); // Slide every 3.5 seconds
+    return () => clearInterval(interval);
+  }, [isHovered, images.length]);
 
   const handleNext = (e: React.MouseEvent) => {
     e.stopPropagation();

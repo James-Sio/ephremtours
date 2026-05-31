@@ -3,16 +3,6 @@ import { motion, AnimatePresence } from "motion/react";
 import { Check, Star, Map, Calendar, Users, Eye, Search, SlidersHorizontal, ArrowUpDown, ChevronRight, X, Heart, Shield, HelpCircle } from "lucide-react";
 import { Link } from "react-router";
 
-// Standardizing import paths for package background images
-import safariHeroImage from "../../imports/gallery-10.jpg";
-import maraImage from "../../imports/gallery-13.jpg";
-import amboseliImage from "../../imports/gallery-14.jpg";
-import tsavoImage from "../../imports/gallery-15.jpg";
-import wasiniImage from "../../imports/gallery-16.jpg";
-import mombasaImage from "../../imports/gallery-17.jpg";
-import marafaImage from "../../imports/gallery-18.jpg";
-import malindiImage from "../../imports/gallery-19.jpg";
-
 const MotionLink = motion.create(Link);
 
 const categories = ["All Experience", "Wildlife Safaris", "Coastal Marine", "Cultural & Scenic"];
@@ -23,7 +13,7 @@ const packages = [
     name: "Maasai Mara National Reserve",
     duration: "3 Days / 2 Nights",
     price: 25000,
-    image: maraImage,
+    image: "/tourImages/1.png",
     rating: "4.9",
     reviews: "184 reviews",
     category: "Wildlife Safaris",
@@ -44,7 +34,7 @@ const packages = [
     name: "Amboseli Elephant Wilderness",
     duration: "2 Days / 1 Night",
     price: 18500,
-    image: amboseliImage,
+    image: "/tourImages/4.png",
     rating: "4.8",
     reviews: "92 reviews",
     category: "Wildlife Safaris",
@@ -65,7 +55,7 @@ const packages = [
     name: "Tsavo East National Park",
     duration: "2 Days / 1 Night",
     price: 15000,
-    image: tsavoImage,
+    image: "/tourImages/5.png",
     rating: "4.9",
     reviews: "116 reviews",
     category: "Wildlife Safaris",
@@ -86,7 +76,7 @@ const packages = [
     name: "Wasini Island & Kisite Dhow",
     duration: "Full Day",
     price: 4500,
-    image: wasiniImage,
+    image: "/tourImages/7.png",
     rating: "5.0",
     reviews: "215 reviews",
     category: "Coastal Marine",
@@ -107,7 +97,7 @@ const packages = [
     name: "Mombasa Cultural Heritage Tour",
     duration: "Full Day",
     price: 3000,
-    image: mombasaImage,
+    image: "/tourImages/10.png",
     rating: "4.7",
     reviews: "78 reviews",
     category: "Cultural & Scenic",
@@ -128,7 +118,7 @@ const packages = [
     name: "Marafa Hell's Kitchen Canyon",
     duration: "Half Day",
     price: 2500,
-    image: marafaImage,
+    image: "/tourImages/13.png",
     rating: "4.8",
     reviews: "64 reviews",
     category: "Cultural & Scenic",
@@ -149,7 +139,7 @@ const packages = [
     name: "Malindi Golden Beach Escapes",
     duration: "Full Day",
     price: 2000,
-    image: malindiImage,
+    image: "/tourImages/14.png",
     rating: "4.6",
     reviews: "82 reviews",
     category: "Coastal Marine",

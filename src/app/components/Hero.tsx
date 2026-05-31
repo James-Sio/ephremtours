@@ -23,7 +23,7 @@ export function Hero() {
         <div className="grid lg:grid-cols-2 gap-12 items-center">
           
           {/* Left Column: Typography & Quick Scan */}
-          <div>
+          <div className="flex flex-col items-center text-center lg:items-start lg:text-left">
             {/* High-End Typography */}
             <motion.h1 
               initial={{ opacity: 0, x: -50 }}
@@ -39,7 +39,7 @@ export function Hero() {
               initial={{ opacity: 0, x: -50 }}
               animate={{ opacity: 1, x: 0 }}
               transition={{ duration: 0.8, delay: 0.2 }}
-              className="text-lg sm:text-xl text-gray-600 mb-10 max-w-xl font-light leading-relaxed"
+              className="text-lg sm:text-xl text-gray-600 mb-10 max-w-xl mx-auto lg:mx-0 font-light leading-relaxed"
             >
               Executive transfers from SGR, premium airport meet & greets, and curated luxury safaris across the Kenyan Coast.
             </motion.p>
@@ -74,7 +74,7 @@ export function Hero() {
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
               transition={{ duration: 1, delay: 0.6 }}
-              className="flex flex-col sm:flex-row gap-4"
+              className="flex flex-col sm:flex-row gap-4 w-full sm:w-auto max-w-md sm:max-w-none"
             >
               <Link 
                 to="/packages" 

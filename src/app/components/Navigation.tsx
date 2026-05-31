@@ -45,7 +45,7 @@ export function Navigation() {
                 className="flex items-center gap-2 cursor-pointer group"
               >
                 <div className="flex items-center mix-blend-multiply" style={{ filter: "contrast(1.4) brightness(1.1)" }}>
-                  <img src={logoImg} alt="Ephream Tours" className="h-12 sm:h-16 w-auto object-contain" />
+                  <img src={logoImg} alt="Ephream Tours" className="h-20 sm:h-24 md:h-28 w-auto object-contain scale-110 origin-left" />
                 </div>
               </motion.div>
             </Link>

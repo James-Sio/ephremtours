@@ -284,7 +284,10 @@ export function ServicesPage() {
   const [passengers, setPassengers] = useState({ adults: 1, children: 0 });
   const [luggage, setLuggage] = useState(2);
   const [fromLocation, setFromLocation] = useState("");
+  const [customFromLocation, setCustomFromLocation] = useState("");
   const [toLocation, setToLocation] = useState("");
+  const [customToLocation, setCustomToLocation] = useState("");
+  const [calculatedPrice, setCalculatedPrice] = useState<number | null>(null);
 
   const locations = [
     "Moi International Airport (MBA)",
@@ -302,6 +305,48 @@ export function ServicesPage() {
   ];
 
   const selectedService = coreServices.find(s => s.id === selectedId);
+
+  useEffect(() => {
+    if (!fromLocation || !toLocation || fromLocation === "Other / Custom Location" || toLocation === "Other / Custom Location") {
+      setCalculatedPrice(null);
+      return;
+    }
+
+    let basePrice = 1500;
+    const routeStr = [fromLocation, toLocation].join("-");
+    const routeRev = [toLocation, fromLocation].join("-");
+    const route = routeStr + "|" + routeRev;
+
+    if (route.includes("SGR Mombasa Terminus")) {
+      if (route.includes("Mombasa Island")) basePrice = 500;
+      else if (route.includes("Nyali")) basePrice = 700;
+      else if (route.includes("Kilifi")) basePrice = 1000;
+      else if (route.includes("Watamu")) basePrice = 1300;
+      else if (route.includes("Malindi")) basePrice = 1500;
+      else if (route.includes("Diani")) basePrice = 4500;
+    } else if (route.includes("Moi International Airport")) {
+      if (route.includes("Mombasa Island") || route.includes("Nyali")) basePrice = 1500;
+      else if (route.includes("Diani")) basePrice = 3500;
+      else if (route.includes("Watamu") || route.includes("Kilifi")) basePrice = 5000;
+    } else if (route.includes("Diani") && route.includes("Nyali")) {
+      basePrice = 3500;
+    } else if (route.includes("Mombasa Island") && route.includes("Kilifi")) {
+      basePrice = 4500;
+    } else if (route.includes("Watamu") && route.includes("Malindi")) {
+      basePrice = 1500;
+    }
+
+    let totalPassengers = passengers.adults + passengers.children;
+    if (totalPassengers > 4) {
+      basePrice += (totalPassengers - 4) * 500;
+    }
+
+    if (tripType === "return") {
+      basePrice *= 2;
+    }
+
+    setCalculatedPrice(basePrice);
+  }, [fromLocation, toLocation, tripType, passengers]);
 
   // Scroll to top when a service is selected
   useEffect(() => {
@@ -686,8 +731,13 @@ export function ServicesPage() {
                                   </select>
                                   <ChevronDown className="absolute right-4 top-1/2 -translate-y-1/2 w-5 h-5 text-gray-400 pointer-events-none" />
                                 </div>
+                                {fromLocation === "Other / Custom Location" && (
+                                  <motion.div initial={{ opacity: 0, height: 0 }} animate={{ opacity: 1, height: "auto" }}>
+                                    <input type="text" placeholder="Type custom Pick-up hotel or location..." required value={customFromLocation} onChange={e => setCustomFromLocation(e.target.value)} className="w-full mt-2 bg-white border border-gray-200 rounded-xl py-3 pl-4 pr-4 text-sm text-gray-900 focus:outline-none focus:ring-2 focus:ring-[#003B73]/20 focus:border-[#003B73]" />
+                                  </motion.div>
+                                )}
                                 <div className="absolute left-[38px] top-[45px] bottom-[45px] w-0.5 bg-gray-200 z-0 hidden sm:block"></div>
-                                <div className="relative">
+                                <div className="relative mt-2">
                                   <Navigation className="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-red-500" />
                                   <select 
                                     required 
@@ -702,6 +752,11 @@ export function ServicesPage() {
                                   </select>
                                   <ChevronDown className="absolute right-4 top-1/2 -translate-y-1/2 w-5 h-5 text-gray-400 pointer-events-none" />
                                 </div>
+                                {toLocation === "Other / Custom Location" && (
+                                  <motion.div initial={{ opacity: 0, height: 0 }} animate={{ opacity: 1, height: "auto" }}>
+                                    <input type="text" placeholder="Type custom Drop-off hotel or location..." required value={customToLocation} onChange={e => setCustomToLocation(e.target.value)} className="w-full mt-2 bg-white border border-gray-200 rounded-xl py-3 pl-4 pr-4 text-sm text-gray-900 focus:outline-none focus:ring-2 focus:ring-[#003B73]/20 focus:border-[#003B73]" />
+                                  </motion.div>
+                                )}
                               </div>
 
                               {/* Date & Time */}
@@ -790,6 +845,21 @@ export function ServicesPage() {
                                 <div className="relative">
                                   <Mail className="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-gray-400" />
                                   <input type="email" placeholder="Email Address" required className="w-full bg-slate-50 border border-gray-200 rounded-xl py-3.5 pl-12 pr-4 text-sm text-gray-900 focus:outline-none focus:ring-2 focus:ring-[#003B73]/20 focus:border-[#003B73] transition-all font-medium shadow-sm placeholder:text-gray-400 placeholder:font-normal" />
+                                </div>
+                              </div>
+
+                              {/* Price Estimation */}
+                              <div className="bg-[#003B73]/5 border border-[#003B73]/10 rounded-2xl p-4 flex items-center justify-between">
+                                <div>
+                                  <h4 className="text-sm font-bold text-[#003B73]">Estimated Fare</h4>
+                                  <p className="text-xs text-gray-500">Based on standard vehicle rates</p>
+                                </div>
+                                <div className="text-right">
+                                  {calculatedPrice ? (
+                                    <span className="text-2xl font-black text-[#003B73]">KES {calculatedPrice.toLocaleString()}</span>
+                                  ) : (
+                                    <span className="text-sm font-bold text-[#F9A03F]">Custom Quote</span>
+                                  )}
                                 </div>
                               </div>
 

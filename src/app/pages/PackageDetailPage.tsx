@@ -261,7 +261,7 @@ export function PackageDetailPage() {
 
             <button
               onClick={() => scrollToSection(bookingRef)}
-              className="px-5 py-3 sm:px-7 sm:py-3.5 bg-amber-400 hover:bg-amber-300 text-black text-xs font-black uppercase tracking-wider rounded-xl transition-all shadow-md cursor-pointer whitespace-nowrap"
+              className="hidden md:block px-5 py-3 sm:px-7 sm:py-3.5 bg-amber-400 hover:bg-amber-300 text-black text-xs font-black uppercase tracking-wider rounded-xl transition-all shadow-md cursor-pointer whitespace-nowrap"
             >
               Enquire Expedition
             </button>

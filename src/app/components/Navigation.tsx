@@ -33,18 +33,18 @@ export function Navigation() {
         initial={{ y: -100 }}
         animate={{ y: 0 }}
         transition={{ duration: 0.6 }}
-        className="fixed top-0 left-0 right-0 z-50 bg-white/90 backdrop-blur-lg shadow-sm border-b border-white/20"
+        className="fixed top-0 left-0 right-0 z-50 bg-white shadow-sm border-b border-gray-100"
       >
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="flex justify-between items-center h-16 sm:h-20">
-            <Link to="/" onClick={() => setIsOpen(false)} className="self-start mt-0">
+            <Link to="/" onClick={() => setIsOpen(false)} className="flex items-center">
               <motion.div
-                initial={{ opacity: 0, y: -20 }}
-                animate={{ opacity: 1, y: 0 }}
+                initial={{ opacity: 0 }}
+                animate={{ opacity: 1 }}
                 transition={{ delay: 0.2 }}
-                className="bg-white px-3 pb-4 pt-2 sm:px-5 sm:pb-6 sm:pt-3 rounded-b-[2rem] shadow-xl border border-t-0 border-white/50 relative z-50"
+                className="flex items-center mix-blend-multiply"
               >
-                <img src={logoImg} alt="Ephream Tours" className="h-16 sm:h-24 md:h-28 w-auto object-contain" />
+                <img src={logoImg} alt="Ephream Tours" className="h-14 sm:h-16 w-auto object-contain" />
               </motion.div>
             </Link>
 

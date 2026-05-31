@@ -1,9 +1,18 @@
 import { motion, AnimatePresence } from "motion/react";
 import { ArrowUp } from "lucide-react";
 import { useState, useEffect } from "react";
+import { useLocation } from "react-router";
 
 export function ScrollToTop() {
   const [isVisible, setIsVisible] = useState(false);
+  const { pathname } = useLocation();
+
+  useEffect(() => {
+    window.scrollTo({
+      top: 0,
+      behavior: "instant"
+    });
+  }, [pathname]);
 
   useEffect(() => {
     const toggleVisibility = () => {

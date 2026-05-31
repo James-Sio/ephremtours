@@ -69,10 +69,10 @@ const coreServices: ServiceData[] = [
       "Luggage handling assistance"
     ],
     pricing: [
-      { route: "SGR to Mombasa Island", price: "KES 500" },
-      { route: "SGR to Kilifi", price: "KES 1,000" },
-      { route: "SGR to Watamu", price: "KES 1,300" },
-      { route: "SGR to Malindi", price: "KES 1,500" }
+      { route: "SGR To/From Mombasa Island", price: "KES 500" },
+      { route: "SGR To/From Kilifi", price: "KES 1,000" },
+      { route: "SGR To/From Watamu", price: "KES 1,300" },
+      { route: "SGR To/From Malindi", price: "KES 1,500" }
     ],
     testimonial: {
       text: "Our train was delayed by an hour, but the driver was patiently waiting with a sign. The van was spotless and the drive to Watamu was smooth.",
@@ -82,7 +82,7 @@ const coreServices: ServiceData[] = [
     routeTable: {
       title: "Fare Chart (To/From SGR Mombasa Terminus)",
       note: "Prices apply to shared shuttle services. Private transfers available on request.",
-      headers: ["Destination", "Shared Shuttle", "Private Transfer"],
+      headers: ["Origin / Destination", "Shared Shuttle", "Private Transfer"],
       rows: [
         { col1: "Mombasa Island", col2: "KES 500", col3: "On Request" },
         { col1: "Nyali / Bamburi", col2: "KES 700", col3: "On Request" },

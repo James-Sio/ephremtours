@@ -133,7 +133,11 @@ export const packages = [
     images: [
       "/tourImages/5.png",
       "/tourImages/9.png",
-      "/tourImages/11.png"
+      "/tourImages/11.png",
+      "/tourImages/21.png",
+      "/tourImages/22.png",
+      "/tourImages/23.png",
+      "/tourImages/24.png"
     ],
     rating: "4.9",
     reviews: "116 reviews",

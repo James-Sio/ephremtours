@@ -306,34 +306,119 @@ export function ServicesPage() {
 
   const selectedService = coreServices.find(s => s.id === selectedId);
 
+  // Dynamic Location Lists based on Service Type
+  const getLocationsList = () => {
+    if (selectedId === "sgr") {
+      return [
+        "SGR Mombasa Terminus",
+        "Mombasa Island / CBD",
+        "Nyali / Bamburi / Shanzu Resorts",
+        "Kilifi Hotels & Resorts",
+        "Watamu Hotels & Resorts",
+        "Malindi Hotels & Resorts",
+        "Diani Beach Resorts / Ukunda",
+        "Other / Custom Location"
+      ];
+    }
+    if (selectedId === "airport") {
+      return [
+        "Moi International Airport (MBA) Mombasa",
+        "Malindi Airport (MYD)",
+        "Diani / Ukunda Airstrip",
+        "Nyali / Bamburi / Shanzu Resorts",
+        "Kilifi Hotels & Resorts",
+        "Watamu Hotels & Resorts",
+        "Malindi Hotels & Resorts",
+        "Diani Beach Resorts",
+        "Other / Custom Location"
+      ];
+    }
+    if (selectedId === "hotel") {
+      return [
+        "Medina Palms (Watamu)",
+        "Hemingways Watamu",
+        "Temple Point Resort (Watamu)",
+        "Kobe Suite Resort (Watamu)",
+        "Baobab Beach Resort (Diani)",
+        "Sands at Nomad (Diani)",
+        "Diani Reef Beach Resort",
+        "Serena Beach Resort (Mombasa)",
+        "Sarova Whitesands (Mombasa)",
+        "PrideInn Paradise (Shanzu)",
+        "Silver Palms Beach Resort (Kilifi)",
+        "Vipingo Ridge (Kilifi)",
+        "Sandies Tropical Village (Malindi)",
+        "Ocean Beach Resort (Malindi)",
+        "Other / Custom Resort"
+      ];
+    }
+    return locations;
+  };
+
+  // Helper to detect what coast region a hotel belongs to for price calculations
+  const getRegion = (locName: string) => {
+    const name = locName.toLowerCase();
+    if (name.includes("watamu")) return "Watamu";
+    if (name.includes("diani") || name.includes("nomad")) return "Diani";
+    if (name.includes("mombasa") || name.includes("whitesands") || name.includes("shanzu")) return "Mombasa";
+    if (name.includes("kilifi") || name.includes("vipingo")) return "Kilifi";
+    if (name.includes("malindi")) return "Malindi";
+    if (name.includes("sgr")) return "SGR";
+    if (name.includes("airport") || name.includes("mba") || name.includes("myd")) return "Airport";
+    return "Custom";
+  };
+
   useEffect(() => {
-    if (!fromLocation || !toLocation || fromLocation === "Other / Custom Location" || toLocation === "Other / Custom Location") {
+    if (!fromLocation || !toLocation || fromLocation === "Other / Custom Location" || toLocation === "Other / Custom Location" || fromLocation === "Other / Custom Resort" || toLocation === "Other / Custom Resort") {
       setCalculatedPrice(null);
       return;
     }
 
-    let basePrice = 1500;
-    const routeStr = [fromLocation, toLocation].join("-");
-    const routeRev = [toLocation, fromLocation].join("-");
-    const route = routeStr + "|" + routeRev;
+    let basePrice = 2000;
+    const fromRegion = getRegion(fromLocation);
+    const toRegion = getRegion(toLocation);
 
-    if (route.includes("SGR Mombasa Terminus")) {
-      if (route.includes("Mombasa Island")) basePrice = 500;
-      else if (route.includes("Nyali")) basePrice = 700;
-      else if (route.includes("Kilifi")) basePrice = 1000;
-      else if (route.includes("Watamu")) basePrice = 1300;
-      else if (route.includes("Malindi")) basePrice = 1500;
-      else if (route.includes("Diani")) basePrice = 4500;
-    } else if (route.includes("Moi International Airport")) {
-      if (route.includes("Mombasa Island") || route.includes("Nyali")) basePrice = 1500;
-      else if (route.includes("Diani")) basePrice = 3500;
-      else if (route.includes("Watamu") || route.includes("Kilifi")) basePrice = 5000;
-    } else if (route.includes("Diani") && route.includes("Nyali")) {
-      basePrice = 3500;
-    } else if (route.includes("Mombasa Island") && route.includes("Kilifi")) {
-      basePrice = 4500;
-    } else if (route.includes("Watamu") && route.includes("Malindi")) {
-      basePrice = 1500;
+    // If Hotel-to-Hotel dynamic calculations
+    if (selectedId === "hotel") {
+      if (fromRegion === toRegion) {
+        basePrice = 1500; // Local inter-hotel transfers (e.g. Hemingways to Medina Palms)
+      } else {
+        const route = [fromRegion, toRegion].join("-") + "|" + [toRegion, fromRegion].join("-");
+        if (route.includes("Diani") && route.includes("Watamu")) basePrice = 9000; // Deep south to deep north coast
+        else if (route.includes("Diani") && route.includes("Mombasa")) basePrice = 3500;
+        else if (route.includes("Diani") && route.includes("Kilifi")) basePrice = 6500;
+        else if (route.includes("Diani") && route.includes("Malindi")) basePrice = 10000;
+        else if (route.includes("Mombasa") && route.includes("Watamu")) basePrice = 5500;
+        else if (route.includes("Mombasa") && route.includes("Kilifi")) basePrice = 4500;
+        else if (route.includes("Mombasa") && route.includes("Malindi")) basePrice = 6500;
+        else if (route.includes("Kilifi") && route.includes("Watamu")) basePrice = 3500;
+        else if (route.includes("Kilifi") && route.includes("Malindi")) basePrice = 4500;
+        else if (route.includes("Watamu") && route.includes("Malindi")) basePrice = 2000;
+      }
+    } else {
+      // SGR or Airport transfers general fallback
+      const routeStr = [fromLocation, toLocation].join("-");
+      const routeRev = [toLocation, fromLocation].join("-");
+      const route = routeStr + "|" + routeRev;
+
+      if (route.includes("SGR Mombasa Terminus")) {
+        if (route.includes("Mombasa Island")) basePrice = 500;
+        else if (route.includes("Nyali")) basePrice = 700;
+        else if (route.includes("Kilifi")) basePrice = 1000;
+        else if (route.includes("Watamu")) basePrice = 1300;
+        else if (route.includes("Malindi")) basePrice = 1500;
+        else if (route.includes("Diani")) basePrice = 4500;
+      } else if (route.includes("Airport")) {
+        if (route.includes("Mombasa Island") || route.includes("Nyali")) basePrice = 1500;
+        else if (route.includes("Diani")) basePrice = 3500;
+        else if (route.includes("Watamu") || route.includes("Kilifi")) basePrice = 5000;
+      } else if (route.includes("Diani") && route.includes("Nyali")) {
+        basePrice = 3500;
+      } else if (route.includes("Mombasa Island") && route.includes("Kilifi")) {
+        basePrice = 4500;
+      } else if (route.includes("Watamu") && route.includes("Malindi")) {
+        basePrice = 1500;
+      }
     }
 
     let totalPassengers = passengers.adults + passengers.children;
@@ -346,7 +431,7 @@ export function ServicesPage() {
     }
 
     setCalculatedPrice(basePrice);
-  }, [fromLocation, toLocation, tripType, passengers]);
+  }, [fromLocation, toLocation, tripType, passengers, selectedId]);
 
   // Scroll to top when a service is selected
   useEffect(() => {
@@ -725,13 +810,13 @@ export function ServicesPage() {
                                     className="w-full bg-white border border-gray-200 rounded-xl py-3.5 pl-12 pr-10 text-sm text-gray-900 appearance-none focus:outline-none focus:ring-2 focus:ring-[#003B73]/20 focus:border-[#003B73] transition-all font-medium shadow-sm"
                                   >
                                     <option value="" disabled>Select Pick-up Location (From)...</option>
-                                    {locations.map(loc => (
-                                      <option key={loc} value={loc} disabled={loc === toLocation && loc !== "Other / Custom Location"}>{loc}</option>
+                                    {getLocationsList().map(loc => (
+                                      <option key={loc} value={loc} disabled={loc === toLocation && loc !== "Other / Custom Location" && loc !== "Other / Custom Resort"}>{loc}</option>
                                     ))}
                                   </select>
                                   <ChevronDown className="absolute right-4 top-1/2 -translate-y-1/2 w-5 h-5 text-gray-400 pointer-events-none" />
                                 </div>
-                                {fromLocation === "Other / Custom Location" && (
+                                {(fromLocation === "Other / Custom Location" || fromLocation === "Other / Custom Resort") && (
                                   <motion.div initial={{ opacity: 0, height: 0 }} animate={{ opacity: 1, height: "auto" }}>
                                     <input type="text" placeholder="Type custom Pick-up hotel or location..." required value={customFromLocation} onChange={e => setCustomFromLocation(e.target.value)} className="w-full mt-2 bg-white border border-gray-200 rounded-xl py-3 pl-4 pr-4 text-sm text-gray-900 focus:outline-none focus:ring-2 focus:ring-[#003B73]/20 focus:border-[#003B73]" />
                                   </motion.div>
@@ -746,13 +831,13 @@ export function ServicesPage() {
                                     className="w-full bg-white border border-gray-200 rounded-xl py-3.5 pl-12 pr-10 text-sm text-gray-900 appearance-none focus:outline-none focus:ring-2 focus:ring-[#003B73]/20 focus:border-[#003B73] transition-all font-medium shadow-sm"
                                   >
                                     <option value="" disabled>Select Drop-off Location (To)...</option>
-                                    {locations.map(loc => (
-                                      <option key={loc} value={loc} disabled={loc === fromLocation && loc !== "Other / Custom Location"}>{loc}</option>
+                                    {getLocationsList().map(loc => (
+                                      <option key={loc} value={loc} disabled={loc === fromLocation && loc !== "Other / Custom Location" && loc !== "Other / Custom Resort"}>{loc}</option>
                                     ))}
                                   </select>
                                   <ChevronDown className="absolute right-4 top-1/2 -translate-y-1/2 w-5 h-5 text-gray-400 pointer-events-none" />
                                 </div>
-                                {toLocation === "Other / Custom Location" && (
+                                {(toLocation === "Other / Custom Location" || toLocation === "Other / Custom Resort") && (
                                   <motion.div initial={{ opacity: 0, height: 0 }} animate={{ opacity: 1, height: "auto" }}>
                                     <input type="text" placeholder="Type custom Drop-off hotel or location..." required value={customToLocation} onChange={e => setCustomToLocation(e.target.value)} className="w-full mt-2 bg-white border border-gray-200 rounded-xl py-3 pl-4 pr-4 text-sm text-gray-900 focus:outline-none focus:ring-2 focus:ring-[#003B73]/20 focus:border-[#003B73]" />
                                   </motion.div>

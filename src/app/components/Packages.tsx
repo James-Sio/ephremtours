@@ -284,140 +284,137 @@ export function Packages() {
           {filteredPackages.length > 0 ? (
             <motion.div 
               layout
-              className="grid sm:grid-cols-2 lg:grid-cols-3 gap-8 md:gap-10"
+              className="grid sm:grid-cols-2 lg:grid-cols-3 gap-6 sm:gap-8"
             >
               {filteredPackages.map((pkg, index) => (
                 <motion.div
                   key={pkg.id}
                   layout
-                  initial={{ opacity: 0, y: 30 }}
-                  animate={{ opacity: 1, y: 0 }}
-                  exit={{ opacity: 0, scale: 0.9 }}
-                  viewport={{ once: true }}
-                  transition={{ duration: 0.6, ease: [0.16, 1, 0.3, 1] }}
-                  className={`group relative flex flex-col bg-white rounded-3xl shadow-md hover:shadow-2xl transition-all duration-500 overflow-hidden border border-gray-100/80 cursor-pointer ${
+                  initial={{ opacity: 0, y: 20 }}
+                  whileInView={{ opacity: 1, y: 0 }}
+                  exit={{ opacity: 0, scale: 0.95 }}
+                  viewport={{ once: true, margin: "-50px" }}
+                  transition={{ duration: 0.5, ease: [0.16, 1, 0.3, 1] }}
+                  className={`group relative flex flex-col bg-white rounded-2xl shadow-sm hover:shadow-xl transition-all duration-300 overflow-hidden border border-gray-100 cursor-pointer ${
                     pkg.popular ? 'ring-2 ring-[#F9A03F]' : ''
                   }`}
                   onClick={() => setSelectedPackage(pkg)}
                 >
                   
-                  {/* Card Image Header */}
-                  <div className="relative h-64 overflow-hidden">
+                  {/* Card Image Header with skeleton background & lazy loading */}
+                  <div className="relative h-44 sm:h-48 overflow-hidden bg-gradient-to-r from-gray-100 to-gray-200">
                     <img
                       src={pkg.image}
                       alt={pkg.name}
-                      className="w-full h-full object-cover transform group-hover:scale-110 transition-transform duration-700 ease-out"
+                      loading="lazy"
+                      decoding="async"
+                      className="w-full h-full object-cover transform group-hover:scale-105 transition-transform duration-500 ease-out"
                     />
                     
                     {/* Visual Dark Overlay */}
-                    <div className="absolute inset-0 bg-gradient-to-t from-black/85 via-black/30 to-transparent" />
+                    <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/25 to-transparent" />
 
                     {/* Popular / Custom Badge */}
-                    <div className="absolute top-4 right-4 flex items-center gap-2">
+                    <div className="absolute top-3 right-3 flex items-center gap-1.5">
                       <button
                         onClick={(e) => toggleFavorite(pkg.id, e)}
-                        className="w-9 h-9 rounded-full bg-white/90 backdrop-blur-md flex items-center justify-center shadow-md text-gray-700 hover:text-red-500 transition-colors"
+                        className="w-8 h-8 rounded-full bg-white/90 backdrop-blur-md flex items-center justify-center shadow-md text-gray-700 hover:text-red-500 transition-colors"
                       >
-                        <Heart className={`w-4 h-4 ${favorites.includes(pkg.id) ? "fill-red-500 text-red-500" : ""}`} />
+                        <Heart className={`w-3.5 h-3.5 ${favorites.includes(pkg.id) ? "fill-red-500 text-red-500" : ""}`} />
                       </button>
 
                       {pkg.popular ? (
-                        <div className="bg-gradient-to-r from-[#F9A03F] to-amber-500 text-white px-3.5 py-1.5 rounded-full text-[10px] font-black uppercase tracking-wider shadow-lg">
+                        <div className="bg-gradient-to-r from-[#F9A03F] to-amber-500 text-white px-2.5 py-1 rounded-full text-[9px] font-extrabold uppercase tracking-wider shadow-sm">
                           Best Seller
                         </div>
                       ) : (
-                        <div className="bg-[#003B73] text-white px-3.5 py-1.5 rounded-full text-[10px] font-black uppercase tracking-wider shadow-lg">
+                        <div className="bg-[#003B73] text-white px-2.5 py-1 rounded-full text-[9px] font-extrabold uppercase tracking-wider shadow-sm">
                           {pkg.badge}
                         </div>
                       )}
                     </div>
 
                     {/* Category tag */}
-                    <div className="absolute top-4 left-4 bg-white/90 backdrop-blur-md text-gray-900 px-3 py-1 rounded-full text-[10px] font-bold shadow-md uppercase tracking-wider">
+                    <div className="absolute top-3 left-3 bg-white/90 backdrop-blur-md text-gray-900 px-2.5 py-1 rounded-full text-[9px] font-bold shadow-sm uppercase tracking-wider">
                       {pkg.category}
                     </div>
 
                     {/* Package Duration over Image */}
-                    <div className="absolute bottom-4 left-4 flex items-center gap-2 text-white bg-black/40 backdrop-blur-sm px-3 py-1.5 rounded-xl text-xs font-semibold">
-                      <Calendar className="w-3.5 h-3.5 text-[#F9A03F]" />
+                    <div className="absolute bottom-3 left-3 flex items-center gap-1.5 text-white bg-black/40 backdrop-blur-sm px-2.5 py-1 rounded-lg text-[10px] font-semibold">
+                      <Calendar className="w-3 h-3 text-[#F9A03F]" />
                       {pkg.duration}
                     </div>
                   </div>
 
                   {/* Card Body */}
-                  <div className="flex flex-col p-6 sm:p-7 flex-grow">
+                  <div className="flex flex-col p-5 flex-grow">
                     
                     {/* Rating & Review Summary */}
-                    <div className="flex items-center gap-2 mb-3">
+                    <div className="flex items-center gap-1.5 mb-2">
                       <div className="flex items-center text-amber-500">
-                        <Star className="w-4 h-4 fill-current" />
-                        <span className="text-sm font-bold text-gray-900 ml-1">{pkg.rating}</span>
+                        <Star className="w-3.5 h-3.5 fill-current" />
+                        <span className="text-xs font-bold text-gray-900 ml-0.5">{pkg.rating}</span>
                       </div>
-                      <span className="text-xs text-gray-400 font-medium">({pkg.reviews})</span>
+                      <span className="text-[10px] text-gray-400 font-medium">({pkg.reviews})</span>
                     </div>
 
                     {/* Title */}
-                    <h3 className="text-lg sm:text-xl font-extrabold text-gray-900 mb-2 leading-snug group-hover:text-[#003B73] transition-colors">
+                    <h3 className="text-base sm:text-lg font-bold text-gray-900 mb-1 leading-snug group-hover:text-[#003B73] transition-colors line-clamp-1">
                       {pkg.name}
                     </h3>
 
                     {/* Short Tagline */}
-                    <p className="text-xs text-gray-500 mb-4 line-clamp-1 italic font-medium">
+                    <p className="text-[11px] text-gray-500 mb-3 line-clamp-1 italic font-medium">
                       "{pkg.tagline}"
                     </p>
 
                     {/* Quick Specifications Strip */}
-                    <div className="grid grid-cols-3 gap-2 bg-gray-50 rounded-2xl p-3 mb-5 border border-gray-100 text-center">
+                    <div className="grid grid-cols-3 gap-1 bg-gray-50 rounded-xl p-2 mb-4 border border-gray-100/50 text-center">
                       <div>
-                        <p className="text-[9px] uppercase font-extrabold text-gray-400">Size</p>
-                        <p className="text-[11px] font-bold text-gray-700">{pkg.specs.groupSize}</p>
+                        <p className="text-[8px] uppercase font-bold tracking-wider text-gray-400">Size</p>
+                        <p className="text-[10px] font-bold text-gray-700">{pkg.specs.groupSize}</p>
                       </div>
                       <div>
-                        <p className="text-[9px] uppercase font-extrabold text-gray-400">Ages</p>
-                        <p className="text-[11px] font-bold text-gray-700">{pkg.specs.ageLimit}</p>
+                        <p className="text-[8px] uppercase font-bold tracking-wider text-gray-400">Ages</p>
+                        <p className="text-[10px] font-bold text-gray-700">{pkg.specs.ageLimit}</p>
                       </div>
                       <div>
-                        <p className="text-[9px] uppercase font-extrabold text-gray-400">Difficulty</p>
-                        <p className="text-[11px] font-bold text-gray-700">{pkg.specs.difficulty}</p>
+                        <p className="text-[8px] uppercase font-bold tracking-wider text-gray-400">Difficulty</p>
+                        <p className="text-[10px] font-bold text-gray-700">{pkg.specs.difficulty}</p>
                       </div>
                     </div>
 
-                    {/* Highlights List (Truncated to first 3 for card design space) */}
-                    <ul className="space-y-2.5 mb-6 flex-grow">
+                    {/* Highlights List */}
+                    <ul className="space-y-2 mb-4 flex-grow">
                       {pkg.features.slice(0, 3).map((feature) => (
                         <li key={feature} className="flex items-start gap-2 text-xs text-gray-600">
-                          <div className="w-4.5 h-4.5 rounded-full bg-emerald-50 flex items-center justify-center shrink-0 mt-0.5">
-                            <Check className="w-3 h-3 text-emerald-600 font-bold" />
+                          <div className="w-4 h-4 rounded-full bg-emerald-50 flex items-center justify-center shrink-0 mt-0.5">
+                            <Check className="w-2.5 h-2.5 text-emerald-600 font-bold" />
                           </div>
-                          <span className="leading-tight">{feature}</span>
+                          <span className="leading-tight line-clamp-1">{feature}</span>
                         </li>
                       ))}
-                      {pkg.features.length > 3 && (
-                        <li className="text-[11px] font-bold text-[#003B73] flex items-center gap-1 mt-1 pl-1">
-                          View details for {pkg.features.length - 3} more features <ChevronRight className="w-3 h-3" />
-                        </li>
-                      )}
                     </ul>
 
                     {/* Footer Pricing & Booking */}
-                    <div className="mt-auto pt-5 border-t border-gray-100 flex items-center justify-between">
+                    <div className="mt-auto pt-4 border-t border-gray-100 flex items-center justify-between">
                       <div className="flex flex-col">
-                        <span className="text-[9px] uppercase font-extrabold tracking-wider text-gray-400">From KES / Person</span>
-                        <div className="flex items-baseline gap-1">
-                          <span className="text-xl sm:text-2xl font-black text-[#003B73]">
+                        <span className="text-[8px] uppercase font-bold tracking-wider text-gray-400">From / Person</span>
+                        <div className="flex items-baseline gap-0.5">
+                          <span className="text-lg sm:text-xl font-extrabold text-[#003B73]">
                             KES {pkg.price.toLocaleString()}
                           </span>
                         </div>
                       </div>
 
                       <button
-                        className={`px-5 py-3 rounded-2xl text-xs font-bold transition-all ${
+                        className={`px-4 py-2.5 rounded-xl text-xs font-bold transition-all ${
                           pkg.popular
-                            ? 'bg-[#003B73] hover:bg-[#002a52] text-white shadow-md'
+                            ? 'bg-[#003B73] hover:bg-[#002a52] text-white shadow-sm'
                             : 'bg-sky-50 hover:bg-sky-100 text-[#003B73]'
                         }`}
                       >
-                        Enquire Now
+                        Enquire
                       </button>
                     </div>
 

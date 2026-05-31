@@ -278,7 +278,7 @@ export function PackageDetailPage() {
       </section>
 
       {/* Editorial splitscreen double column detail board */}
-      <main className="py-16 sm:py-24 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
+      <main className="py-16 sm:py-24 pb-32 lg:pb-24 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
         <div className="grid lg:grid-cols-12 gap-12 sm:gap-16">
           
           {/* LEFT COLUMN: Editorial Details, Timelines, Lodging (8 Columns) */}
@@ -775,6 +775,20 @@ export function PackageDetailPage() {
           </motion.div>
         )}
       </AnimatePresence>
+
+      {/* Dynamic Sticky Mobile Booking Bar */}
+      <div className="lg:hidden fixed bottom-0 left-0 right-0 p-4 bg-gray-950/90 backdrop-blur-xl border-t border-white/10 z-45 flex items-center justify-between shadow-2xl safe-bottom">
+        <div>
+          <span className="block text-[8px] uppercase tracking-wider text-gray-400 font-extrabold">All-Inclusive Starting</span>
+          <span className="text-base font-black text-amber-400">KES {pkg.price.toLocaleString()}</span>
+        </div>
+        <button
+          onClick={() => scrollToSection(bookingRef)}
+          className="px-6 py-3 bg-amber-400 hover:bg-amber-300 text-black text-xs font-black uppercase tracking-widest rounded-xl transition-all shadow-lg active:scale-95 cursor-pointer"
+        >
+          Enquire Now
+        </button>
+      </div>
 
     </div>
   );

@@ -78,14 +78,14 @@ export function Hero() {
             >
               <Link 
                 to="/packages" 
-                className="px-8 py-4 bg-sky-600 hover:bg-sky-700 text-white font-bold rounded-full transition-colors flex items-center justify-center gap-2 shadow-lg shadow-sky-600/30"
+                className="px-8 py-4 bg-[#003B73] hover:bg-[#002a52] text-white font-bold rounded-full transition-colors flex items-center justify-center gap-2 shadow-lg shadow-blue-900/30"
               >
                 <Calendar className="w-5 h-5" />
                 Book a Safari
               </Link>
               <Link 
                 to="/contact" 
-                className="px-8 py-4 bg-white border border-gray-200 hover:border-gray-300 hover:bg-gray-50 text-gray-800 font-bold rounded-full transition-colors flex items-center justify-center shadow-sm"
+                className="px-8 py-4 bg-white border border-[#F9A03F] hover:bg-[#F9A03F] hover:text-white text-[#F9A03F] font-bold rounded-full transition-colors flex items-center justify-center shadow-sm"
               >
                 Request Custom Quote
               </Link>
@@ -126,8 +126,8 @@ export function Hero() {
                   <span className="text-lg sm:text-xl">🌟</span>
                 </div>
                 <div>
-                  <p className="text-[10px] sm:text-xs text-gray-500 font-medium uppercase">Rating</p>
-                  <p className="text-xs sm:text-sm font-bold text-gray-800">5.0 Top Rated</p>
+                  <p className="text-[10px] sm:text-xs text-[#003B73] font-medium uppercase">Rating</p>
+                  <p className="text-xs sm:text-sm font-bold text-[#F9A03F]">5.0 Top Rated</p>
                 </div>
               </motion.div>
             </motion.div>
@@ -136,7 +136,7 @@ export function Hero() {
             <motion.div
               animate={{ scale: [1, 1.1, 1], opacity: [0.3, 0.6, 0.3] }}
               transition={{ duration: 5, repeat: Infinity }}
-              className="absolute inset-0 bg-gradient-to-tr from-sky-400 to-purple-400 rounded-full blur-[80px] -z-10"
+              className="absolute inset-0 bg-gradient-to-tr from-[#003B73] to-[#F9A03F] rounded-full blur-[80px] -z-10 opacity-40"
             />
           </motion.div>
 

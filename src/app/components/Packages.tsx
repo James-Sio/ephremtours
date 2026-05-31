@@ -651,9 +651,10 @@ export function Packages() {
                   layout
                   initial={{ opacity: 0, y: 30 }}
                   whileInView={{ opacity: 1, y: 0 }}
+                  whileHover={{ y: -8, scale: 1.02 }}
                   exit={{ opacity: 0, scale: 0.95 }}
                   viewport={{ once: true, margin: "-50px" }}
-                  transition={{ duration: 0.6, ease: [0.16, 1, 0.3, 1] }}
+                  transition={{ duration: 0.5, ease: [0.16, 1, 0.3, 1] }}
                   className={`group relative flex flex-col bg-gray-900/50 backdrop-blur-md rounded-2xl shadow-xl hover:shadow-2xl hover:shadow-[#003B73]/20 transition-all duration-500 overflow-hidden border border-white/5 hover:border-amber-500/30 cursor-pointer ${
                     pkg.popular ? 'ring-2 ring-amber-500/50 bg-gray-900/70' : ''
                   }`}

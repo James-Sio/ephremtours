@@ -5,6 +5,7 @@ import { ScrollToTop } from "./components/ScrollToTop";
 import { Loader } from "./components/Loader";
 import { Footer } from "./components/Footer";
 import { Toaster } from "sonner";
+import { CustomCursor } from "./components/CustomCursor";
 
 import { Home } from "./pages/Home";
 import { ServicesPage } from "./pages/ServicesPage";
@@ -18,6 +19,7 @@ export default function App() {
   return (
     <>
       <Loader />
+      <CustomCursor />
       <Toaster richColors position="top-right" />
       <div className="min-h-screen bg-gradient-to-b from-sky-50 to-white flex flex-col">
         <Navigation />

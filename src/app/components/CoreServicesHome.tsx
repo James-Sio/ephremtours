@@ -21,7 +21,7 @@ export function CoreServicesHome() {
             <motion.h2 
               initial={{ opacity: 0, y: 20 }}
               whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true }}
+              viewport={{ once: true, amount: 0.15 }}
               className="text-3xl sm:text-4xl font-extrabold text-white mb-4"
             >
               Our Core <span className="bg-gradient-to-r from-sky-400 to-blue-500 bg-clip-text text-transparent">Expertise</span>
@@ -29,7 +29,7 @@ export function CoreServicesHome() {
             <motion.p 
               initial={{ opacity: 0, y: 20 }}
               whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true }}
+              viewport={{ once: true, amount: 0.15 }}
               transition={{ delay: 0.1 }}
               className="text-gray-400 text-lg"
             >
@@ -40,7 +40,7 @@ export function CoreServicesHome() {
           <motion.div
             initial={{ opacity: 0, x: 20 }}
             whileInView={{ opacity: 1, x: 0 }}
-            viewport={{ once: true }}
+            viewport={{ once: true, amount: 0.15 }}
           >
             <Link to="/services" className="inline-flex items-center gap-2 text-sky-400 hover:text-white font-semibold transition-colors group">
               Explore All Services
@@ -55,7 +55,7 @@ export function CoreServicesHome() {
               key={service.id}
               initial={{ opacity: 0, y: 20 }}
               whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true }}
+              viewport={{ once: true, amount: 0.15 }}
               transition={{ delay: idx * 0.1 }}
             >
               <Link 

@@ -13,7 +13,7 @@ export function SignatureFleet() {
           <motion.h2 
             initial={{ opacity: 0, y: 20 }}
             whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
+            viewport={{ once: true, amount: 0.15 }}
             className="text-4xl sm:text-5xl font-extrabold text-gray-900 mb-6 tracking-tight"
           >
             Our Signature <span className="text-sky-600">Fleet</span>
@@ -21,7 +21,7 @@ export function SignatureFleet() {
           <motion.p 
             initial={{ opacity: 0, y: 20 }}
             whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
+            viewport={{ once: true, amount: 0.15 }}
             transition={{ delay: 0.1 }}
             className="text-xl text-gray-600 max-w-2xl mx-auto font-light"
           >
@@ -34,7 +34,7 @@ export function SignatureFleet() {
           <motion.div 
             initial={{ opacity: 0, x: -30 }}
             whileInView={{ opacity: 1, x: 0 }}
-            viewport={{ once: true }}
+            viewport={{ once: true, amount: 0.15 }}
             className="relative"
           >
             <div className="relative rounded-3xl overflow-hidden shadow-2xl">
@@ -58,7 +58,7 @@ export function SignatureFleet() {
           <motion.div 
             initial={{ opacity: 0, x: 30 }}
             whileInView={{ opacity: 1, x: 0 }}
-            viewport={{ once: true }}
+            viewport={{ once: true, amount: 0.15 }}
             className="space-y-8"
           >
             <div className="space-y-6">

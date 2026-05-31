@@ -18,7 +18,7 @@ export function CTA() {
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true }}
+          viewport={{ once: true, amount: 0.15 }}
           className="inline-flex items-center justify-center w-16 h-16 rounded-full bg-yellow-500/20 text-yellow-400 mb-8"
         >
           <Star className="w-8 h-8 fill-current" />
@@ -27,7 +27,7 @@ export function CTA() {
         <motion.h2 
           initial={{ opacity: 0, y: 20 }}
           whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true }}
+          viewport={{ once: true, amount: 0.15 }}
           transition={{ delay: 0.1 }}
           className="text-4xl sm:text-5xl md:text-6xl font-extrabold text-white mb-6 tracking-tight"
         >
@@ -37,7 +37,7 @@ export function CTA() {
         <motion.p 
           initial={{ opacity: 0, y: 20 }}
           whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true }}
+          viewport={{ once: true, amount: 0.15 }}
           transition={{ delay: 0.2 }}
           className="text-xl text-gray-300 mb-10 max-w-2xl mx-auto font-light leading-relaxed"
         >
@@ -47,7 +47,7 @@ export function CTA() {
         <motion.div 
           initial={{ opacity: 0, y: 20 }}
           whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true }}
+          viewport={{ once: true, amount: 0.15 }}
           transition={{ delay: 0.3 }}
           className="flex flex-col sm:flex-row justify-center items-center gap-4"
         >

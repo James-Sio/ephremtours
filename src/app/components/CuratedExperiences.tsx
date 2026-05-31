@@ -24,7 +24,7 @@ export function CuratedExperiences() {
             <motion.h2 
               initial={{ opacity: 0, y: 20 }}
               whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true }}
+              viewport={{ once: true, amount: 0.15 }}
               className="text-4xl sm:text-5xl font-extrabold text-gray-900 mb-6 tracking-tight"
             >
               Curated Coastal <span className="text-sky-600">Experiences</span>
@@ -32,7 +32,7 @@ export function CuratedExperiences() {
             <motion.p 
               initial={{ opacity: 0, y: 20 }}
               whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true }}
+              viewport={{ once: true, amount: 0.15 }}
               transition={{ delay: 0.1 }}
               className="text-xl text-gray-600 font-light"
             >
@@ -43,7 +43,7 @@ export function CuratedExperiences() {
           <motion.div
             initial={{ opacity: 0, x: 20 }}
             whileInView={{ opacity: 1, x: 0 }}
-            viewport={{ once: true }}
+            viewport={{ once: true, amount: 0.15 }}
           >
             <Link to="/services" className="inline-flex items-center gap-2 px-6 py-3 bg-gray-900 text-white rounded-full hover:bg-gray-800 transition-colors group font-semibold">
               View Day Tours
@@ -59,7 +59,7 @@ export function CuratedExperiences() {
               key={exp.id}
               initial={{ opacity: 0, scale: 0.95 }}
               whileInView={{ opacity: 1, scale: 1 }}
-              viewport={{ once: true }}
+              viewport={{ once: true, amount: 0.15 }}
               transition={{ delay: idx * 0.1 }}
               className={`relative rounded-3xl overflow-hidden group cursor-pointer ${exp.span}`}
             >

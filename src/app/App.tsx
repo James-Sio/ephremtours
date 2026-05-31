@@ -9,6 +9,7 @@ import { Toaster } from "sonner";
 import { Home } from "./pages/Home";
 import { ServicesPage } from "./pages/ServicesPage";
 import { PackagesPage } from "./pages/PackagesPage";
+import { PackageDetailPage } from "./pages/PackageDetailPage";
 import { GalleryPage } from "./pages/GalleryPage";
 import { AboutPage } from "./pages/AboutPage";
 import { ContactPage } from "./pages/ContactPage";
@@ -25,6 +26,7 @@ export default function App() {
             <Route path="/" element={<Home />} />
             <Route path="/services" element={<ServicesPage />} />
             <Route path="/packages" element={<PackagesPage />} />
+            <Route path="/packages/:id" element={<PackageDetailPage />} />
             <Route path="/gallery" element={<GalleryPage />} />
             <Route path="/about" element={<AboutPage />} />
             <Route path="/contact" element={<ContactPage />} />

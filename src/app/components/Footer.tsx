@@ -15,9 +15,12 @@ export function Footer() {
   ];
 
   return (
-    <footer className="bg-gradient-to-br from-gray-900 to-sky-900 text-white pt-12 sm:pt-16 pb-6">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-8 sm:gap-12 mb-8 sm:mb-12">
+    <footer className="bg-[#003B73] text-white pt-16 sm:pt-20 pb-8 relative overflow-hidden">
+      {/* Decorative Glow */}
+      <div className="absolute top-0 right-1/4 w-96 h-96 bg-[#F9A03F]/10 rounded-full blur-[100px] pointer-events-none"></div>
+      
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
+        <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-12 mb-12 sm:mb-16">
           {/* Brand */}
           <motion.div
             initial={{ opacity: 0, y: 20 }}
@@ -25,14 +28,27 @@ export function Footer() {
             viewport={{ once: true }}
             transition={{ duration: 0.5 }}
           >
-            <div className="flex items-center gap-2 mb-4">
-              <div className="bg-gradient-to-br from-sky-400 to-blue-600 p-2 rounded-lg">
-                <Palmtree className="w-6 h-6 text-white" />
+            <div className="flex items-center gap-3 mb-6">
+              <div className="relative flex items-center justify-center w-10 h-10 bg-gradient-to-b from-sky-300 to-blue-500 rounded-full shadow-md overflow-hidden border-2 border-white">
+                <div className="absolute bottom-0 w-full h-1/2 bg-blue-600 rounded-b-full"></div>
+                <Palmtree className="w-6 h-6 text-green-500 relative z-10 drop-shadow-md mb-1" />
+                <div className="absolute top-1 right-1 w-2.5 h-2.5 bg-yellow-400 rounded-full blur-[1px]"></div>
               </div>
-              <span className="font-bold text-xl">EPHREAM TOURS</span>
+              <div className="flex flex-col justify-center leading-none">
+                <span className="font-extrabold text-xl text-white tracking-tighter uppercase" style={{ fontFamily: "Arial, sans-serif", letterSpacing: "-1px" }}>
+                  EPHREAM
+                </span>
+                <div className="flex items-center gap-1 mt-0.5">
+                  <div className="h-[2px] w-3 bg-[#F9A03F]"></div>
+                  <span className="font-extrabold text-[10px] text-[#F9A03F] tracking-[0.2em] uppercase">
+                    TOURS
+                  </span>
+                  <div className="h-[2px] w-8 bg-[#F9A03F]"></div>
+                </div>
+              </div>
             </div>
-            <p className="text-sky-200 text-sm leading-relaxed">
-              Your trusted partner for unforgettable journeys across Kenya. Professional service, competitive prices, memorable experiences.
+            <p className="text-sky-100/70 text-sm leading-relaxed font-light pr-4">
+              Your trusted partner for unforgettable journeys across Kenya. Professional service, competitive prices, and memorable experiences tailored for you.
             </p>
           </motion.div>
 
@@ -43,14 +59,15 @@ export function Footer() {
             viewport={{ once: true }}
             transition={{ duration: 0.5, delay: 0.1 }}
           >
-            <h3 className="font-bold text-lg mb-4">Quick Links</h3>
-            <ul className="space-y-2">
+            <h3 className="font-bold text-lg mb-6 text-white tracking-wide">Quick Links</h3>
+            <ul className="space-y-3">
               {quickLinks.map((item) => (
                 <li key={item.name}>
                   <Link
                     to={item.path}
-                    className="text-sky-200 hover:text-white transition-colors text-sm"
+                    className="text-sky-100/70 hover:text-[#F9A03F] transition-colors text-sm font-medium flex items-center gap-2 group"
                   >
+                    <span className="w-1.5 h-1.5 rounded-full bg-[#F9A03F] opacity-0 group-hover:opacity-100 transition-opacity"></span>
                     {item.name}
                   </Link>
                 </li>
@@ -65,13 +82,21 @@ export function Footer() {
             viewport={{ once: true }}
             transition={{ duration: 0.5, delay: 0.2 }}
           >
-            <h3 className="font-bold text-lg mb-4">Our Services</h3>
-            <ul className="space-y-2 text-sm text-sky-200">
-              <li>Airport Transfer</li>
-              <li>SGR Transfer</li>
-              <li>Hotels Transfer</li>
-              <li>City Tour</li>
-              <li>Custom Packages</li>
+            <h3 className="font-bold text-lg mb-6 text-white tracking-wide">Our Services</h3>
+            <ul className="space-y-3">
+              {[
+                { name: "SGR Terminus Transfers", path: "/services" },
+                { name: "VIP Airport Meet & Greet", path: "/services" },
+                { name: "Hotel-to-Hotel Shuttles", path: "/services" },
+                { name: "City & Cultural Tours", path: "/services" },
+                { name: "Safari & Excursions", path: "/packages" }
+              ].map((service, idx) => (
+                <li key={idx}>
+                  <Link to={service.path} className="text-sky-100/70 hover:text-[#F9A03F] transition-colors text-sm font-medium block">
+                    {service.name}
+                  </Link>
+                </li>
+              ))}
             </ul>
           </motion.div>
 
@@ -82,48 +107,43 @@ export function Footer() {
             viewport={{ once: true }}
             transition={{ duration: 0.5, delay: 0.3 }}
           >
-            <h3 className="font-bold text-lg mb-4">Contact Us</h3>
-            <ul className="space-y-3 text-sm">
-              <li className="flex items-start gap-2 text-sky-200">
-                <Phone className="w-4 h-4 mt-0.5 flex-shrink-0" />
-                <div>
-                  <p>+254 701 738725</p>
-                  <p>Till No: 5669756</p>
+            <h3 className="font-bold text-lg mb-6 text-white tracking-wide">Contact Us</h3>
+            <ul className="space-y-4 text-sm font-medium">
+              <li className="flex items-start gap-3 text-sky-100/70">
+                <div className="w-8 h-8 rounded-full bg-white/5 flex items-center justify-center shrink-0">
+                  <Phone className="w-4 h-4 text-[#F9A03F]" />
+                </div>
+                <div className="pt-1.5">
+                  <p className="hover:text-white transition-colors cursor-pointer">+254 701 738725</p>
+                  <p className="text-xs text-sky-100/50 mt-1">Till No: 5669756</p>
                 </div>
               </li>
-              <li className="flex items-start gap-2 text-sky-200">
-                <Mail className="w-4 h-4 mt-0.5 flex-shrink-0" />
-                <p className="break-all">ephreamtours@gmail.com</p>
+              <li className="flex items-center gap-3 text-sky-100/70 hover:text-white transition-colors">
+                <div className="w-8 h-8 rounded-full bg-white/5 flex items-center justify-center shrink-0">
+                  <Mail className="w-4 h-4 text-[#F9A03F]" />
+                </div>
+                <p className="break-all cursor-pointer">ephreamtours@gmail.com</p>
               </li>
-              <li className="flex items-start gap-2 text-sky-200">
-                <MapPin className="w-4 h-4 mt-0.5 flex-shrink-0" />
+              <li className="flex items-center gap-3 text-sky-100/70">
+                <div className="w-8 h-8 rounded-full bg-white/5 flex items-center justify-center shrink-0">
+                  <MapPin className="w-4 h-4 text-[#F9A03F]" />
+                </div>
                 <p>Malindi, Serving All of Kenya</p>
               </li>
             </ul>
 
             {/* Social Media */}
-            <div className="flex gap-3 mt-4">
-              <motion.a
-                whileHover={{ scale: 1.2 }}
-                href="#"
-                className="w-8 h-8 bg-white/10 hover:bg-white/20 rounded-full flex items-center justify-center transition-colors"
-              >
-                <Facebook className="w-4 h-4" />
-              </motion.a>
-              <motion.a
-                whileHover={{ scale: 1.2 }}
-                href="#"
-                className="w-8 h-8 bg-white/10 hover:bg-white/20 rounded-full flex items-center justify-center transition-colors"
-              >
-                <Instagram className="w-4 h-4" />
-              </motion.a>
-              <motion.a
-                whileHover={{ scale: 1.2 }}
-                href="#"
-                className="w-8 h-8 bg-white/10 hover:bg-white/20 rounded-full flex items-center justify-center transition-colors"
-              >
-                <Twitter className="w-4 h-4" />
-              </motion.a>
+            <div className="flex gap-4 mt-8">
+              {[Facebook, Instagram, Twitter].map((Icon, idx) => (
+                <motion.a
+                  key={idx}
+                  whileHover={{ scale: 1.1, y: -2 }}
+                  href="#"
+                  className="w-10 h-10 bg-white/5 hover:bg-[#F9A03F] rounded-full flex items-center justify-center transition-all duration-300 group"
+                >
+                  <Icon className="w-4 h-4 text-white group-hover:scale-110 transition-transform" />
+                </motion.a>
+              ))}
             </div>
           </motion.div>
         </div>
@@ -134,9 +154,13 @@ export function Footer() {
           whileInView={{ opacity: 1 }}
           viewport={{ once: true }}
           transition={{ duration: 0.5, delay: 0.4 }}
-          className="pt-6 border-t border-white/10 text-center text-sm text-sky-200"
+          className="pt-8 border-t border-white/10 flex flex-col sm:flex-row justify-between items-center gap-4 text-sm text-sky-100/50 font-medium"
         >
-          <p>&copy; {currentYear} Ephream Tours. All rights reserved. | Available 24/7 for your convenience</p>
+          <p>&copy; {currentYear} Ephream Tours. All rights reserved.</p>
+          <p className="flex items-center gap-2">
+            <span className="w-2 h-2 rounded-full bg-emerald-500 shadow-[0_0_8px_rgba(16,185,129,0.5)]"></span>
+            Available 24/7 for your convenience
+          </p>
         </motion.div>
       </div>
     </footer>

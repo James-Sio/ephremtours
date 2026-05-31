@@ -1,6 +1,7 @@
 import { motion } from "motion/react";
-import { Train, Plane, Camera, Hotel, Calendar, ArrowRight } from "lucide-react";
+import { Train, Plane, Camera, Hotel, Calendar } from "lucide-react";
 import { Link } from "react-router";
+import companyLogo from "../../imports/image.png";
 
 const quickServices = [
   { id: "sgr", icon: Train, label: "SGR Transfer", color: "text-orange-600", bg: "bg-orange-100" },
@@ -11,100 +12,135 @@ const quickServices = [
 
 export function Hero() {
   return (
-    <section id="home" className="relative min-h-[100svh] flex flex-col justify-center items-center overflow-hidden pt-24 pb-16 bg-white">
+    <section id="home" className="relative min-h-[100svh] flex flex-col justify-center overflow-hidden pt-24 pb-16 bg-white">
       
       {/* Ultra-Clean Subtle Background Effects */}
       <div className="absolute top-0 right-0 w-[500px] h-[500px] bg-sky-50 rounded-full blur-[100px] opacity-70 pointer-events-none" />
       <div className="absolute bottom-0 left-0 w-[500px] h-[500px] bg-indigo-50 rounded-full blur-[100px] opacity-70 pointer-events-none" />
 
-      <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 w-full flex flex-col items-center text-center">
+      <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 w-full">
         
-        {/* VIP Event Banner */}
-        <motion.div
-          initial={{ opacity: 0, y: -20 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.6 }}
-          className="mb-8 sm:mb-12"
-        >
-          <Link to="/contact" className="inline-flex items-center gap-3 bg-white border border-gray-200 shadow-sm hover:shadow-md px-4 py-2 sm:px-6 sm:py-3 rounded-full transition-all group">
-            <span className="flex h-3 w-3 relative">
-              <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-orange-400 opacity-75"></span>
-              <span className="relative inline-flex rounded-full h-3 w-3 bg-orange-500"></span>
-            </span>
-            <span className="text-xs sm:text-sm font-medium text-gray-600">
-              <strong className="text-gray-900">Summer Tides Event:</strong> July 1st - 5th
-            </span>
-            <ArrowRight className="w-4 h-4 text-gray-400 group-hover:text-gray-900 group-hover:translate-x-1 transition-all" />
-          </Link>
-        </motion.div>
-
-        {/* High-End Typography (Dark text for white background) */}
-        <motion.h1 
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.8, delay: 0.2 }}
-          className="text-5xl sm:text-6xl md:text-7xl lg:text-8xl font-extrabold text-gray-900 mb-6 tracking-tight leading-[1.1]"
-        >
-          Discerning Travel.<br />
-          <span className="bg-gradient-to-r from-sky-500 to-blue-600 bg-clip-text text-transparent">Impeccable Service.</span>
-        </motion.h1>
-        
-        <motion.p 
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.8, delay: 0.3 }}
-          className="text-lg sm:text-xl md:text-2xl text-gray-600 mb-12 max-w-3xl mx-auto font-light leading-relaxed"
-        >
-          Executive transfers from SGR, premium airport meet & greets, and curated luxury safaris across the Kenyan Coast.
-        </motion.p>
-
-        {/* Quick-Scan Service Bar (Mobile Optimized for White Bg) */}
-        <motion.div
-          initial={{ opacity: 0, y: 30 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.8, delay: 0.5 }}
-          className="w-full max-w-4xl mx-auto"
-        >
-          <p className="text-xs font-bold text-gray-400 uppercase tracking-widest mb-4">Quick Service Select</p>
+        <div className="grid lg:grid-cols-2 gap-12 items-center">
           
-          <div className="grid grid-cols-2 md:grid-cols-4 gap-3 sm:gap-4">
-            {quickServices.map((service) => (
+          {/* Left Column: Typography & Quick Scan */}
+          <div>
+            {/* High-End Typography */}
+            <motion.h1 
+              initial={{ opacity: 0, x: -50 }}
+              animate={{ opacity: 1, x: 0 }}
+              transition={{ duration: 0.8 }}
+              className="text-5xl sm:text-6xl md:text-7xl font-extrabold text-gray-900 mb-6 tracking-tight leading-[1.1]"
+            >
+              Discerning Travel.<br />
+              <span className="bg-gradient-to-r from-sky-500 to-blue-600 bg-clip-text text-transparent">Impeccable Service.</span>
+            </motion.h1>
+            
+            <motion.p 
+              initial={{ opacity: 0, x: -50 }}
+              animate={{ opacity: 1, x: 0 }}
+              transition={{ duration: 0.8, delay: 0.2 }}
+              className="text-lg sm:text-xl text-gray-600 mb-10 max-w-xl font-light leading-relaxed"
+            >
+              Executive transfers from SGR, premium airport meet & greets, and curated luxury safaris across the Kenyan Coast.
+            </motion.p>
+
+            {/* Quick-Scan Service Bar (Mobile Optimized for White Bg) */}
+            <motion.div
+              initial={{ opacity: 0, y: 30 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.8, delay: 0.4 }}
+              className="w-full mb-10"
+            >
+              <p className="text-xs font-bold text-gray-400 uppercase tracking-widest mb-4">Quick Service Select</p>
+              
+              <div className="grid grid-cols-2 md:grid-cols-4 gap-3 sm:gap-4">
+                {quickServices.map((service) => (
+                  <Link 
+                    key={service.id}
+                    to="/services"
+                    className="bg-white border border-gray-100 shadow-sm hover:shadow-xl hover:border-sky-100 p-4 rounded-2xl flex flex-col items-center justify-center gap-3 transition-all hover:-translate-y-1 group"
+                  >
+                    <div className={`w-10 h-10 ${service.bg} rounded-xl flex items-center justify-center transform group-hover:scale-110 transition-transform`}>
+                      <service.icon className={`w-5 h-5 ${service.color}`} />
+                    </div>
+                    <span className="text-gray-800 font-semibold text-xs sm:text-sm">{service.label}</span>
+                  </Link>
+                ))}
+              </div>
+            </motion.div>
+
+            {/* Main Action Buttons */}
+            <motion.div
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              transition={{ duration: 1, delay: 0.6 }}
+              className="flex flex-col sm:flex-row gap-4"
+            >
               <Link 
-                key={service.id}
-                to="/services"
-                className="bg-white border border-gray-100 shadow-sm hover:shadow-xl hover:border-sky-100 p-4 sm:p-5 rounded-2xl flex flex-col items-center justify-center gap-3 transition-all hover:-translate-y-1 group"
+                to="/packages" 
+                className="px-8 py-4 bg-sky-600 hover:bg-sky-700 text-white font-bold rounded-full transition-colors flex items-center justify-center gap-2 shadow-lg shadow-sky-600/30"
               >
-                <div className={`w-12 h-12 sm:w-14 sm:h-14 ${service.bg} rounded-2xl flex items-center justify-center transform group-hover:scale-110 transition-transform`}>
-                  <service.icon className={`w-6 h-6 sm:w-7 sm:h-7 ${service.color}`} />
-                </div>
-                <span className="text-gray-800 font-semibold text-sm sm:text-base">{service.label}</span>
+                <Calendar className="w-5 h-5" />
+                Book a Safari
               </Link>
-            ))}
+              <Link 
+                to="/contact" 
+                className="px-8 py-4 bg-white border border-gray-200 hover:border-gray-300 hover:bg-gray-50 text-gray-800 font-bold rounded-full transition-colors flex items-center justify-center shadow-sm"
+              >
+                Request Custom Quote
+              </Link>
+            </motion.div>
           </div>
-        </motion.div>
 
-        {/* Main Action Buttons */}
-        <motion.div
-          initial={{ opacity: 0 }}
-          animate={{ opacity: 1 }}
-          transition={{ duration: 1, delay: 0.8 }}
-          className="mt-12 flex flex-col sm:flex-row gap-4"
-        >
-          <Link 
-            to="/packages" 
-            className="px-8 py-4 bg-sky-600 hover:bg-sky-700 text-white font-bold rounded-full transition-colors flex items-center justify-center gap-2 shadow-lg shadow-sky-600/30"
+          {/* Right Column: Bouncing Flyer */}
+          <motion.div
+            initial={{ opacity: 0, x: 50 }}
+            animate={{ opacity: 1, x: 0 }}
+            transition={{ duration: 0.8, delay: 0.4 }}
+            className="relative flex justify-center mt-12 lg:mt-0"
           >
-            <Calendar className="w-5 h-5" />
-            Book a Safari
-          </Link>
-          <Link 
-            to="/contact" 
-            className="px-8 py-4 bg-white border border-gray-200 hover:border-gray-300 hover:bg-gray-50 text-gray-800 font-bold rounded-full transition-colors flex items-center justify-center shadow-sm"
-          >
-            Request Custom Quote
-          </Link>
-        </motion.div>
+            <motion.div
+              animate={{
+                y: [0, -15, 0],
+                rotate: [0, 3, 0, -3, 0]
+              }}
+              transition={{
+                duration: 8,
+                repeat: Infinity,
+                ease: "easeInOut"
+              }}
+              className="relative z-10 w-full max-w-[280px] sm:max-w-sm"
+            >
+              <img
+                src={companyLogo}
+                alt="Ephream Tours Business Card"
+                className="w-full h-auto rounded-2xl shadow-2xl border-4 border-white"
+              />
+              
+              <motion.div 
+                animate={{ y: [0, 10, 0] }} 
+                transition={{ duration: 4, repeat: Infinity, ease: "easeInOut", delay: 1 }}
+                className="absolute -bottom-4 -left-4 sm:-bottom-6 sm:-left-6 bg-white p-3 sm:p-4 rounded-xl shadow-xl border border-gray-100 flex items-center gap-2 sm:gap-3"
+              >
+                <div className="w-8 h-8 sm:w-10 sm:h-10 bg-green-100 rounded-full flex items-center justify-center">
+                  <span className="text-lg sm:text-xl">🌟</span>
+                </div>
+                <div>
+                  <p className="text-[10px] sm:text-xs text-gray-500 font-medium uppercase">Rating</p>
+                  <p className="text-xs sm:text-sm font-bold text-gray-800">5.0 Top Rated</p>
+                </div>
+              </motion.div>
+            </motion.div>
 
+            {/* Glowing background behind flyer */}
+            <motion.div
+              animate={{ scale: [1, 1.1, 1], opacity: [0.3, 0.6, 0.3] }}
+              transition={{ duration: 5, repeat: Infinity }}
+              className="absolute inset-0 bg-gradient-to-tr from-sky-400 to-purple-400 rounded-full blur-[80px] -z-10"
+            />
+          </motion.div>
+
+        </div>
       </div>
     </section>
   );

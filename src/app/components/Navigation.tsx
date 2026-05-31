@@ -44,8 +44,8 @@ export function Navigation() {
                 transition={{ delay: 0.2 }}
                 className="flex items-center gap-2 cursor-pointer group"
               >
-                <div className="flex items-center">
-                  <img src={logoImg} alt="Ephream Tours" className="h-12 sm:h-16 w-auto object-contain drop-shadow-sm" />
+                <div className="flex items-center mix-blend-multiply">
+                  <img src={logoImg} alt="Ephream Tours" className="h-12 sm:h-16 w-auto object-contain" />
                 </div>
               </motion.div>
             </Link>

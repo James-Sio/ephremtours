@@ -29,8 +29,8 @@ export function Footer() {
             viewport={{ once: true }}
             transition={{ duration: 0.5 }}
           >
-            <div className="flex items-center mb-6 bg-white/10 p-2 rounded-xl inline-block w-fit">
-              <img src={logoImg} alt="Ephream Tours" className="h-16 sm:h-20 w-auto object-contain drop-shadow-md" />
+            <div className="flex items-center mb-6 bg-white p-3 rounded-2xl shadow-lg inline-block w-fit transition-transform hover:scale-105">
+              <img src={logoImg} alt="Ephream Tours" className="h-16 sm:h-20 w-auto object-contain" />
             </div>
             <p className="text-sky-100/70 text-sm leading-relaxed font-light pr-4">
               Your trusted partner for unforgettable journeys across Kenya. Professional service, competitive prices, and memorable experiences tailored for you.

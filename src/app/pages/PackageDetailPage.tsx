@@ -365,7 +365,7 @@ export function PackageDetailPage() {
                       {/* Small visual image placeholder directly inside the day to mimic Go2Africa */}
                       <div className="md:col-span-4 rounded-2xl overflow-hidden h-28 border border-white/10 bg-gray-900">
                         <img 
-                          src={pkg.images[Math.min(day.day, pkg.images.length - 1)]} 
+                          src={pkg.images[(day.day - 1) % pkg.images.length]} 
                           alt={`Day ${day.day}`} 
                           className="w-full h-full object-cover transform hover:scale-105 transition-transform duration-500"
                         />
@@ -411,10 +411,10 @@ export function PackageDetailPage() {
 
                   <div className="grid grid-cols-2 gap-3 h-64">
                     <div className="rounded-2xl overflow-hidden border border-white/5 h-full">
-                      <img src={pkg.images[1]} alt="bedroom" className="w-full h-full object-cover" />
+                      <img src={pkg.images[1 % pkg.images.length]} alt="bedroom" className="w-full h-full object-cover" />
                     </div>
                     <div className="rounded-2xl overflow-hidden border border-white/5 h-full">
-                      <img src={pkg.images[2]} alt="pool" className="w-full h-full object-cover" />
+                      <img src={pkg.images[2 % pkg.images.length]} alt="pool" className="w-full h-full object-cover" />
                     </div>
                   </div>
                 </div>

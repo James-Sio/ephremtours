@@ -19,11 +19,8 @@ export const packages = [
     price: 25000,
     images: [
       "/tourImages/1.png",
-      "https://images.unsplash.com/photo-1516426122078-c23e76319801?auto=format&fit=crop&w=800&q=80",
       "/tourImages/2.png",
-      "https://images.unsplash.com/photo-1547471080-7cc2caa01a7e?auto=format&fit=crop&w=800&q=80",
-      "/tourImages/3.png",
-      "https://images.unsplash.com/photo-1518098268026-4e43a1a009de?auto=format&fit=crop&w=800&q=80"
+      "/tourImages/3.png"
     ],
     rating: "4.9",
     reviews: "184 reviews",
@@ -83,13 +80,8 @@ export const packages = [
     price: 18500,
     images: [
       "/tourImages/4.png",
-      "https://images.unsplash.com/photo-1581888227599-779811939961?auto=format&fit=crop&w=800&q=80",
       "/tourImages/6.png",
-      "https://images.unsplash.com/photo-1516026672322-bc52d61a55d5?auto=format&fit=crop&w=800&q=80",
-      "/tourImages/8.png",
-      "https://images.unsplash.com/photo-1504541989296-167df755af3f?auto=format&fit=crop&w=800&q=80",
-      "https://images.unsplash.com/photo-1603566436906-8c430ee81414?auto=format&fit=crop&w=800&q=80",
-      "https://images.unsplash.com/photo-1629814402685-64539ef5b451?auto=format&fit=crop&w=800&q=80"
+      "/tourImages/8.png"
     ],
     rating: "4.8",
     reviews: "92 reviews",
@@ -140,13 +132,8 @@ export const packages = [
     price: 15000,
     images: [
       "/tourImages/5.png",
-      "https://images.unsplash.com/photo-1519074002996-a69e7ac46a42?auto=format&fit=crop&w=800&q=80",
       "/tourImages/9.png",
-      "https://images.unsplash.com/photo-1575550959106-5a7defe28b56?auto=format&fit=crop&w=800&q=80",
-      "/tourImages/11.png",
-      "https://images.unsplash.com/photo-1551085254-e96b210db58a?auto=format&fit=crop&w=800&q=80",
-      "https://images.unsplash.com/photo-1602491453979-02654b3a896a?auto=format&fit=crop&w=800&q=80",
-      "https://images.unsplash.com/photo-1501785888041-af3ef285b470?auto=format&fit=crop&w=800&q=80"
+      "/tourImages/11.png"
     ],
     rating: "4.9",
     reviews: "116 reviews",
@@ -195,13 +182,8 @@ export const packages = [
     price: 4500,
     images: [
       "/tourImages/7.png",
-      "https://images.unsplash.com/photo-1544551763-46a013bb70d5?auto=format&fit=crop&w=800&q=80",
       "/tourImages/12.png",
-      "https://images.unsplash.com/photo-1507525428034-b723cf961d3e?auto=format&fit=crop&w=800&q=80",
-      "/tourImages/15.png",
-      "https://images.unsplash.com/photo-1506929562872-bb421503ef21?auto=format&fit=crop&w=800&q=80",
-      "https://images.unsplash.com/photo-1519046904884-53103b34b206?auto=format&fit=crop&w=800&q=80",
-      "https://images.unsplash.com/photo-1538964173425-93884d738596?auto=format&fit=crop&w=800&q=80"
+      "/tourImages/15.png"
     ],
     rating: "5.0",
     reviews: "215 reviews",
@@ -244,13 +226,8 @@ export const packages = [
     price: 3000,
     images: [
       "/tourImages/10.png",
-      "https://images.unsplash.com/photo-1598285514605-64db9f939e6a?auto=format&fit=crop&w=800&q=80",
       "/tourImages/16.png",
-      "https://images.unsplash.com/photo-1590523277543-a94d2e4eb00b?auto=format&fit=crop&w=800&q=80",
-      "/tourImages/17.png",
-      "https://images.unsplash.com/photo-1509316975850-ff9c5deb0cd9?auto=format&fit=crop&w=800&q=80",
-      "https://images.unsplash.com/photo-1540206395-68808572332f?auto=format&fit=crop&w=800&q=80",
-      "https://images.unsplash.com/photo-1520116468816-95b69f847357?auto=format&fit=crop&w=800&q=80"
+      "/tourImages/17.png"
     ],
     rating: "4.7",
     reviews: "78 reviews",
@@ -292,13 +269,8 @@ export const packages = [
     price: 2500,
     images: [
       "/tourImages/13.png",
-      "https://images.unsplash.com/photo-1504280390367-361c6d9f38f4?auto=format&fit=crop&w=800&q=80",
       "/tourImages/18.png",
-      "https://images.unsplash.com/photo-1472214222555-d404758b1c42?auto=format&fit=crop&w=800&q=80",
-      "/tourImages/19.png",
-      "https://images.unsplash.com/photo-1506744038136-46273834b3fb?auto=format&fit=crop&w=800&q=80",
-      "https://images.unsplash.com/photo-1513836279014-a89f7a76ae86?auto=format&fit=crop&w=800&q=80",
-      "https://images.unsplash.com/photo-1470071459604-3b5ec3a7fe05?auto=format&fit=crop&w=800&q=80"
+      "/tourImages/19.png"
     ],
     rating: "4.8",
     reviews: "64 reviews",
@@ -340,12 +312,7 @@ export const packages = [
     price: 2000,
     images: [
       "/tourImages/14.png",
-      "https://images.unsplash.com/photo-1505118380757-91f5f5632de0?auto=format&fit=crop&w=800&q=80",
-      "/tourImages/20.png",
-      "https://images.unsplash.com/photo-1520250497591-112f2f40a3f4?auto=format&fit=crop&w=800&q=80",
-      "https://images.unsplash.com/photo-1510414842594-a61c69b5ae57?auto=format&fit=crop&w=800&q=80",
-      "https://images.unsplash.com/photo-1506953823976-52e1fdc0135a?auto=format&fit=crop&w=800&q=80",
-      "https://images.unsplash.com/photo-1468413253725-0d5181091126?auto=format&fit=crop&w=800&q=80"
+      "/tourImages/20.png"
     ],
     rating: "4.6",
     reviews: "82 reviews",

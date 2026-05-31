@@ -26,9 +26,9 @@ export function Hero() {
           <div className="flex flex-col items-center text-center lg:items-start lg:text-left">
             {/* High-End Typography */}
             <motion.h1 
-              initial={{ opacity: 0, x: -50 }}
-              animate={{ opacity: 1, x: 0 }}
-              transition={{ duration: 0.8 }}
+              initial={{ opacity: 0, y: 30 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.8, ease: [0.16, 1, 0.3, 1] }}
               className="text-5xl sm:text-6xl md:text-7xl font-extrabold text-gray-900 mb-6 tracking-tight leading-[1.1]"
             >
               Discerning Travel.<br />
@@ -36,9 +36,9 @@ export function Hero() {
             </motion.h1>
             
             <motion.p 
-              initial={{ opacity: 0, x: -50 }}
-              animate={{ opacity: 1, x: 0 }}
-              transition={{ duration: 0.8, delay: 0.2 }}
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.8, delay: 0.15, ease: [0.16, 1, 0.3, 1] }}
               className="text-lg sm:text-xl text-gray-600 mb-10 max-w-xl mx-auto lg:mx-0 font-light leading-relaxed"
             >
               Executive transfers from SGR, premium airport meet & greets, and curated luxury safaris across the Kenyan Coast.
@@ -46,9 +46,9 @@ export function Hero() {
 
             {/* Quick-Scan Service Bar (Mobile Optimized for White Bg) */}
             <motion.div
-              initial={{ opacity: 0, y: 30 }}
+              initial={{ opacity: 0, y: 25 }}
               animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.8, delay: 0.4 }}
+              transition={{ duration: 0.8, delay: 0.3, ease: [0.16, 1, 0.3, 1] }}
               className="w-full mb-10"
             >
               <p className="text-xs font-bold text-gray-400 uppercase tracking-widest mb-4">Quick Service Select</p>
@@ -71,9 +71,9 @@ export function Hero() {
 
             {/* Main Action Buttons */}
             <motion.div
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 1 }}
-              transition={{ duration: 1, delay: 0.6 }}
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.8, delay: 0.45, ease: [0.16, 1, 0.3, 1] }}
               className="flex flex-col sm:flex-row gap-4 w-full sm:w-auto max-w-md sm:max-w-none"
             >
               <Link 
@@ -94,9 +94,9 @@ export function Hero() {
 
           {/* Right Column: Bouncing Flyer */}
           <motion.div
-            initial={{ opacity: 0, x: 50 }}
-            animate={{ opacity: 1, x: 0 }}
-            transition={{ duration: 0.8, delay: 0.4 }}
+            initial={{ opacity: 0, y: 40, scale: 0.95 }}
+            animate={{ opacity: 1, y: 0, scale: 1 }}
+            transition={{ duration: 1, delay: 0.35, ease: [0.16, 1, 0.3, 1] }}
             className="relative flex justify-center mt-12 lg:mt-0"
           >
             <motion.div

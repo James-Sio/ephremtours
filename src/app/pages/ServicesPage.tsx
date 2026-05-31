@@ -283,6 +283,23 @@ export function ServicesPage() {
   const [tripType, setTripType] = useState<"one-way" | "return">("one-way");
   const [passengers, setPassengers] = useState({ adults: 1, children: 0 });
   const [luggage, setLuggage] = useState(2);
+  const [fromLocation, setFromLocation] = useState("");
+  const [toLocation, setToLocation] = useState("");
+
+  const locations = [
+    "Moi International Airport (MBA)",
+    "SGR Mombasa Terminus",
+    "Mombasa Island",
+    "Nyali / Bamburi / Shanzu",
+    "Mtwapa / Vipingo",
+    "Kilifi",
+    "Watamu",
+    "Malindi",
+    "Diani Beach / Ukunda",
+    "Tsavo National Park",
+    "Nairobi",
+    "Other / Custom Location"
+  ];
 
   const selectedService = coreServices.find(s => s.id === selectedId);
 
@@ -656,12 +673,34 @@ export function ServicesPage() {
                               <div className="space-y-3 relative bg-slate-50 p-4 border border-gray-100 rounded-2xl">
                                 <div className="relative">
                                   <MapPin className="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-emerald-500" />
-                                  <input type="text" placeholder="Pick-up Location (From)" required className="w-full bg-white border border-gray-200 rounded-xl py-3.5 pl-12 pr-4 text-sm text-gray-900 focus:outline-none focus:ring-2 focus:ring-[#003B73]/20 focus:border-[#003B73] transition-all font-medium shadow-sm" />
+                                  <select 
+                                    required 
+                                    value={fromLocation}
+                                    onChange={(e) => setFromLocation(e.target.value)}
+                                    className="w-full bg-white border border-gray-200 rounded-xl py-3.5 pl-12 pr-10 text-sm text-gray-900 appearance-none focus:outline-none focus:ring-2 focus:ring-[#003B73]/20 focus:border-[#003B73] transition-all font-medium shadow-sm"
+                                  >
+                                    <option value="" disabled>Select Pick-up Location (From)...</option>
+                                    {locations.map(loc => (
+                                      <option key={loc} value={loc} disabled={loc === toLocation && loc !== "Other / Custom Location"}>{loc}</option>
+                                    ))}
+                                  </select>
+                                  <ChevronDown className="absolute right-4 top-1/2 -translate-y-1/2 w-5 h-5 text-gray-400 pointer-events-none" />
                                 </div>
                                 <div className="absolute left-[38px] top-[45px] bottom-[45px] w-0.5 bg-gray-200 z-0 hidden sm:block"></div>
                                 <div className="relative">
                                   <Navigation className="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-red-500" />
-                                  <input type="text" placeholder="Drop-off Location (To)" required className="w-full bg-white border border-gray-200 rounded-xl py-3.5 pl-12 pr-4 text-sm text-gray-900 focus:outline-none focus:ring-2 focus:ring-[#003B73]/20 focus:border-[#003B73] transition-all font-medium shadow-sm" />
+                                  <select 
+                                    required 
+                                    value={toLocation}
+                                    onChange={(e) => setToLocation(e.target.value)}
+                                    className="w-full bg-white border border-gray-200 rounded-xl py-3.5 pl-12 pr-10 text-sm text-gray-900 appearance-none focus:outline-none focus:ring-2 focus:ring-[#003B73]/20 focus:border-[#003B73] transition-all font-medium shadow-sm"
+                                  >
+                                    <option value="" disabled>Select Drop-off Location (To)...</option>
+                                    {locations.map(loc => (
+                                      <option key={loc} value={loc} disabled={loc === fromLocation && loc !== "Other / Custom Location"}>{loc}</option>
+                                    ))}
+                                  </select>
+                                  <ChevronDown className="absolute right-4 top-1/2 -translate-y-1/2 w-5 h-5 text-gray-400 pointer-events-none" />
                                 </div>
                               </div>
 

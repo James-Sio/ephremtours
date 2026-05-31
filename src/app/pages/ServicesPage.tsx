@@ -4,7 +4,7 @@ import {
   Plane, Train, Hotel, MapPin, Users, Camera, 
   ArrowLeft, CheckCircle2, Star, Calendar, 
   Clock, User, Phone, Mail, ShieldCheck, Check,
-  Send, Navigation, Info, ChevronDown
+  Send, Navigation, Info, ChevronDown, Briefcase, Baby, ArrowRightLeft
 } from "lucide-react";
 
 // Gallery image imports
@@ -280,6 +280,9 @@ const coreServices: ServiceData[] = [
 export function ServicesPage() {
   const [selectedId, setSelectedId] = useState<string | null>(null);
   const [bookingState, setBookingState] = useState<"idle" | "submitting" | "success">("idle");
+  const [tripType, setTripType] = useState<"one-way" | "return">("one-way");
+  const [passengers, setPassengers] = useState({ adults: 1, children: 0 });
+  const [luggage, setLuggage] = useState(2);
 
   const selectedService = coreServices.find(s => s.id === selectedId);
 
@@ -636,28 +639,36 @@ export function ServicesPage() {
                             >
                               <div>
                                 <h3 className="text-2xl font-extrabold text-gray-900 mb-1 tracking-tight">Book Your Ride</h3>
-                                <p className="text-xs text-gray-500 font-bold uppercase tracking-widest mb-6">Instantly reserve your spot</p>
+                                <p className="text-xs text-gray-500 font-bold uppercase tracking-widest mb-6">Get Instant Confirmation</p>
                               </div>
 
-                              {/* Select Route */}
-                              <div className="space-y-2">
-                                <label className="text-xs font-bold text-gray-700 ml-1">Select Route / Package</label>
+                              {/* Trip Type Selector */}
+                              <div className="flex p-1 bg-slate-100 rounded-xl mb-6">
+                                <button type="button" onClick={() => setTripType("one-way")} className={`flex-1 flex justify-center items-center gap-2 py-2 text-sm font-bold rounded-lg transition-all ${tripType === "one-way" ? "bg-white text-[#003B73] shadow-sm" : "text-gray-500 hover:text-gray-700"}`}>
+                                  <ArrowRightLeft className="w-4 h-4 opacity-50" /> One Way
+                                </button>
+                                <button type="button" onClick={() => setTripType("return")} className={`flex-1 flex justify-center items-center gap-2 py-2 text-sm font-bold rounded-lg transition-all ${tripType === "return" ? "bg-white text-[#003B73] shadow-sm" : "text-gray-500 hover:text-gray-700"}`}>
+                                  <ArrowRightLeft className="w-4 h-4" /> Return Trip
+                                </button>
+                              </div>
+
+                              {/* Locations */}
+                              <div className="space-y-3 relative bg-slate-50 p-4 border border-gray-100 rounded-2xl">
                                 <div className="relative">
-                                  <MapPin className="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-gray-400" />
-                                  <select required className="w-full bg-slate-50 border border-gray-200 rounded-xl py-3.5 pl-12 pr-4 text-sm text-gray-900 appearance-none focus:outline-none focus:ring-2 focus:ring-[#003B73]/20 focus:border-[#003B73] transition-all font-medium shadow-sm">
-                                    <option value="">Choose your destination...</option>
-                                    {selectedService.pricing.map((route, idx) => (
-                                      <option key={idx} value={route.route}>{route.route} ({route.price})</option>
-                                    ))}
-                                    <option value="custom">Custom Route Request</option>
-                                  </select>
+                                  <MapPin className="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-emerald-500" />
+                                  <input type="text" placeholder="Pick-up Location (From)" required className="w-full bg-white border border-gray-200 rounded-xl py-3.5 pl-12 pr-4 text-sm text-gray-900 focus:outline-none focus:ring-2 focus:ring-[#003B73]/20 focus:border-[#003B73] transition-all font-medium shadow-sm" />
+                                </div>
+                                <div className="absolute left-[38px] top-[45px] bottom-[45px] w-0.5 bg-gray-200 z-0 hidden sm:block"></div>
+                                <div className="relative">
+                                  <Navigation className="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-red-500" />
+                                  <input type="text" placeholder="Drop-off Location (To)" required className="w-full bg-white border border-gray-200 rounded-xl py-3.5 pl-12 pr-4 text-sm text-gray-900 focus:outline-none focus:ring-2 focus:ring-[#003B73]/20 focus:border-[#003B73] transition-all font-medium shadow-sm" />
                                 </div>
                               </div>
 
                               {/* Date & Time */}
                               <div className="grid grid-cols-2 gap-4">
                                 <div className="space-y-2">
-                                  <label className="text-xs font-bold text-gray-700 ml-1">Date</label>
+                                  <label className="text-xs font-bold text-gray-700 ml-1">{tripType === "return" ? "Departure Date" : "Date"}</label>
                                   <div className="relative">
                                     <Calendar className="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-gray-400" />
                                     <input type="date" required className="w-full bg-slate-50 border border-gray-200 rounded-xl py-3.5 pl-12 pr-4 text-sm text-gray-900 focus:outline-none focus:ring-2 focus:ring-[#003B73]/20 focus:border-[#003B73] transition-all font-medium shadow-sm" />
@@ -672,8 +683,63 @@ export function ServicesPage() {
                                 </div>
                               </div>
 
+                              {tripType === "return" && (
+                                <motion.div initial={{ opacity: 0, height: 0 }} animate={{ opacity: 1, height: 'auto' }} className="grid grid-cols-2 gap-4">
+                                  <div className="space-y-2">
+                                    <label className="text-xs font-bold text-gray-700 ml-1">Return Date</label>
+                                    <div className="relative">
+                                      <Calendar className="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-gray-400" />
+                                      <input type="date" required className="w-full bg-slate-50 border border-gray-200 rounded-xl py-3.5 pl-12 pr-4 text-sm text-gray-900 focus:outline-none focus:ring-2 focus:ring-[#003B73]/20 focus:border-[#003B73] transition-all font-medium shadow-sm" />
+                                    </div>
+                                  </div>
+                                  <div className="space-y-2">
+                                    <label className="text-xs font-bold text-gray-700 ml-1">Return Time</label>
+                                    <div className="relative">
+                                      <Clock className="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-gray-400" />
+                                      <input type="time" required className="w-full bg-slate-50 border border-gray-200 rounded-xl py-3.5 pl-12 pr-4 text-sm text-gray-900 focus:outline-none focus:ring-2 focus:ring-[#003B73]/20 focus:border-[#003B73] transition-all font-medium shadow-sm" />
+                                    </div>
+                                  </div>
+                                </motion.div>
+                              )}
+
+                              {/* Passengers & Luggage */}
+                              <div className="grid grid-cols-2 gap-4">
+                                <div className="bg-slate-50 border border-gray-100 p-4 rounded-2xl">
+                                  <label className="text-xs font-bold text-gray-700 block mb-3 flex items-center gap-1"><Users className="w-4 h-4 text-[#003B73]" /> Passengers</label>
+                                  <div className="space-y-3">
+                                    <div className="flex items-center justify-between">
+                                      <span className="text-sm font-bold text-gray-900">Adults</span>
+                                      <div className="flex items-center gap-2 bg-white rounded-lg border border-gray-200 p-1">
+                                        <button type="button" onClick={() => setPassengers(p => ({...p, adults: Math.max(1, p.adults - 1)}))} className="w-6 h-6 rounded bg-slate-100 flex items-center justify-center font-bold text-gray-600 hover:bg-slate-200">-</button>
+                                        <span className="text-sm font-bold w-4 text-center">{passengers.adults}</span>
+                                        <button type="button" onClick={() => setPassengers(p => ({...p, adults: p.adults + 1}))} className="w-6 h-6 rounded bg-slate-100 flex items-center justify-center font-bold text-gray-600 hover:bg-slate-200">+</button>
+                                      </div>
+                                    </div>
+                                    <div className="flex items-center justify-between">
+                                      <span className="text-sm font-bold text-gray-900 flex items-center gap-1">Children <Baby className="w-3 h-3 text-gray-400"/></span>
+                                      <div className="flex items-center gap-2 bg-white rounded-lg border border-gray-200 p-1">
+                                        <button type="button" onClick={() => setPassengers(p => ({...p, children: Math.max(0, p.children - 1)}))} className="w-6 h-6 rounded bg-slate-100 flex items-center justify-center font-bold text-gray-600 hover:bg-slate-200">-</button>
+                                        <span className="text-sm font-bold w-4 text-center">{passengers.children}</span>
+                                        <button type="button" onClick={() => setPassengers(p => ({...p, children: p.children + 1}))} className="w-6 h-6 rounded bg-slate-100 flex items-center justify-center font-bold text-gray-600 hover:bg-slate-200">+</button>
+                                      </div>
+                                    </div>
+                                  </div>
+                                </div>
+                                <div className="bg-slate-50 border border-gray-100 p-4 rounded-2xl">
+                                  <label className="text-xs font-bold text-gray-700 block mb-3 flex items-center gap-1"><Briefcase className="w-4 h-4 text-[#F9A03F]" /> Luggage</label>
+                                  <div className="flex items-center justify-between">
+                                    <span className="text-sm font-bold text-gray-900">Suitcases</span>
+                                    <div className="flex items-center gap-2 bg-white rounded-lg border border-gray-200 p-1">
+                                      <button type="button" onClick={() => setLuggage(l => Math.max(0, l - 1))} className="w-6 h-6 rounded bg-slate-100 flex items-center justify-center font-bold text-gray-600 hover:bg-slate-200">-</button>
+                                      <span className="text-sm font-bold w-4 text-center">{luggage}</span>
+                                      <button type="button" onClick={() => setLuggage(l => l + 1)} className="w-6 h-6 rounded bg-slate-100 flex items-center justify-center font-bold text-gray-600 hover:bg-slate-200">+</button>
+                                    </div>
+                                  </div>
+                                </div>
+                              </div>
+
                               {/* Personal Info */}
-                              <div className="space-y-4 pt-2">
+                              <div className="space-y-4 pt-2 border-t border-gray-100">
                                 <div className="relative">
                                   <User className="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-gray-400" />
                                   <input type="text" placeholder="Full Name" required className="w-full bg-slate-50 border border-gray-200 rounded-xl py-3.5 pl-12 pr-4 text-sm text-gray-900 focus:outline-none focus:ring-2 focus:ring-[#003B73]/20 focus:border-[#003B73] transition-all font-medium shadow-sm placeholder:text-gray-400 placeholder:font-normal" />
@@ -698,13 +764,13 @@ export function ServicesPage() {
                                   <div className="w-6 h-6 border-2 border-white/30 border-t-white rounded-full animate-spin" />
                                 ) : (
                                   <>
-                                    Confirm Booking Request
+                                    Get Instant Quote
                                     <Send className="w-4 h-4" />
                                   </>
                                 )}
                               </button>
                               <p className="text-center text-xs font-medium text-gray-500 mt-4 bg-gray-50 p-3 rounded-lg border border-gray-100">
-                                No payment required to request. We confirm availability instantly via WhatsApp.
+                                No payment required to request. We confirm availability & final pricing instantly via WhatsApp.
                               </p>
                             </motion.form>
                           )}

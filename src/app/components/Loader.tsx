@@ -1,5 +1,5 @@
 import { motion, AnimatePresence } from "motion/react";
-import { Palmtree } from "lucide-react";
+import logoImg from "../../imports/logo.png";
 import { useState, useEffect } from "react";
 
 export function Loader() {
@@ -31,17 +31,16 @@ export function Loader() {
           >
             <motion.div
               animate={{
-                rotate: [0, 360],
-                scale: [1, 1.2, 1]
+                scale: [1, 1.05, 1]
               }}
               transition={{
                 duration: 2,
                 repeat: Infinity,
                 ease: "easeInOut"
               }}
-              className="w-20 h-20 sm:w-24 sm:h-24 bg-white rounded-2xl flex items-center justify-center mx-auto mb-6 shadow-2xl"
+              className="bg-white p-4 rounded-3xl shadow-2xl inline-flex items-center justify-center mx-auto mb-6"
             >
-              <Palmtree className="w-10 h-10 sm:w-12 sm:h-12 text-sky-600" />
+              <img src={logoImg} alt="Ephream Tours" className="h-24 sm:h-32 w-auto object-contain" />
             </motion.div>
 
             <motion.h1

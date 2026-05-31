@@ -1,6 +1,7 @@
 import { motion } from "motion/react";
 import { Palmtree, Phone, Mail, MapPin, Facebook, Instagram, Twitter } from "lucide-react";
 import { Link } from "react-router";
+import logoImg from "../../imports/logo.png";
 
 export function Footer() {
   const currentYear = new Date().getFullYear();
@@ -28,24 +29,8 @@ export function Footer() {
             viewport={{ once: true }}
             transition={{ duration: 0.5 }}
           >
-            <div className="flex items-center gap-3 mb-6">
-              <div className="relative flex items-center justify-center w-10 h-10 bg-gradient-to-b from-sky-300 to-blue-500 rounded-full shadow-md overflow-hidden border-2 border-white">
-                <div className="absolute bottom-0 w-full h-1/2 bg-blue-600 rounded-b-full"></div>
-                <Palmtree className="w-6 h-6 text-green-500 relative z-10 drop-shadow-md mb-1" />
-                <div className="absolute top-1 right-1 w-2.5 h-2.5 bg-yellow-400 rounded-full blur-[1px]"></div>
-              </div>
-              <div className="flex flex-col justify-center leading-none">
-                <span className="font-extrabold text-xl text-white tracking-tighter uppercase" style={{ fontFamily: "Arial, sans-serif", letterSpacing: "-1px" }}>
-                  EPHREAM
-                </span>
-                <div className="flex items-center gap-1 mt-0.5">
-                  <div className="h-[2px] w-3 bg-[#F9A03F]"></div>
-                  <span className="font-extrabold text-[10px] text-[#F9A03F] tracking-[0.2em] uppercase">
-                    TOURS
-                  </span>
-                  <div className="h-[2px] w-8 bg-[#F9A03F]"></div>
-                </div>
-              </div>
+            <div className="flex items-center mb-6 bg-white/10 p-2 rounded-xl inline-block w-fit">
+              <img src={logoImg} alt="Ephream Tours" className="h-16 sm:h-20 w-auto object-contain drop-shadow-md" />
             </div>
             <p className="text-sky-100/70 text-sm leading-relaxed font-light pr-4">
               Your trusted partner for unforgettable journeys across Kenya. Professional service, competitive prices, and memorable experiences tailored for you.

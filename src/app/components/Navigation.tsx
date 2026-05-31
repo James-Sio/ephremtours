@@ -2,6 +2,7 @@ import { motion, AnimatePresence } from "motion/react";
 import { Palmtree, Menu, X } from "lucide-react";
 import { useState, useEffect } from "react";
 import { Link, useLocation } from "react-router";
+import logoImg from "../../imports/logo.png";
 
 export function Navigation() {
   const [isOpen, setIsOpen] = useState(false);
@@ -43,22 +44,8 @@ export function Navigation() {
                 transition={{ delay: 0.2 }}
                 className="flex items-center gap-2 cursor-pointer group"
               >
-                <div className="relative flex items-center justify-center w-10 h-10 sm:w-12 sm:h-12 bg-gradient-to-b from-sky-300 to-blue-500 rounded-full shadow-md group-hover:scale-105 transition-transform overflow-hidden border-2 border-white">
-                  <div className="absolute bottom-0 w-full h-1/2 bg-blue-600 rounded-b-full"></div>
-                  <Palmtree className="w-6 h-6 sm:w-7 sm:h-7 text-green-500 relative z-10 drop-shadow-md mb-1" />
-                  <div className="absolute top-1 right-1 w-3 h-3 bg-yellow-400 rounded-full blur-[1px]"></div>
-                </div>
-                <div className="flex flex-col justify-center leading-none">
-                  <span className="font-extrabold text-xl sm:text-2xl text-[#003B73] tracking-tighter uppercase" style={{ fontFamily: "Arial, sans-serif", letterSpacing: "-1px" }}>
-                    EPHREAM
-                  </span>
-                  <div className="flex items-center gap-1">
-                    <div className="h-[2px] w-3 bg-[#F9A03F]"></div>
-                    <span className="font-extrabold text-[10px] sm:text-xs text-[#F9A03F] tracking-[0.2em] uppercase">
-                      TOURS
-                    </span>
-                    <div className="h-[2px] flex-grow bg-[#F9A03F]"></div>
-                  </div>
+                <div className="flex items-center">
+                  <img src={logoImg} alt="Ephream Tours" className="h-12 sm:h-16 w-auto object-contain drop-shadow-sm" />
                 </div>
               </motion.div>
             </Link>

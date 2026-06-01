@@ -7,12 +7,15 @@ import {
   Calendar, Check, ChevronDown, Sparkles
 } from "lucide-react";
 import { toast } from "sonner";
-import { fleetImagesFor } from "../data/fleetImages";
+import { fleetGalleryFor, type FleetImageSet } from "../data/fleetImages";
+import { FleetProgressiveImage } from "../components/FleetProgressiveImage";
+import { FleetThumbImage } from "../components/FleetThumbImage";
+import { preloadFleetModel, preloadUrl, useFleetPreload } from "../hooks/useFleetPreload";
 
 type ToyotaVehicle = {
   model: string;
   type: string;
-  gallery: string[];
+  gallery: FleetImageSet[];
   baseDailyRate: number;
   seats: string;
   suitability: string;
@@ -80,7 +83,7 @@ const vehicleSpecs = [
 
 const targetVehicles: ToyotaVehicle[] = vehicleSpecs.map((spec) => ({
   ...spec,
-  gallery: fleetImagesFor(spec.model),
+  gallery: fleetGalleryFor(spec.model),
 }));
 
 export function PartnershipPage() {
@@ -95,6 +98,9 @@ export function PartnershipPage() {
   const [galleryIndex, setGalleryIndex] = useState(0);
 
   const currentVehicle = targetVehicles.find(v => v.model === selectedModel) || targetVehicles[0];
+  const activeVehicle = targetVehicles.find((v) => v.model === activeTab) ?? targetVehicles[0];
+
+  useFleetPreload(activeTab, activeVehicle.gallery);
 
   useEffect(() => {
     setGalleryIndex(0);
@@ -235,6 +241,8 @@ export function PartnershipPage() {
               <button
                 key={veh.model}
                 onClick={() => setActiveTab(veh.model)}
+                onMouseEnter={() => preloadFleetModel(veh.model)}
+                onFocus={() => preloadFleetModel(veh.model)}
                 className={`px-5 py-3 rounded-full font-bold text-xs sm:text-sm transition-all ${
                   activeTab === veh.model
                     ? "bg-[#F9A03F] text-gray-900 shadow-lg shadow-orange-500/20"
@@ -250,7 +258,7 @@ export function PartnershipPage() {
           <AnimatePresence mode="wait">
             {targetVehicles.map((veh) => {
               if (veh.model !== activeTab) return null;
-              const heroSrc = veh.gallery[galleryIndex] ?? veh.gallery[0];
+              const heroImage = veh.gallery[galleryIndex] ?? veh.gallery[0];
               const shortName = veh.model.replace("Toyota ", "");
               return (
                 <motion.div
@@ -265,18 +273,24 @@ export function PartnershipPage() {
                   <div className="space-y-4">
                     <div className="rounded-2xl overflow-hidden aspect-[16/10] bg-gray-800 border border-white/10 shadow-lg relative group">
                       <AnimatePresence mode="wait">
-                        <motion.img
-                          key={heroSrc}
-                          src={heroSrc}
-                          alt={`${veh.model} — photo ${galleryIndex + 1}`}
-                          initial={{ opacity: 0.6, scale: 1.02 }}
-                          animate={{ opacity: 1, scale: 1 }}
-                          exit={{ opacity: 0.6, scale: 1.02 }}
-                          transition={{ duration: 0.35 }}
-                          className="w-full h-full object-cover group-hover:scale-[1.02] transition-transform duration-700"
-                        />
+                        <motion.div
+                          key={`${veh.model}-${galleryIndex}`}
+                          initial={{ opacity: 0.85 }}
+                          animate={{ opacity: 1 }}
+                          exit={{ opacity: 0.85 }}
+                          transition={{ duration: 0.25 }}
+                          className="absolute inset-0"
+                        >
+                          <FleetProgressiveImage
+                            image={heroImage}
+                            alt={`${veh.model} — photo ${galleryIndex + 1}`}
+                            priority
+                            className="h-full w-full"
+                            sizes="(max-width: 1024px) 100vw, 640px"
+                          />
+                        </motion.div>
                       </AnimatePresence>
-                      <div className="absolute inset-0 bg-gradient-to-t from-gray-950/60 to-transparent pointer-events-none" />
+                      <div className="absolute inset-0 bg-gradient-to-t from-gray-950/60 to-transparent pointer-events-none z-[1]" />
                       <div className="absolute bottom-6 left-6 z-10 flex flex-wrap gap-2">
                         <span className="bg-[#F9A03F] text-gray-900 text-xs font-bold uppercase px-3 py-1 rounded-full">{veh.type}</span>
                         <span className="bg-black/50 text-white text-xs font-medium px-3 py-1 rounded-full backdrop-blur-sm">
@@ -288,9 +302,12 @@ export function PartnershipPage() {
                     <div className="grid grid-cols-5 gap-2 sm:gap-3">
                       {veh.gallery.map((img, index) => (
                         <button
-                          key={img}
+                          key={img.hero}
                           type="button"
                           onClick={() => setGalleryIndex(index)}
+                          onMouseEnter={() => {
+                            preloadUrl(img.hero);
+                          }}
                           aria-label={`View ${shortName} photo ${index + 1}`}
                           aria-pressed={galleryIndex === index}
                           className={`rounded-xl overflow-hidden aspect-[4/3] bg-gray-800 border-2 transition-all focus:outline-none focus-visible:ring-2 focus-visible:ring-[#F9A03F] ${
@@ -299,11 +316,9 @@ export function PartnershipPage() {
                               : "border-white/10 opacity-80 hover:opacity-100 hover:border-white/30"
                           }`}
                         >
-                          <img
-                            src={img}
+                          <FleetThumbImage
+                            image={img}
                             alt={`${shortName} view ${index + 1}`}
-                            className="w-full h-full object-cover"
-                            loading="lazy"
                           />
                         </button>
                       ))}

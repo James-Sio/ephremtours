@@ -10,6 +10,8 @@ export type HireVehicleSpec = {
   hireDailyRate: number;
   transferFrom: number;
   halfDayFrom: number;
+  suitability: string;
+  highlight: string;
   bestFor: string[];
   gallery: FleetImageSet[];
 };
@@ -24,6 +26,8 @@ const specs = [
     hireDailyRate: 8500,
     transferFrom: 4500,
     halfDayFrom: 5000,
+    suitability: "VIP Airport Meet & Greets & Executive Corporate Transfers",
+    highlight: "Our most requested executive hire along the coast",
     bestFor: ["VIP airport", "Executive meetings", "Luxury resort transfers"],
   },
   {
@@ -35,6 +39,8 @@ const specs = [
     hireDailyRate: 6500,
     transferFrom: 4000,
     halfDayFrom: 4000,
+    suitability: "Direct Resort Shuttles & Luxury Tourist Excursions",
+    highlight: "Extremely popular for Watamu and Diani boutique transfers",
     bestFor: ["Watamu & Diani shuttles", "Boutique hotels", "Family groups"],
   },
   {
@@ -46,6 +52,8 @@ const specs = [
     hireDailyRate: 5500,
     transferFrom: 3500,
     halfDayFrom: 3500,
+    suitability: "Coastal Day Trips & Family Hotel-to-Hotel Transfers",
+    highlight: "Consistent daily bookings for family coastal holidays",
     bestFor: ["Coastal day trips", "Hotel hops", "Small families"],
   },
   {
@@ -57,6 +65,8 @@ const specs = [
     hireDailyRate: 5000,
     transferFrom: 3200,
     halfDayFrom: 3200,
+    suitability: "SGR Terminus Shuttles & Local Mombasa Old Town Excursions",
+    highlight: "Excellent value for groups wanting comfort without premium MPV rates",
     bestFor: ["SGR & city runs", "Old Town tours", "Value-conscious groups"],
   },
   {
@@ -68,6 +78,8 @@ const specs = [
     hireDailyRate: 7500,
     transferFrom: 5000,
     halfDayFrom: 4500,
+    suitability: "Tsavo East Safaris & High-Capacity Corporate Events",
+    highlight: "High demand during safari peak seasons from Watamu & Diani",
     bestFor: ["Group transfers", "Tsavo safaris", "Team outings"],
   },
   {
@@ -79,6 +91,8 @@ const specs = [
     hireDailyRate: 9000,
     transferFrom: 5500,
     halfDayFrom: 5500,
+    suitability: "Safari Game Drives & Rough Coastal Terrains (Tsavo/Amboseli)",
+    highlight: "Top choice for premium safari excursions departing the coast",
     bestFor: ["Game drives", "Rough roads", "Safari packages"],
   },
   {
@@ -90,6 +104,8 @@ const specs = [
     hireDailyRate: 12000,
     transferFrom: 8000,
     halfDayFrom: 7000,
+    suitability: "School Trips, Church Events, Wedding Fleets & Large Corporate Groups",
+    highlight: "Best for high-capacity group transport and wedding convoys",
     bestFor: ["Weddings", "Church & school trips", "Large corporate groups"],
   },
 ] as const;

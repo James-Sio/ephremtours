@@ -36,8 +36,8 @@ export function CarHirePromo() {
             </h2>
 
             <p className="text-base sm:text-lg text-sky-100/90 font-light leading-relaxed mb-8 max-w-xl">
-              Book a private Toyota with a trained driver for transfers along the coast, full-day use,
-              safaris, or group events. No partnership application needed — just tell us where and when.
+              Browse all 7 Toyota models with the same real photos as our partnership fleet — 5 images per car.
+              Book with a trained driver for transfers, full-day hire, safaris, or events.
             </p>
 
             <ul className="grid sm:grid-cols-2 gap-3 mb-8">
@@ -54,7 +54,7 @@ export function CarHirePromo() {
                 to="/car-hire"
                 className="touch-target inline-flex items-center justify-center gap-2 px-8 py-4 bg-[#F9A03F] hover:bg-amber-400 text-gray-900 font-bold rounded-full transition-all shadow-lg"
               >
-                View car hire options
+                Browse fleet & book
                 <ArrowRight className="w-5 h-5" />
               </Link>
               <Link

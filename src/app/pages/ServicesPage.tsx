@@ -2,7 +2,7 @@ import { motion, AnimatePresence } from "motion/react";
 import { useState, useEffect } from "react";
 import { Link, useLocation, useNavigate } from "react-router";
 import { 
-  Plane, Train, Hotel, MapPin, Users, Camera, Car,
+  Plane, Train, Hotel, MapPin, Users, Camera,
   ArrowLeft, CheckCircle2, Star, Calendar, 
   Clock, User, Phone, Mail, ShieldCheck, Check,
   Send, Navigation, Info, ChevronDown, Briefcase, Baby, ArrowRightLeft
@@ -588,32 +588,17 @@ export function ServicesPage() {
               <h1 className="text-4xl sm:text-5xl md:text-6xl font-extrabold text-gray-900 mb-6 tracking-tight">
                 Core <span className="text-[#003B73]">Services</span>
               </h1>
-              <p className="text-gray-600 text-lg max-w-2xl mx-auto font-light leading-relaxed">
-                Need a car? We offer <strong className="font-semibold text-gray-800">car hire with driver</strong> plus transfers, safaris, and VIP concierge. Select a service below to view rates and book.
+              <p className="text-gray-600 text-base sm:text-lg max-w-2xl mx-auto font-light leading-relaxed text-pretty px-1">
+                SGR terminus transfers, VIP airport meet &amp; greet, hotel shuttles, city tours, safaris, and corporate travel — each with its own booking flow below.
+              </p>
+              <p className="mt-4 text-sm text-gray-500">
+                Need to hire a Toyota by the day or week?{" "}
+                <Link to="/car-hire" className="font-bold text-[#003B73] hover:text-[#F9A03F] underline-offset-2 hover:underline">
+                  Go to Car Hire
+                </Link>{" "}
+                (separate from these transfer services).
               </p>
             </div>
-
-            <Link
-              to="/car-hire"
-              className="block mb-8 sm:mb-10 group"
-            >
-              <div className="relative overflow-hidden rounded-3xl bg-gradient-to-r from-emerald-600 to-[#003B73] p-6 sm:p-8 shadow-xl hover:shadow-2xl transition-all hover:-translate-y-1">
-                <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 relative z-10">
-                  <div className="text-white">
-                    <div className="inline-flex items-center gap-2 bg-white/15 px-3 py-1 rounded-full text-xs font-bold uppercase tracking-widest mb-3">
-                      <Car className="w-4 h-4 text-[#F9A03F]" /> Dedicated car hire
-                    </div>
-                    <h2 className="text-2xl sm:text-3xl font-black mb-2">Need a car? Book by vehicle type</h2>
-                    <p className="text-sky-100/90 font-light max-w-xl text-sm sm:text-base">
-                      Real Toyota photos, hire-specific booking (not SGR transfers) — choose Alphard, Voxy, Hiace, Prado & more.
-                    </p>
-                  </div>
-                  <span className="inline-flex items-center justify-center gap-2 bg-[#F9A03F] text-gray-900 font-bold px-6 py-3.5 rounded-full shrink-0 group-hover:bg-amber-300 transition-colors">
-                    Browse fleet & book <Car className="w-5 h-5" />
-                  </span>
-                </div>
-              </div>
-            </Link>
 
             <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-6 sm:gap-8">
               {coreServices.map((service) => (

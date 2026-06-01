@@ -96,7 +96,7 @@ export function HireFleetShowcase({
             animate={{ opacity: 1, y: 0 }}
             exit={{ opacity: 0, y: -16 }}
             transition={{ duration: 0.35 }}
-            className="grid lg:grid-cols-2 gap-8 lg:gap-12 items-start bg-white/5 backdrop-blur-xl border border-white/10 rounded-2xl sm:rounded-3xl p-5 sm:p-8 lg:p-10 shadow-2xl"
+            className="grid lg:grid-cols-2 gap-8 lg:gap-12 items-start bg-white/5 mobile-no-blur border border-white/10 rounded-2xl sm:rounded-3xl p-5 sm:p-8 lg:p-10 shadow-2xl min-w-0"
           >
             {/* Gallery — partnership layout */}
             <div className="space-y-4">
@@ -155,7 +155,7 @@ export function HireFleetShowcase({
                 <p className="text-[10px] font-bold text-gray-500 uppercase tracking-widest mb-2">
                   All {vehicle.shortName} photos ({vehicle.gallery.length})
                 </p>
-                <div className="grid grid-cols-5 gap-2">
+                <div className="grid grid-cols-3 sm:grid-cols-5 gap-2">
                   {vehicle.gallery.map((img, index) => (
                     <button
                       key={`mosaic-${img.hero}`}
@@ -314,12 +314,12 @@ function FleetHireCard({
         isActive ? "border-emerald-500 ring-2 ring-emerald-500/20" : "border-gray-100 hover:border-gray-200"
       }`}
     >
-      <div className="grid grid-cols-4 grid-rows-2 gap-0.5 bg-gray-900 p-0.5">
+      <div className="grid grid-cols-3 sm:grid-cols-4 grid-rows-2 gap-0.5 bg-gray-900 p-0.5">
         {vehicle.gallery.map((img, i) => (
           <div
             key={img.hero}
             className={`overflow-hidden bg-gray-800 ${
-              i === 0 ? "col-span-2 row-span-2 min-h-[8rem]" : "aspect-[4/3]"
+              i === 0 ? "col-span-2 row-span-2 min-h-[6rem] sm:min-h-[8rem]" : "aspect-[4/3]"
             }`}
           >
             <FleetThumbImage

@@ -4,8 +4,8 @@
   "version": "1.0.0",
   "type": "module",
   "scripts": {
-    "build": "vite build",
-    "dev": "vite",
+    "build": "node init && vite build",
+    "dev": "node init && vite",
     "fleet:optimize": "node scratch/optimize_public_images.mjs",
     "images:optimize": "node scratch/optimize_public_images.mjs"
   },

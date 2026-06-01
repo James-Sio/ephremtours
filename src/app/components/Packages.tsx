@@ -617,59 +617,55 @@ export function Packages() {
           </p>
         </motion.div>
 
-        {/* Controls Layout */}
-        <div className="bg-gray-900/60 backdrop-blur-xl rounded-3xl border border-white/10 shadow-2xl p-6 sm:p-8 mb-16">
-          <div className="flex flex-col lg:flex-row gap-6 justify-between items-center">
-            
-            {/* Category tabs */}
-            <div className="-mx-2 px-2 flex gap-2 overflow-x-auto scrollbar-none w-full lg:mx-0 lg:px-0 lg:flex-wrap lg:overflow-visible lg:w-auto pb-1 lg:pb-0">
-              {categories.map(cat => (
-                <button
-                  key={cat}
-                  onClick={() => setSelectedCategory(cat)}
-                  className={`touch-target shrink-0 px-5 sm:px-6 py-3 rounded-2xl text-xs sm:text-sm font-bold transition-all relative cursor-pointer active:scale-[0.98] ${
-                    selectedCategory === cat
-                      ? "text-white bg-[#003B73] border border-sky-500/30 shadow-lg shadow-sky-950/55"
-                      : "text-gray-400 hover:text-white hover:bg-white/5 bg-white/5 border border-white/5"
-                  }`}
-                >
-                  {cat}
-                </button>
-              ))}
+        {/* Controls Layout — stacked on phone for readable filters */}
+        <div className="bg-gray-900 mobile-no-blur rounded-2xl sm:rounded-3xl border border-white/10 shadow-2xl p-4 sm:p-8 mb-12 sm:mb-16">
+          <p className="text-[10px] font-bold uppercase tracking-widest text-gray-500 mb-3 sm:hidden">Filter packages</p>
+          <div className="flex flex-col gap-4">
+            <div className="w-full overflow-x-auto scrollbar-none -mx-1 px-1">
+              <div className="flex gap-2 pb-1 w-max max-w-none">
+                {categories.map((cat) => (
+                  <button
+                    key={cat}
+                    type="button"
+                    onClick={() => setSelectedCategory(cat)}
+                    className={`touch-target shrink-0 whitespace-nowrap px-4 py-2.5 rounded-xl text-[11px] sm:text-sm font-bold transition-all active:scale-[0.98] ${
+                      selectedCategory === cat
+                        ? "text-white bg-[#003B73] border border-sky-500/30 shadow-md"
+                        : "text-gray-400 bg-white/5 border border-white/10"
+                    }`}
+                  >
+                    {cat === "All Experience" ? "All" : cat.replace("Wildlife ", "").replace("Coastal ", "").replace("Cultural & ", "")}
+                  </button>
+                ))}
+              </div>
             </div>
 
-            {/* Filter controls */}
-            <div className="flex flex-col sm:flex-row gap-4 w-full lg:w-auto shrink-0">
-              
-              {/* Elegant Search */}
-              <div className="relative flex-grow sm:flex-grow-0 sm:w-80">
-                <Search className="w-4 h-4 text-gray-400 absolute left-4 top-4" />
+            <div className="flex flex-col gap-3 w-full">
+              <div className="relative w-full">
+                <Search className="w-4 h-4 text-gray-400 absolute left-3 top-1/2 -translate-y-1/2 pointer-events-none" />
                 <input
                   type="text"
-                  placeholder="Search ultra-luxury experiences..."
+                  placeholder="Search packages..."
                   value={searchQuery}
                   onChange={(e) => setSearchQuery(e.target.value)}
-                  className="w-full pl-11 pr-4 py-3.5 rounded-2xl border border-white/10 text-xs sm:text-sm focus:outline-none focus:ring-2 focus:ring-amber-500 bg-gray-950/70 focus:bg-gray-950 transition-all text-white font-semibold placeholder:text-gray-500"
+                  className="w-full pl-10 pr-4 py-3 rounded-xl border border-white/10 text-sm focus:outline-none focus:ring-2 focus:ring-amber-500 bg-gray-950 text-white placeholder:text-gray-500"
                 />
               </div>
 
-              {/* Sort Selector */}
-              <div className="relative shrink-0 flex items-center gap-2 border border-white/10 rounded-2xl px-4 py-3.5 bg-gray-950/70 hover:bg-gray-950 transition-all text-xs sm:text-sm font-bold text-gray-300">
-                <ArrowUpDown className="w-4 h-4 text-amber-400" />
+              <div className="flex items-center gap-2 border border-white/10 rounded-xl px-3 py-3 bg-gray-950 w-full">
+                <ArrowUpDown className="w-4 h-4 text-amber-400 shrink-0" />
                 <select
                   value={sortBy}
                   onChange={(e) => setSortBy(e.target.value)}
-                  className="focus:outline-none bg-transparent cursor-pointer font-bold text-white select-none [&>option]:bg-gray-950"
+                  className="flex-1 min-w-0 focus:outline-none bg-transparent text-sm font-bold text-white [&>option]:bg-gray-950"
                 >
                   <option value="popular">Highly Popular</option>
                   <option value="priceAsc">Price: Low to High</option>
                   <option value="priceDesc">Price: High to Low</option>
-                  <option value="rating">Top Customer Rated</option>
+                  <option value="rating">Top Rated</option>
                 </select>
               </div>
-
             </div>
-
           </div>
         </div>
 

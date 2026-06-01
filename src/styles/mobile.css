@@ -48,7 +48,6 @@ body {
   }
 }
 
-/* Hide scrollbars for horizontal chip rows */
 .scrollbar-none {
   -ms-overflow-style: none;
   scrollbar-width: none;
@@ -58,7 +57,6 @@ body {
   display: none;
 }
 
-/* Minimum touch target (Apple HIG / Material) */
 @media (pointer: coarse) {
   .touch-target {
     min-height: 44px;
@@ -66,7 +64,27 @@ body {
   }
 }
 
-/* Reduce motion for accessibility */
+/* Readable wrapping on small screens — avoids blur/break from overflow */
+.text-pretty {
+  text-wrap: pretty;
+}
+
+.text-balance {
+  text-wrap: balance;
+}
+
+.min-w-0-safe {
+  min-width: 0;
+}
+
+/* Backdrop blur can make text look fuzzy on some phones */
+@media (max-width: 767px) {
+  .mobile-no-blur {
+    -webkit-backdrop-filter: none !important;
+    backdrop-filter: none !important;
+  }
+}
+
 @media (prefers-reduced-motion: reduce) {
   html {
     scroll-behavior: auto;

@@ -72,7 +72,6 @@ web_modules/
 .tern-project
 
 # Stores VS Code state
-.vscode/
 .idea/
 *.suo
 *.ntvs*
@@ -81,8 +80,7 @@ web_modules/
 *.sw?
 
 # local env files
-.env
-.env.local
 .env.development.local
 .env.test.local
 .env.production.local
+config.bat

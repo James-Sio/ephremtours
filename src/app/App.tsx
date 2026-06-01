@@ -14,6 +14,7 @@ import { PackageDetailPage } from "./pages/PackageDetailPage";
 import { GalleryPage } from "./pages/GalleryPage";
 import { AboutPage } from "./pages/AboutPage";
 import { ContactPage } from "./pages/ContactPage";
+import { PartnershipPage } from "./pages/PartnershipPage";
 
 export default function App() {
   return (
@@ -32,6 +33,7 @@ export default function App() {
             <Route path="/gallery" element={<GalleryPage />} />
             <Route path="/about" element={<AboutPage />} />
             <Route path="/contact" element={<ContactPage />} />
+            <Route path="/partnership" element={<PartnershipPage />} />
           </Routes>
         </main>
         <Footer />

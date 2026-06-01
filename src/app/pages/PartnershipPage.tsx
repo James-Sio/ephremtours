@@ -7,26 +7,11 @@ import {
   Calendar, Check, ChevronDown, Sparkles
 } from "lucide-react";
 import { toast } from "sonner";
-
-// Gallery image imports to use as beautiful vehicle representations
-import gallery9 from "../../imports/gallery-9.jpg";   // Voxy
-import gallery10 from "../../imports/gallery-10.jpg"; // Noah
-import gallery11 from "../../imports/gallery-11.jpg"; // Alphard
-import gallery12 from "../../imports/gallery-12.jpg"; // Esquire
-import gallery13 from "../../imports/gallery-13.jpg"; // Hiace
-import gallery14 from "../../imports/gallery-14.jpg"; // Prado
-import gallery15 from "../../imports/gallery-15.jpg"; // Secondary vehicle
-import gallery16 from "../../imports/gallery-16.jpg"; // Coaster
-import gallery17 from "../../imports/gallery-17.jpg"; // Voxy secondary
-import gallery18 from "../../imports/gallery-18.jpg"; // Voxy tertiary
-import gallery20 from "../../imports/gallery-20.jpg"; // Prado secondary
-import gallery21 from "../../imports/gallery-21.jpg"; // Noah secondary
-import gallery22 from "../../imports/gallery-22.jpg"; // Noah tertiary
+import { fleetImagesFor } from "../data/fleetImages";
 
 type ToyotaVehicle = {
   model: string;
   type: string;
-  image: string;
   gallery: string[];
   baseDailyRate: number;
   seats: string;
@@ -34,78 +19,69 @@ type ToyotaVehicle = {
   highlight: string;
 };
 
-const targetVehicles: ToyotaVehicle[] = [
+const vehicleSpecs = [
   {
     model: "Toyota Alphard",
     type: "Elite First-Class MPV",
-    image: gallery11,
-    gallery: [gallery11, gallery22, gallery21],
     baseDailyRate: 8500,
     seats: "7 VIP Seats",
     suitability: "VIP Airport Meet & Greets & Executive Corporate Transfers",
-    highlight: "Highest earning potential with premium coastal bookings"
+    highlight: "Highest earning potential with premium coastal bookings",
   },
   {
     model: "Toyota Esquire",
     type: "Executive Luxury MPV",
-    image: gallery12,
-    gallery: [gallery12, gallery14, gallery15],
     baseDailyRate: 6500,
     seats: "7 Premium Seats",
     suitability: "Direct Resort Shuttles & Luxury Tourist Excursions",
-    highlight: "Extremely popular for Watamu and Diani boutique transfers"
+    highlight: "Extremely popular for Watamu and Diani boutique transfers",
   },
   {
     model: "Toyota Voxy",
     type: "Luxury Family MPV",
-    image: gallery9,
-    gallery: [gallery9, gallery17, gallery18],
     baseDailyRate: 5500,
     seats: "7-8 Versatile Seats",
     suitability: "Coastal Day Trips & Family Hotel-to-Hotel Transfers",
-    highlight: "Consistent daily bookings due to high coastal tourist demand"
+    highlight: "Consistent daily bookings due to high coastal tourist demand",
   },
   {
     model: "Toyota Noah",
     type: "Premium Comfort MPV",
-    image: gallery10,
-    gallery: [gallery10, gallery21, gallery22],
     baseDailyRate: 5000,
     seats: "7-8 Comfort Seats",
     suitability: "SGR Terminus Shuttles & Local Mombasa Old Town Excursions",
-    highlight: "Excellent fuel-to-yield ratio for long-term lease returns"
+    highlight: "Excellent fuel-to-yield ratio for long-term lease returns",
   },
   {
     model: "Toyota Hiace",
     type: "High-Capacity Safari Shuttle",
-    image: gallery13,
-    gallery: [gallery13, gallery14, gallery15],
     baseDailyRate: 7500,
     seats: "14 Group Seats",
     suitability: "Tsavo East Safaris & High-Capacity Corporate Events",
-    highlight: "High demand during safari peak seasons (Watamu/Diani departures)"
+    highlight: "High demand during safari peak seasons (Watamu/Diani departures)",
   },
   {
     model: "Toyota Prado",
     type: "Premium 4x4 Safari SUV",
-    image: gallery14,
-    gallery: [gallery14, gallery15, gallery20],
     baseDailyRate: 9000,
     seats: "7 Seats (4x4)",
     suitability: "Safari Game Drives & Rough Coastal Terrains (Tsavo/Amboseli packages)",
-    highlight: "Highly requested for premium safari excursions departing Watamu/Diani"
+    highlight: "Highly requested for premium safari excursions departing Watamu/Diani",
   },
   {
     model: "Toyota Coaster",
     type: "High-Capacity Group Bus",
-    image: gallery16,
-    gallery: [gallery16, gallery13, gallery21],
     baseDailyRate: 12000,
     seats: "23-30 Group Seats",
     suitability: "School Trips, Church Events, Wedding Fleets & Large Corporate Groups",
-    highlight: "Best yield for high-capacity group transport requirements"
-  }
-];
+    highlight: "Best yield for high-capacity group transport requirements",
+  },
+] as const;
+
+const targetVehicles: ToyotaVehicle[] = vehicleSpecs.map((spec) => ({
+  ...spec,
+  gallery: fleetImagesFor(spec.model),
+}));
 
 export function PartnershipPage() {
   const [selectedModel, setSelectedModel] = useState<string>("Toyota Alphard");
@@ -116,8 +92,13 @@ export function PartnershipPage() {
   const [carTown, setCarTown] = useState<string>("");
   const [submitState, setSubmitState] = useState<"idle" | "submitting" | "success">("idle");
   const [activeTab, setActiveTab] = useState<string>("Toyota Alphard");
+  const [galleryIndex, setGalleryIndex] = useState(0);
 
   const currentVehicle = targetVehicles.find(v => v.model === selectedModel) || targetVehicles[0];
+
+  useEffect(() => {
+    setGalleryIndex(0);
+  }, [activeTab]);
   const monthlyEarnings = currentVehicle.baseDailyRate * leaseDays;
   const weeklyEarnings = Math.round(monthlyEarnings / 4);
 
@@ -260,7 +241,7 @@ export function PartnershipPage() {
                     : "bg-white/5 hover:bg-white/10 text-white border border-white/10"
                 }`}
               >
-                🚗 {veh.model.replace("Toyota ", "")}
+                {veh.model.replace("Toyota ", "")}
               </button>
             ))}
           </div>
@@ -269,6 +250,8 @@ export function PartnershipPage() {
           <AnimatePresence mode="wait">
             {targetVehicles.map((veh) => {
               if (veh.model !== activeTab) return null;
+              const heroSrc = veh.gallery[galleryIndex] ?? veh.gallery[0];
+              const shortName = veh.model.replace("Toyota ", "");
               return (
                 <motion.div
                   key={veh.model}
@@ -278,28 +261,56 @@ export function PartnershipPage() {
                   transition={{ duration: 0.4 }}
                   className="grid lg:grid-cols-2 gap-12 items-center bg-white/5 backdrop-blur-xl border border-white/10 rounded-3xl p-8 lg:p-12 shadow-2xl"
                 >
-                  {/* Left: Image Portfolio & Slider mockup */}
-                  <div className="space-y-6">
+                  {/* Left: authentic model photo gallery */}
+                  <div className="space-y-4">
                     <div className="rounded-2xl overflow-hidden aspect-[16/10] bg-gray-800 border border-white/10 shadow-lg relative group">
-                      <img 
-                        src={veh.image} 
-                        alt={veh.model} 
-                        className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700" 
-                      />
-                      <div className="absolute inset-0 bg-gradient-to-t from-gray-950/60 to-transparent" />
-                      <div className="absolute bottom-6 left-6 z-10">
+                      <AnimatePresence mode="wait">
+                        <motion.img
+                          key={heroSrc}
+                          src={heroSrc}
+                          alt={`${veh.model} — photo ${galleryIndex + 1}`}
+                          initial={{ opacity: 0.6, scale: 1.02 }}
+                          animate={{ opacity: 1, scale: 1 }}
+                          exit={{ opacity: 0.6, scale: 1.02 }}
+                          transition={{ duration: 0.35 }}
+                          className="w-full h-full object-cover group-hover:scale-[1.02] transition-transform duration-700"
+                        />
+                      </AnimatePresence>
+                      <div className="absolute inset-0 bg-gradient-to-t from-gray-950/60 to-transparent pointer-events-none" />
+                      <div className="absolute bottom-6 left-6 z-10 flex flex-wrap gap-2">
                         <span className="bg-[#F9A03F] text-gray-900 text-xs font-bold uppercase px-3 py-1 rounded-full">{veh.type}</span>
+                        <span className="bg-black/50 text-white text-xs font-medium px-3 py-1 rounded-full backdrop-blur-sm">
+                          {galleryIndex + 1} / {veh.gallery.length}
+                        </span>
                       </div>
                     </div>
-                    
-                    {/* Small Gallery Strip */}
-                    <div className="grid grid-cols-3 gap-4">
+
+                    <div className="grid grid-cols-5 gap-2 sm:gap-3">
                       {veh.gallery.map((img, index) => (
-                        <div key={index} className="rounded-xl overflow-hidden aspect-[4/3] bg-gray-800 border border-white/10">
-                          <img src={img} alt="Vehicle Detail View" className="w-full h-full object-cover" />
-                        </div>
+                        <button
+                          key={img}
+                          type="button"
+                          onClick={() => setGalleryIndex(index)}
+                          aria-label={`View ${shortName} photo ${index + 1}`}
+                          aria-pressed={galleryIndex === index}
+                          className={`rounded-xl overflow-hidden aspect-[4/3] bg-gray-800 border-2 transition-all focus:outline-none focus-visible:ring-2 focus-visible:ring-[#F9A03F] ${
+                            galleryIndex === index
+                              ? "border-[#F9A03F] ring-2 ring-[#F9A03F]/40 scale-[1.02]"
+                              : "border-white/10 opacity-80 hover:opacity-100 hover:border-white/30"
+                          }`}
+                        >
+                          <img
+                            src={img}
+                            alt={`${shortName} view ${index + 1}`}
+                            className="w-full h-full object-cover"
+                            loading="lazy"
+                          />
+                        </button>
                       ))}
                     </div>
+                    <p className="text-[11px] text-gray-500 text-center sm:text-left">
+                      Authentic {shortName} reference photos · Wikimedia Commons (CC)
+                    </p>
                   </div>
 
                   {/* Right: Technical specifications */}

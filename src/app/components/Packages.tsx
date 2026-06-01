@@ -5,6 +5,9 @@ import {
   ChevronLeft, Sparkles, Clock, Compass, Coffee, Sunset, Camera, Compass as Binoculars, Gift, Info
 } from "lucide-react";
 import { Link, useNavigate } from "react-router";
+import { publicImageSet } from "../data/tourImages";
+import { FleetProgressiveImage } from "./FleetProgressiveImage";
+import { preloadUrl } from "../hooks/useFleetPreload";
 
 const MotionLink = motion.create(Link);
 
@@ -357,6 +360,13 @@ export const packages = [
 function CardImageCarousel({ images, name, onClick }: { images: string[], name: string, onClick: () => void }) {
   const [currentIndex, setCurrentIndex] = useState(0);
   const [isHovered, setIsHovered] = useState(false);
+  const optimized = useMemo(() => images.map(publicImageSet), [images]);
+
+  useEffect(() => {
+    if (optimized.length <= 1) return;
+    const next = (currentIndex + 1) % optimized.length;
+    preloadUrl(optimized[next].hero);
+  }, [currentIndex, optimized]);
 
   useEffect(() => {
     if (isHovered || images.length <= 1) return;
@@ -384,16 +394,22 @@ function CardImageCarousel({ images, name, onClick }: { images: string[], name: 
       onClick={onClick}
     >
       <AnimatePresence mode="wait">
-        <motion.img
+        <motion.div
           key={currentIndex}
-          src={images[currentIndex]}
-          alt={`${name} slide ${currentIndex + 1}`}
-          initial={{ opacity: 0.8, scale: 1 }}
-          animate={{ opacity: 1, scale: isHovered ? 1.06 : 1 }}
-          exit={{ opacity: 0.8 }}
-          transition={{ duration: 0.5, ease: "easeInOut" }}
-          className="w-full h-full object-cover transition-all duration-700"
-        />
+          initial={{ opacity: 0.85 }}
+          animate={{ opacity: 1, scale: isHovered ? 1.03 : 1 }}
+          exit={{ opacity: 0.85 }}
+          transition={{ duration: 0.45, ease: "easeInOut" }}
+          className="absolute inset-0"
+        >
+          <FleetProgressiveImage
+            image={optimized[currentIndex]}
+            alt={`${name} — photo ${currentIndex + 1}`}
+            priority={currentIndex === 0}
+            className="h-full w-full"
+            sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 400px"
+          />
+        </motion.div>
       </AnimatePresence>
 
       {/* Luxury Dark Gradient Overlay */}
@@ -446,6 +462,21 @@ function CardImageCarousel({ images, name, onClick }: { images: string[], name: 
 
 export function Packages() {
   const navigate = useNavigate();
+
+  useEffect(() => {
+    const warm = () => {
+      for (const pkg of packages) {
+        const first = pkg.images[0];
+        if (first) preloadUrl(publicImageSet(first).thumb);
+      }
+    };
+    const id = window.requestIdleCallback?.(warm, { timeout: 2500 }) ?? window.setTimeout(warm, 400);
+    return () => {
+      if (typeof id === "number") window.clearTimeout(id);
+      else window.cancelIdleCallback?.(id);
+    };
+  }, []);
+
   const [selectedCategory, setSelectedCategory] = useState("All Experience");
   const [searchQuery, setSearchQuery] = useState("");
   const [sortBy, setSortBy] = useState("popular");

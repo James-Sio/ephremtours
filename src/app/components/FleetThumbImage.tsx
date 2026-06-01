@@ -1,9 +1,9 @@
 import { useState } from "react";
 import { cn } from "./ui/utils";
-import type { FleetImageSet } from "../data/fleetImages";
+import type { OptimizedImageSet } from "../data/optimizedImages";
 
 type FleetThumbImageProps = {
-  image: FleetImageSet;
+  image: OptimizedImageSet;
   alt: string;
   className?: string;
 };

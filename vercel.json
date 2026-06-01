@@ -8,7 +8,7 @@
   ],
   "headers": [
     {
-      "source": "/fleet/(.*)",
+      "source": "/(fleet|tourImages)/(.*)",
       "headers": [
         {
           "key": "Cache-Control",

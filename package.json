@@ -6,7 +6,8 @@
   "scripts": {
     "build": "vite build",
     "dev": "vite",
-    "fleet:optimize": "node scratch/optimize_fleet_images.mjs"
+    "fleet:optimize": "node scratch/optimize_public_images.mjs",
+    "images:optimize": "node scratch/optimize_public_images.mjs"
   },
   "engines": {
     "node": ">=22.0.0"

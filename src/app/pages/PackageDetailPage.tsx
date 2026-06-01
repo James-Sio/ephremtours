@@ -7,6 +7,10 @@ import {
   ArrowLeft, Bed, MapPin, Users, HeartHandshake, PhoneCall
 } from "lucide-react";
 import { packages } from "../components/Packages";
+import { publicImageSets } from "../data/tourImages";
+import { FleetProgressiveImage } from "../components/FleetProgressiveImage";
+import { FleetThumbImage } from "../components/FleetThumbImage";
+import { preloadUrl } from "../hooks/useFleetPreload";
 
 export function PackageDetailPage() {
   const { id } = useParams();
@@ -18,6 +22,11 @@ export function PackageDetailPage() {
     return packages.find(p => p.id === id);
   }, [id]);
 
+  const gallery = useMemo(
+    () => (pkg ? publicImageSets(pkg.images) : []),
+    [pkg]
+  );
+
   // If package doesn't exist, redirect back
   useEffect(() => {
     if (!pkg) {
@@ -25,7 +34,13 @@ export function PackageDetailPage() {
     }
   }, [pkg, navigate]);
 
-  if (!pkg) return null;
+  useEffect(() => {
+    if (!gallery.length) return;
+    for (const img of gallery) {
+      preloadUrl(img.thumb);
+      preloadUrl(img.hero);
+    }
+  }, [gallery]);
 
   // Form & Premium upgrades state
   const [adultsCount, setAdultsCount] = useState(2);
@@ -47,12 +62,22 @@ export function PackageDetailPage() {
   const [heroImageIndex, setHeroImageIndex] = useState(0);
 
   useEffect(() => {
-    if (!pkg || pkg.images.length <= 1) return;
+    if (!gallery.length || gallery.length <= 1) return;
     const interval = setInterval(() => {
-      setHeroImageIndex((prev) => (prev + 1) % pkg.images.length);
-    }, 6000); // Cinematic transition every 6 seconds
+      setHeroImageIndex((prev) => {
+        const next = (prev + 1) % gallery.length;
+        preloadUrl(gallery[next].hero);
+        return next;
+      });
+    }, 6000);
     return () => clearInterval(interval);
-  }, [pkg]);
+  }, [gallery]);
+
+  useEffect(() => {
+    if (!gallery.length) return;
+    const next = (heroImageIndex + 1) % gallery.length;
+    preloadUrl(gallery[next].hero);
+  }, [heroImageIndex, gallery]);
 
   // Scroll tracking to make sub-navigation sticky
   const [isSticky, setIsSticky] = useState(false);
@@ -107,6 +132,9 @@ export function PackageDetailPage() {
 
   // Live Auto-Concierge Price Engine
   const calculatedCost = useMemo(() => {
+    if (!pkg) {
+      return { base: 0, adults: 0, children: 0, pickup: 0, upgrades: 0, total: 0 };
+    }
     const baseVal = pkg.price;
     const adultsSubtotal = baseVal * adultsCount;
     const childrenSubtotal = Math.round(baseVal * 0.5) * childrenCount;
@@ -140,6 +168,8 @@ export function PackageDetailPage() {
     }, 1500);
   };
 
+  if (!pkg) return null;
+
   return (
     <div className="bg-gray-950 text-white min-h-screen relative overflow-hidden font-sans selection:bg-amber-400 selection:text-black">
       
@@ -149,16 +179,22 @@ export function PackageDetailPage() {
         {/* Massive full screen dynamic background image */}
         <div className="absolute inset-0 bg-gray-950">
           <AnimatePresence mode="wait">
-            <motion.img 
+            <motion.div
               key={heroImageIndex}
-              src={pkg.images[heroImageIndex]} 
-              alt={pkg.name} 
-              initial={{ opacity: 0.3 }}
+              initial={{ opacity: 0.4 }}
               animate={{ opacity: 1 }}
-              exit={{ opacity: 0.3 }}
-              transition={{ duration: 1.5, ease: "easeInOut" }}
-              className="absolute inset-0 w-full h-full object-cover transform scale-105"
-            />
+              exit={{ opacity: 0.4 }}
+              transition={{ duration: 1, ease: "easeInOut" }}
+              className="absolute inset-0 scale-105"
+            >
+              <FleetProgressiveImage
+                image={gallery[heroImageIndex]}
+                alt={pkg.name}
+                priority
+                className="h-full w-full"
+                sizes="100vw"
+              />
+            </motion.div>
           </AnimatePresence>
           {/* Elite dual-gradient backdrop mapping */}
           <div className="absolute inset-0 bg-gradient-to-t from-gray-950 via-gray-950/20 to-black/35 z-10 pointer-events-none" />
@@ -272,19 +308,20 @@ export function PackageDetailPage() {
       {/* Horizontal Premium Photo Strip (Go2Africa Visual) */}
       <section className="py-2 border-b border-white/5 bg-gray-900/40">
         <div className="flex items-center gap-3 overflow-x-auto py-3 px-4 scrollbar-none">
-          {pkg.images.map((img, idx) => (
+          {gallery.map((img, idx) => (
             <div 
-              key={idx}
+              key={img.hero}
               onClick={() => {
                 setActiveGalleryIndex(idx);
                 setIsGalleryOpen(true);
               }}
+              onMouseEnter={() => preloadUrl(img.hero)}
               className="relative w-64 sm:w-80 h-40 sm:h-48 rounded-2xl overflow-hidden shrink-0 border border-white/5 hover:border-amber-400/40 cursor-pointer group transition-all duration-500"
             >
-              <img 
-                src={img} 
-                alt={`${pkg.name} slide ${idx + 1}`} 
-                className="w-full h-full object-cover transform group-hover:scale-105 transition-transform duration-700"
+              <FleetThumbImage
+                image={img}
+                alt={`${pkg.name} slide ${idx + 1}`}
+                className="transform group-hover:scale-105 transition-transform duration-700"
               />
               <div className="absolute inset-0 bg-black/20 group-hover:bg-transparent transition-colors" />
               <div className="absolute bottom-3 left-3 bg-black/60 backdrop-blur-md px-2.5 py-1 rounded-lg border border-white/10 text-[9px] uppercase font-bold text-amber-300 tracking-wider">
@@ -382,10 +419,10 @@ export function PackageDetailPage() {
 
                       {/* Small visual image placeholder directly inside the day to mimic Go2Africa */}
                       <div className="md:col-span-4 rounded-2xl overflow-hidden h-28 border border-white/10 bg-gray-900">
-                        <img 
-                          src={pkg.images[(day.day - 1) % pkg.images.length]} 
-                          alt={`Day ${day.day}`} 
-                          className="w-full h-full object-cover transform hover:scale-105 transition-transform duration-500"
+                        <FleetThumbImage
+                          image={gallery[(day.day - 1) % gallery.length]}
+                          alt={`Day ${day.day}`}
+                          className="transform hover:scale-105 transition-transform duration-500"
                         />
                       </div>
                     </div>
@@ -429,10 +466,20 @@ export function PackageDetailPage() {
 
                   <div className="grid grid-cols-2 gap-3 h-64">
                     <div className="rounded-2xl overflow-hidden border border-white/5 h-full">
-                      <img src={pkg.images[1 % pkg.images.length]} alt="bedroom" className="w-full h-full object-cover" />
+                      <FleetProgressiveImage
+                        image={gallery[1 % gallery.length]}
+                        alt="Luxury accommodation"
+                        className="h-full w-full"
+                        sizes="320px"
+                      />
                     </div>
                     <div className="rounded-2xl overflow-hidden border border-white/5 h-full">
-                      <img src={pkg.images[2 % pkg.images.length]} alt="pool" className="w-full h-full object-cover" />
+                      <FleetProgressiveImage
+                        image={gallery[2 % gallery.length]}
+                        alt="Resort amenities"
+                        className="h-full w-full"
+                        sizes="320px"
+                      />
                     </div>
                   </div>
                 </div>
@@ -764,16 +811,22 @@ export function PackageDetailPage() {
               onClick={(e) => e.stopPropagation()}
             >
               <AnimatePresence mode="wait">
-                <motion.img 
+                <motion.div
                   key={activeGalleryIndex}
-                  src={pkg.images[activeGalleryIndex]} 
-                  alt={`${pkg.name} lightbox`} 
-                  initial={{ opacity: 0.8 }}
+                  initial={{ opacity: 0.85 }}
                   animate={{ opacity: 1 }}
-                  exit={{ opacity: 0.8 }}
-                  transition={{ duration: 0.4 }}
-                  className="w-full h-full max-h-[80vh] object-contain rounded-2xl border border-white/10 shadow-2xl"
-                />
+                  exit={{ opacity: 0.85 }}
+                  transition={{ duration: 0.35 }}
+                  className="w-full max-h-[80vh] aspect-[16/10] rounded-2xl overflow-hidden border border-white/10 shadow-2xl"
+                >
+                  <FleetProgressiveImage
+                    image={gallery[activeGalleryIndex]}
+                    alt={`${pkg.name} lightbox`}
+                    priority
+                    className="h-full w-full max-h-[80vh]"
+                    sizes="(max-width: 1280px) 90vw, 1024px"
+                  />
+                </motion.div>
               </AnimatePresence>
 
               {/* Navigation arrows inside Lightbox */}

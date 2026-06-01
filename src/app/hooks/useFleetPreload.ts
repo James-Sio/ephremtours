@@ -1,5 +1,5 @@
 import { useEffect, useRef } from "react";
-import type { FleetImageSet } from "../data/fleetImages";
+import type { OptimizedImageSet } from "../data/optimizedImages";
 import { fleetGalleryFor, FLEET_SLUGS } from "../data/fleetImages";
 
 const cache = new Set<string>();
@@ -30,7 +30,7 @@ export function preloadAllFleetThumbs() {
 }
 
 /** Preload current model gallery; optionally warm other models after idle. */
-export function useFleetPreload(activeModel: string, gallery: FleetImageSet[]) {
+export function useFleetPreload(activeModel: string, gallery: OptimizedImageSet[]) {
   const warmed = useRef(false);
 
   useEffect(() => {

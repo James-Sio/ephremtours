@@ -1,3 +1,9 @@
+import type { OptimizedImageSet } from "./optimizedImages";
+import { publicImageSet } from "./optimizedImages";
+
+export type { OptimizedImageSet };
+export type FleetImageSet = OptimizedImageSet;
+
 /** Public fleet gallery paths — images from Wikimedia Commons (CC-licensed). */
 
 export const FLEET_SLUGS: Record<string, string> = {
@@ -12,24 +18,10 @@ export const FLEET_SLUGS: Record<string, string> = {
 
 export const FLEET_IMAGE_COUNT = 5;
 
-export type FleetImageSet = {
-  /** Full-size JPEG fallback */
-  fallback: string;
-  /** ~960px WebP for hero display */
-  hero: string;
-  /** ~200px WebP for thumbnails & instant preview */
-  thumb: string;
-};
-
-export function fleetImageSet(model: string, index: number): FleetImageSet {
+export function fleetImageSet(model: string, index: number): OptimizedImageSet {
   const slug = FLEET_SLUGS[model];
   const n = index + 1;
-  const base = `/fleet/${slug}/${n}`;
-  return {
-    fallback: `${base}.jpg`,
-    hero: `${base}-hero.webp`,
-    thumb: `${base}-thumb.webp`,
-  };
+  return publicImageSet(`/fleet/${slug}/${n}.jpg`);
 }
 
 export function fleetGalleryFor(model: string): FleetImageSet[] {

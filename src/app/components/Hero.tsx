@@ -1,13 +1,14 @@
 import { motion } from "motion/react";
-import { Train, Plane, Camera, Hotel, Calendar } from "lucide-react";
+import { Train, Plane, Camera, Hotel, Calendar, Car } from "lucide-react";
 import { Link } from "react-router";
 import companyLogo from "../../imports/image.png";
 
 const quickServices = [
-  { id: "sgr", icon: Train, label: "SGR Transfer", color: "text-orange-600", bg: "bg-orange-100" },
-  { id: "airport", icon: Plane, label: "Airport VIP", color: "text-sky-600", bg: "bg-sky-100" },
-  { id: "safari", icon: Camera, label: "Safaris", color: "text-amber-600", bg: "bg-amber-100" },
-  { id: "hotel", icon: Hotel, label: "Shuttles", color: "text-emerald-600", bg: "bg-emerald-100" },
+  { id: "car-hire", icon: Car, label: "Car Hire", color: "text-emerald-700", bg: "bg-emerald-100", path: "/services#car-hire" },
+  { id: "sgr", icon: Train, label: "SGR Transfer", color: "text-orange-600", bg: "bg-orange-100", path: "/services" },
+  { id: "airport", icon: Plane, label: "Airport VIP", color: "text-sky-600", bg: "bg-sky-100", path: "/services" },
+  { id: "safari", icon: Camera, label: "Safaris", color: "text-amber-600", bg: "bg-amber-100", path: "/packages" },
+  { id: "hotel", icon: Hotel, label: "Shuttles", color: "text-emerald-600", bg: "bg-emerald-100", path: "/services" },
 ];
 
 export function Hero() {
@@ -41,7 +42,7 @@ export function Hero() {
               transition={{ duration: 0.8, delay: 0.15, ease: [0.16, 1, 0.3, 1] }}
               className="text-lg sm:text-xl text-gray-600 mb-10 max-w-xl mx-auto lg:mx-0 font-light leading-relaxed"
             >
-              Executive transfers from SGR, premium airport meet & greets, and curated luxury safaris across the Kenyan Coast.
+              Car hire with driver, executive SGR and airport transfers, and curated luxury safaris across the Kenyan Coast.
             </motion.p>
 
             {/* Quick-Scan Service Bar (Mobile Optimized for White Bg) */}
@@ -53,11 +54,11 @@ export function Hero() {
             >
               <p className="text-xs font-bold text-gray-400 uppercase tracking-widest mb-4">Quick Service Select</p>
               
-              <div className="grid grid-cols-2 md:grid-cols-4 gap-3 sm:gap-4">
+              <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-5 gap-3 sm:gap-4">
                 {quickServices.map((service) => (
                   <Link 
                     key={service.id}
-                    to="/services"
+                    to={service.path}
                     className="bg-white border border-gray-100 shadow-sm hover:shadow-xl hover:border-sky-100 p-4 rounded-2xl flex flex-col items-center justify-center gap-3 transition-all hover:-translate-y-1 group"
                   >
                     <div className={`w-10 h-10 ${service.bg} rounded-xl flex items-center justify-center transform group-hover:scale-110 transition-transform`}>
@@ -77,6 +78,13 @@ export function Hero() {
               className="flex flex-col sm:flex-row gap-4 w-full sm:w-auto max-w-md sm:max-w-none"
             >
               <Link 
+                to="/services#car-hire" 
+                className="px-8 py-4 bg-emerald-600 hover:bg-emerald-700 text-white font-bold rounded-full transition-colors flex items-center justify-center gap-2 shadow-lg"
+              >
+                <Car className="w-5 h-5" />
+                Hire a Car
+              </Link>
+              <Link 
                 to="/packages" 
                 className="px-8 py-4 bg-[#003B73] hover:bg-[#002a52] text-white font-bold rounded-full transition-colors flex items-center justify-center gap-2 shadow-lg shadow-blue-900/30"
               >
@@ -87,7 +95,7 @@ export function Hero() {
                 to="/contact" 
                 className="px-8 py-4 bg-white border border-[#F9A03F] hover:bg-[#F9A03F] hover:text-white text-[#F9A03F] font-bold rounded-full transition-colors flex items-center justify-center shadow-sm"
               >
-                Request Custom Quote
+                Request a Quote
               </Link>
             </motion.div>
           </div>

@@ -342,7 +342,7 @@ export function PartnershipPage() {
                 </div>
                 <div>
                   <p className="text-[10px] font-bold uppercase tracking-widest text-amber-600">For travellers & companies</p>
-                  <h3 className="text-2xl font-black text-gray-900">Hire our fleet</h3>
+                  <h3 className="text-2xl font-black text-gray-900">Need a car? Car hire</h3>
                 </div>
               </div>
               <ul className="space-y-3 text-sm text-gray-600 mb-8">
@@ -360,10 +360,10 @@ export function PartnershipPage() {
               </ul>
               <div className="flex flex-col sm:flex-row gap-3">
                 <Link
-                  to="/services"
+                  to="/services#car-hire"
                   className="touch-target flex-1 text-center px-6 py-3.5 bg-[#003B73] hover:bg-[#002B54] text-white font-bold rounded-xl transition-all"
                 >
-                  View hire services
+                  Car hire services
                 </Link>
                 <Link
                   to="/contact"

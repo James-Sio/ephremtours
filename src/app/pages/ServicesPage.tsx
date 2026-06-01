@@ -1,7 +1,8 @@
 import { motion, AnimatePresence } from "motion/react";
 import { useState, useEffect } from "react";
+import { useLocation } from "react-router";
 import { 
-  Plane, Train, Hotel, MapPin, Users, Camera, 
+  Plane, Train, Hotel, MapPin, Users, Camera, Car,
   ArrowLeft, CheckCircle2, Star, Calendar, 
   Clock, User, Phone, Mail, ShieldCheck, Check,
   Send, Navigation, Info, ChevronDown, Briefcase, Baby, ArrowRightLeft
@@ -59,6 +60,39 @@ const defaultFaqs = [
 ];
 
 const coreServices: ServiceData[] = [
+  {
+    id: "car-hire",
+    title: "Car & Van Hire",
+    shortDesc: "Need a vehicle? Hire our Toyota fleet with a professional chauffeur.",
+    icon: Car,
+    color: "from-emerald-500 to-teal-600",
+    coverImage: gallery14,
+    gallery: [gallery14, gallery13, gallery16, gallery11],
+    longDesc: "Looking for a car? Ephream Tours offers full car hire services along the Kenyan coast. Every booking includes a licensed, professional driver and a well-maintained Toyota — from executive Alphards and Voxys to Hiace shuttles and Coaster buses. Use us for airport and SGR transfers, full-day city hire, safaris, weddings, and corporate events. Tell us your dates and route; we confirm availability and a clear rate before you travel.",
+    features: [
+      "Car hire with professional chauffeur (we do not offer self-drive)",
+      "Hourly, full-day, and multi-day hire available",
+      "Airport, SGR, hotel, safari, wedding & event itineraries",
+      "Toyota Alphard, Voxy, Noah, Esquire, Hiace, Prado, Coaster",
+      "Transparent pricing — per trip or per day on request",
+    ],
+    pricing: [
+      { route: "Half-day hire (4 hrs, within city)", price: "From KES 5,000" },
+      { route: "Full-day hire (8 hrs)", price: "From KES 8,000" },
+      { route: "Airport / SGR one-way transfer", price: "See route rates below" },
+      { route: "Safari or multi-day hire", price: "Custom quote" },
+    ],
+    testimonial: {
+      text: "We hired a van with driver for three days between Mombasa and Watamu. Easy to book on WhatsApp, clean vehicle, and the driver was excellent.",
+      author: "Sarah M., UK visitor",
+    },
+    faqs: [
+      { q: "Do you offer self-drive car hire?", a: "No. All our hires include a professional Ephream Tours chauffeur for your safety, insurance, and local knowledge." },
+      { q: "How do I book a car?", a: "Contact us via WhatsApp or the booking form with your dates, pickup location, and vehicle size needed. We confirm availability within minutes." },
+      { q: "Which vehicles can I hire?", a: "Our hire fleet includes Toyota MPVs (Alphard, Voxy, Noah, Esquire), Hiace vans, Land Cruiser Prado, and Coaster buses depending on group size." },
+      ...defaultFaqs.slice(3),
+    ],
+  },
   {
     id: "lobby-concierge",
     title: "Lobby-to-Platform VIP Concierge",
@@ -345,6 +379,7 @@ const coreServices: ServiceData[] = [
 ];
 
 export function ServicesPage() {
+  const location = useLocation();
   const [selectedId, setSelectedId] = useState<string | null>(null);
   const [bookingState, setBookingState] = useState<"idle" | "submitting" | "success">("idle");
   const [tripType, setTripType] = useState<"one-way" | "return">("one-way");
@@ -527,10 +562,19 @@ export function ServicesPage() {
     setCalculatedPrice(basePrice);
   }, [fromLocation, toLocation, tripType, passengers, selectedId]);
 
+  // Open service from URL hash (e.g. /services#car-hire)
+  useEffect(() => {
+    const hash = location.hash.replace("#", "");
+    if (hash && coreServices.some((s) => s.id === hash)) {
+      setSelectedId(hash);
+      setBookingState("idle");
+    }
+  }, [location.hash]);
+
   // Scroll to top when a service is selected
   useEffect(() => {
     if (selectedId) {
-      window.scrollTo({ top: 0, behavior: 'smooth' });
+      window.scrollTo({ top: 0, behavior: "smooth" });
     }
   }, [selectedId]);
 
@@ -574,7 +618,7 @@ export function ServicesPage() {
                 Core <span className="text-[#003B73]">Services</span>
               </h1>
               <p className="text-gray-600 text-lg max-w-2xl mx-auto font-light leading-relaxed">
-                We focus on doing six things exceptionally well. Select a service below to view detailed routes, explore galleries, and instantly book your luxury ride.
+                Need a car? We offer <strong className="font-semibold text-gray-800">car hire with driver</strong> plus transfers, safaris, and VIP concierge. Select a service below to view rates and book.
               </p>
             </div>
 

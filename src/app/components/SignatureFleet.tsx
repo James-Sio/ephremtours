@@ -1,4 +1,5 @@
 import { motion } from "motion/react";
+import { Link } from "react-router";
 import { CheckCircle2, ShieldCheck, ThermometerSnowflake, Users } from "lucide-react";
 
 import fleet1 from "../../imports/gallery-22.jpg"; 
@@ -92,6 +93,13 @@ export function SignatureFleet() {
                 </div>
               </div>
             </div>
+
+            <Link
+              to="/services#car-hire"
+              className="touch-target inline-flex items-center justify-center gap-2 mt-4 px-8 py-4 bg-[#003B73] hover:bg-[#002a52] text-white font-bold rounded-full transition-colors"
+            >
+              Hire a car with driver
+            </Link>
           </motion.div>
 
         </div>

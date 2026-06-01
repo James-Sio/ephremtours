@@ -22,6 +22,7 @@ import { toast } from "sonner";
 import { CONTACT_PHONES, MPESA_TILL } from "../data/siteContact";
 import {
   estimateHirePrice,
+  formatWeeklyRate,
   HIRE_PICKUP_LOCATIONS,
   HIRE_PURPOSES,
   type HireDriverOption,
@@ -104,16 +105,24 @@ export function CarHireBookingForm({ vehicle, className = "" }: CarHireBookingFo
         ? `Passengers: ${adults} adult(s)${children ? `, ${children} child(ren)` : ""}`
         : null,
       childSeat && driverOption === "with-driver" ? `Child seat: Yes` : null,
-      estimate
-        ? [
-            `Est. total: KES ${estimate.total.toLocaleString()}`,
-            estimate.driverFee > 0 ? `(Vehicle KES ${estimate.vehicleSubtotal.toLocaleString()} + Driver KES ${estimate.driverFee.toLocaleString()})` : null,
-            estimate.mpesaDeposit
-              ? `Suggested deposit (self-drive): KES ${estimate.mpesaDeposit.toLocaleString()}`
-              : null,
-          ]
-            .filter(Boolean)
-            .join("\n")
+      estimate?.customQuote
+        ? `Pricing: Custom quote — Coaster rate depends on the job`
+        : estimate
+          ? [
+              `Est. total: KES ${estimate.total.toLocaleString()}`,
+              estimate.driverFee > 0
+                ? `(Vehicle KES ${estimate.vehicleSubtotal.toLocaleString()} + Driver KES ${estimate.driverFee.toLocaleString()})`
+                : null,
+              estimate.mpesaDeposit
+                ? `Suggested deposit (self-drive): KES ${estimate.mpesaDeposit.toLocaleString()}`
+                : null,
+              estimate.priceNote,
+            ]
+              .filter(Boolean)
+              .join("\n")
+          : null,
+      vehicle.hireWeeklyRate
+        ? `Weekly rate (with driver): KES ${vehicle.hireWeeklyRate.toLocaleString()}`
         : null,
       `Pay via M-Pesa Till: *${MPESA_TILL}*`,
       notes ? `Notes: ${notes}` : null,
@@ -213,10 +222,15 @@ export function CarHireBookingForm({ vehicle, className = "" }: CarHireBookingFo
           >
             <UserCircle className="w-6 h-6 text-emerald-600" />
             With driver
-            {estimateWithDriver && (
-              <span className="text-[10px] font-black text-emerald-600">
-                from KES {estimateWithDriver.total.toLocaleString()}
-              </span>
+            {vehicle.hireWeeklyRate != null ? (
+              <span className="text-[10px] font-black text-emerald-600">{formatWeeklyRate(vehicle)}/wk</span>
+            ) : (
+              estimateWithDriver &&
+              !estimateWithDriver.customQuote && (
+                <span className="text-[10px] font-black text-emerald-600">
+                  from KES {estimateWithDriver.total.toLocaleString()}
+                </span>
+              )
             )}
           </button>
           <button
@@ -230,10 +244,15 @@ export function CarHireBookingForm({ vehicle, className = "" }: CarHireBookingFo
           >
             <Car className="w-6 h-6 text-sky-600" />
             No driver
-            {estimateSelfDrive && (
-              <span className="text-[10px] font-black text-sky-600">
-                from KES {estimateSelfDrive.total.toLocaleString()}
-              </span>
+            {vehicle.quoteOnRequest ? (
+              <span className="text-[10px] font-black text-sky-600">Quote on request</span>
+            ) : (
+              estimateSelfDrive &&
+              !estimateSelfDrive.customQuote && (
+                <span className="text-[10px] font-black text-sky-600">
+                  from KES {estimateSelfDrive.total.toLocaleString()}
+                </span>
+              )
             )}
           </button>
         </div>
@@ -502,45 +521,75 @@ export function CarHireBookingForm({ vehicle, className = "" }: CarHireBookingFo
       {/* Price breakdown */}
       {estimate && (
         <div className="space-y-3">
-          <div className="bg-emerald-50 border border-emerald-200/60 rounded-2xl p-4 space-y-3">
+          <div
+            className={`rounded-2xl p-4 space-y-3 border ${
+              estimate.customQuote
+                ? "bg-amber-50 border-amber-200/80"
+                : "bg-emerald-50 border-emerald-200/60"
+            }`}
+          >
             <div className="flex items-start justify-between gap-4">
               <div>
-                <h4 className="text-sm font-bold text-emerald-900">Your estimate</h4>
-                <p className="text-[11px] text-emerald-700/80">
+                <h4 className={`text-sm font-bold ${estimate.customQuote ? "text-amber-900" : "text-emerald-900"}`}>
+                  {estimate.customQuote ? "Custom quote" : "Your estimate"}
+                </h4>
+                <p className={`text-[11px] ${estimate.customQuote ? "text-amber-800/90" : "text-emerald-700/80"}`}>
                   {vehicle.shortName} · {purposeMeta.label}
                   {effectiveDays > 1 ? ` · ${effectiveDays} days` : ""} ·{" "}
                   {driverOption === "with-driver" ? "With driver" : "Self-drive"}
                 </p>
+                {vehicle.hireWeeklyRate != null && !estimate.customQuote && (
+                  <p className="text-[11px] font-bold text-[#F9A03F] mt-1">
+                    Weekly list price: {formatWeeklyRate(vehicle)} (with driver)
+                  </p>
+                )}
               </div>
-              <span className="text-2xl font-black text-emerald-800 whitespace-nowrap">
-                KES {estimate.total.toLocaleString()}
-              </span>
+              {!estimate.customQuote && (
+                <span className="text-2xl font-black text-emerald-800 whitespace-nowrap">
+                  KES {estimate.total.toLocaleString()}
+                </span>
+              )}
             </div>
 
-            <div className="text-xs space-y-1.5 pt-2 border-t border-emerald-200/50">
-              <div className="flex justify-between text-emerald-900/90">
-                <span>Vehicle hire</span>
-                <span className="font-bold">KES {estimate.vehicleSubtotal.toLocaleString()}</span>
-              </div>
-              {estimate.driverFee > 0 && (
+            {estimate.customQuote ? (
+              <p className="text-sm text-amber-900 leading-relaxed">{estimate.priceNote}</p>
+            ) : (
+              <div className="text-xs space-y-1.5 pt-2 border-t border-emerald-200/50">
                 <div className="flex justify-between text-emerald-900/90">
-                  <span>Professional driver</span>
-                  <span className="font-bold">KES {estimate.driverFee.toLocaleString()}</span>
+                  <span>Vehicle hire</span>
+                  <span className="font-bold">KES {estimate.vehicleSubtotal.toLocaleString()}</span>
                 </div>
-              )}
-              {estimateWithDriver && estimateSelfDrive && driverOption === "with-driver" && (
-                <p className="text-[10px] text-emerald-600 pt-1">
-                  Self-drive would be KES {estimateSelfDrive.total.toLocaleString()} (save KES{" "}
-                  {(estimateWithDriver.total - estimateSelfDrive.total).toLocaleString()})
-                </p>
-              )}
-              {estimateWithDriver && estimateSelfDrive && driverOption === "self-drive" && (
-                <p className="text-[10px] text-sky-600 pt-1">
-                  With driver would be KES {estimateWithDriver.total.toLocaleString()} (+KES{" "}
-                  {(estimateWithDriver.total - estimateSelfDrive.total).toLocaleString()} for chauffeur)
-                </p>
-              )}
-            </div>
+                {estimate.driverFee > 0 && (
+                  <div className="flex justify-between text-emerald-900/90">
+                    <span>Professional driver</span>
+                    <span className="font-bold">KES {estimate.driverFee.toLocaleString()}</span>
+                  </div>
+                )}
+                {estimate.priceNote && (
+                  <p className="text-[10px] text-emerald-700 pt-1">{estimate.priceNote}</p>
+                )}
+                {estimateWithDriver &&
+                  estimateSelfDrive &&
+                  !estimateWithDriver.customQuote &&
+                  !estimateSelfDrive.customQuote &&
+                  driverOption === "with-driver" && (
+                    <p className="text-[10px] text-emerald-600 pt-1">
+                      Self-drive would be KES {estimateSelfDrive.total.toLocaleString()} (save KES{" "}
+                      {(estimateWithDriver.total - estimateSelfDrive.total).toLocaleString()})
+                    </p>
+                  )}
+                {estimateWithDriver &&
+                  estimateSelfDrive &&
+                  !estimateWithDriver.customQuote &&
+                  !estimateSelfDrive.customQuote &&
+                  driverOption === "self-drive" && (
+                    <p className="text-[10px] text-sky-600 pt-1">
+                      With driver would be KES {estimateWithDriver.total.toLocaleString()} (+KES{" "}
+                      {(estimateWithDriver.total - estimateSelfDrive.total).toLocaleString()} for chauffeur)
+                    </p>
+                  )}
+              </div>
+            )}
           </div>
 
           <div className="flex items-center gap-3 bg-[#003B73] text-white rounded-2xl p-4">

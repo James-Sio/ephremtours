@@ -12,6 +12,7 @@ import { FleetThumbImage } from "./FleetThumbImage";
 import {
   HIRE_VEHICLES,
   estimateHirePrice,
+  formatWeeklyRate,
   getHireVehicle,
   type HireVehicleSpec,
 } from "../data/hireFleet";
@@ -184,20 +185,32 @@ export function HireFleetShowcase({
               </div>
 
               <div className="grid grid-cols-2 gap-4">
+                <div className="bg-white/5 p-4 rounded-xl border border-white/10 col-span-2 sm:col-span-1">
+                  <span className="text-[10px] text-gray-400 font-bold uppercase tracking-widest block mb-1">
+                    Weekly · with driver
+                  </span>
+                  <span className="text-xl font-bold text-[#F9A03F]">
+                    {formatWeeklyRate(vehicle) ?? "Contact for quote"}
+                  </span>
+                </div>
                 <div className="bg-white/5 p-4 rounded-xl border border-white/10">
                   <span className="text-[10px] text-gray-400 font-bold uppercase tracking-widest block mb-1">
                     Full day · with driver
                   </span>
                   <span className="text-xl font-bold text-emerald-400">
-                    KES {estimateHirePrice(vehicle, "full-day", 1, "with-driver")?.total.toLocaleString()}
+                    {vehicle.quoteOnRequest
+                      ? "On request"
+                      : `KES ${estimateHirePrice(vehicle, "full-day", 1, "with-driver")?.total.toLocaleString()}`}
                   </span>
                 </div>
-                <div className="bg-white/5 p-4 rounded-xl border border-white/10">
+                <div className="bg-white/5 p-4 rounded-xl border border-white/10 sm:col-span-2">
                   <span className="text-[10px] text-gray-400 font-bold uppercase tracking-widest block mb-1">
                     Full day · self-drive
                   </span>
                   <span className="text-xl font-bold text-sky-300">
-                    KES {estimateHirePrice(vehicle, "full-day", 1, "self-drive")?.total.toLocaleString()}
+                    {vehicle.quoteOnRequest
+                      ? "On request"
+                      : `KES ${estimateHirePrice(vehicle, "full-day", 1, "self-drive")?.total.toLocaleString()}`}
                   </span>
                 </div>
                 <div className="bg-white/5 p-4 rounded-xl border border-white/10">
@@ -343,15 +356,23 @@ function FleetHireCard({
         </div>
           <p className="text-xs text-gray-500 mb-3 line-clamp-2">{vehicle.suitability}</p>
         <div className="flex flex-wrap gap-2 text-[10px] font-bold mb-3">
-          <span className="bg-emerald-50 text-emerald-800 px-2 py-1 rounded-full">
-            Driver KES {estimateHirePrice(vehicle, "full-day", 1, "with-driver")?.total.toLocaleString()}
-          </span>
-          <span className="bg-sky-50 text-sky-800 px-2 py-1 rounded-full">
-            Self KES {estimateHirePrice(vehicle, "full-day", 1, "self-drive")?.total.toLocaleString()}
-          </span>
+          {vehicle.quoteOnRequest ? (
+            <span className="bg-amber-50 text-amber-900 px-2 py-1 rounded-full">Price on request</span>
+          ) : (
+            <>
+              <span className="bg-[#F9A03F]/15 text-amber-900 px-2 py-1 rounded-full">
+                {formatWeeklyRate(vehicle)}/wk
+              </span>
+              <span className="bg-emerald-50 text-emerald-800 px-2 py-1 rounded-full">
+                Day w/ driver KES {vehicle.hireDailyRate.toLocaleString()}
+              </span>
+            </>
+          )}
         </div>
         <div className="flex items-center justify-between gap-3">
-          <p className="text-xs font-bold text-gray-500">Full day from</p>
+          <p className="text-xs font-bold text-gray-500">
+            {vehicle.quoteOnRequest ? "Coaster" : "Weekly hire"}
+          </p>
           <button
             type="button"
             onClick={onSelect}

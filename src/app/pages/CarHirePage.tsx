@@ -5,7 +5,7 @@ import { Car, ShieldCheck, Check, Handshake, ArrowRight } from "lucide-react";
 import { CarHireBookingForm } from "../components/CarHireBookingForm";
 import { HireFleetModelGrid, HireFleetShowcase } from "../components/HireFleetShowcase";
 import { FleetProgressiveImage } from "../components/FleetProgressiveImage";
-import { HIRE_VEHICLES, getHireVehicle } from "../data/hireFleet";
+import { HIRE_VEHICLES, formatWeeklyRate, getHireVehicle } from "../data/hireFleet";
 import { preloadAllFleetThumbs } from "../hooks/useFleetPreload";
 
 export function CarHirePage() {
@@ -159,7 +159,9 @@ export function CarHirePage() {
               />
               <div className="absolute bottom-0 inset-x-0 z-10 bg-gradient-to-t from-black/70 to-transparent p-4">
                 <p className="text-white font-bold text-sm">{vehicle.model}</p>
-                <p className="text-emerald-300 text-xs">KES {vehicle.hireDailyRate.toLocaleString()}/day</p>
+                <p className="text-emerald-300 text-xs">
+                  {formatWeeklyRate(vehicle) ?? `KES ${vehicle.hireDailyRate.toLocaleString()}/day`}
+                </p>
               </div>
             </div>
 

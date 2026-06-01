@@ -8,16 +8,22 @@ import {
 } from "lucide-react";
 
 // Gallery image imports
+import gallery9 from "../../imports/gallery-9.jpg";
 import gallery10 from "../../imports/gallery-10.jpg";
 import gallery11 from "../../imports/gallery-11.jpg";
 import gallery12 from "../../imports/gallery-12.jpg";
+import gallery13 from "../../imports/gallery-13.jpg";
 import gallery14 from "../../imports/gallery-14.jpg";
 import gallery15 from "../../imports/gallery-15.jpg";
+import gallery16 from "../../imports/gallery-16.jpg";
 import gallery17 from "../../imports/gallery-17.jpg";
+import gallery18 from "../../imports/gallery-18.jpg";
 import gallery19 from "../../imports/gallery-19.jpg";
 import gallery20 from "../../imports/gallery-20.jpg";
 import gallery21 from "../../imports/gallery-21.jpg";
+import gallery22 from "../../imports/gallery-22.jpg";
 import gallery23 from "../../imports/gallery-23.jpg";
+
 
 type ServiceData = {
   id: string;
@@ -53,6 +59,67 @@ const defaultFaqs = [
 ];
 
 const coreServices: ServiceData[] = [
+  {
+    id: "lobby-concierge",
+    title: "Lobby-to-Platform VIP Concierge",
+    shortDesc: "The ultimate white-glove connection between your hotel lobby and the SGR train platform.",
+    icon: Hotel,
+    color: "from-blue-800 to-amber-500",
+    coverImage: gallery13,
+    gallery: [
+      gallery9,
+      gallery10,
+      gallery11,
+      gallery12,
+      gallery13,
+      gallery14,
+      gallery15,
+      gallery16,
+      gallery17,
+      gallery18,
+      gallery22
+    ],
+    longDesc: "Elevate your coastal holiday to the absolute peak of luxury. Our elite Lobby-to-Platform VIP Concierge service bridges the gap between the Mombasa SGR Terminus and your luxury resort. Enjoy a seamless, white-glove experience where a private professional concierge handles your luggage directly from your hotel room, coordinates your pre-check-in with the front desk so your room keys are ready on arrival, and providesSwahili coconut water and cold towels in a luxury vehicle.",
+    features: [
+      "Room-to-train platform complete luggage handling",
+      "Pre-arranged resort room-key handoff in-transit",
+      "Swahili welcome refreshments & cold towel service",
+      "Express SGR terminal check-in & boarding assistance",
+      "Executive luxury fleet with Wi-Fi & device charging"
+    ],
+    pricing: [
+      { route: "Nyali/Bamburi Resorts <-> SGR", price: "KES 2,500" },
+      { route: "Kilifi Resorts <-> SGR", price: "KES 4,000" },
+      { route: "Watamu Resorts <-> SGR", price: "KES 5,500" },
+      { route: "Malindi Resorts <-> SGR", price: "KES 6,500" },
+      { route: "Diani Beach Resorts <-> SGR", price: "KES 5,000" }
+    ],
+    testimonial: {
+      text: "An absolute game-changer! Our concierge met us in the lobby, handled all our bags, and when we reached our villa, we walked straight to our room—no front desk lines. Exquisite service.",
+      author: "Lord & Lady Harrington, UK"
+    },
+    faqs: [
+      { q: "How is the room-key handoff coordinated?", a: "We partner directly with leading luxury resorts on the coast. With your permission, we pre-verify your check-in documents with the front desk and retrieve your room keys so our concierge can hand them to you inside the vehicle during transit." },
+      { q: "Do you handle the train ticket booking?", a: "Yes, our VIP Concierge package can include pre-booking of SGR First Class tickets upon request to ensure a seamless end-to-end journey." },
+      { q: "What happens if the train is delayed?", a: "We monitor train schedules in real-time. Your concierge and private chauffeur are synchronized perfectly with the actual arrival or departure, guaranteeing zero wait time." },
+      { q: "Is the vehicle private?", a: "Yes, the Lobby-to-Platform service is always 100% private, utilizing our signature fleet of luxury SUVs and executive vans." }
+    ],
+    routeTable: {
+      title: "VIP Concierge Partner Resorts & Rates",
+      note: "Rates are all-inclusive per vehicle, covering up to 5 guests with full premium concierge treatment.",
+      headers: ["Luxury Partner Resort", "Region", "Direct Executive Rate"],
+      rows: [
+        { col1: "Hemingways Watamu", col2: "Watamu", col3: "KES 5,500" },
+        { col1: "Medina Palms Watamu", col2: "Watamu", col3: "KES 5,500" },
+        { col1: "PrideInn Paradise Shanzu", col2: "Mombasa North", col3: "KES 2,500" },
+        { col1: "Sarova Whitesands Mombasa", col2: "Mombasa North", col3: "KES 2,500" },
+        { col1: "Silver Palms Beach Kilifi", col2: "Kilifi", col3: "KES 4,000" },
+        { col1: "Vipingo Ridge Kilifi", col2: "Kilifi", col3: "KES 4,500" },
+        { col1: "Sands at Nomad Diani", col2: "Diani Beach", col3: "KES 5,000" },
+        { col1: "Baobab Beach Resort Diani", col2: "Diani Beach", col3: "KES 5,000" }
+      ]
+    }
+  },
   {
     id: "sgr",
     title: "SGR Terminus Transfers",
@@ -308,6 +375,20 @@ export function ServicesPage() {
 
   // Dynamic Location Lists based on Service Type
   const getLocationsList = () => {
+    if (selectedId === "lobby-concierge") {
+      return [
+        "SGR Mombasa Terminus",
+        "Hemingways Watamu",
+        "Medina Palms Watamu",
+        "PrideInn Paradise Shanzu",
+        "Sarova Whitesands Mombasa",
+        "Silver Palms Beach Kilifi",
+        "Vipingo Ridge Kilifi",
+        "Sands at Nomad Diani",
+        "Baobab Beach Resort Diani",
+        "Other / Custom Resort"
+      ];
+    }
     if (selectedId === "sgr") {
       return [
         "SGR Mombasa Terminus",
@@ -358,10 +439,10 @@ export function ServicesPage() {
   // Helper to detect what coast region a hotel belongs to for price calculations
   const getRegion = (locName: string) => {
     const name = locName.toLowerCase();
-    if (name.includes("watamu")) return "Watamu";
-    if (name.includes("diani") || name.includes("nomad")) return "Diani";
-    if (name.includes("mombasa") || name.includes("whitesands") || name.includes("shanzu")) return "Mombasa";
-    if (name.includes("kilifi") || name.includes("vipingo")) return "Kilifi";
+    if (name.includes("watamu") || name.includes("hemingways") || name.includes("medina")) return "Watamu";
+    if (name.includes("diani") || name.includes("nomad") || name.includes("baobab")) return "Diani";
+    if (name.includes("mombasa") || name.includes("whitesands") || name.includes("shanzu") || name.includes("prideinn") || name.includes("nyali")) return "Mombasa";
+    if (name.includes("kilifi") || name.includes("vipingo") || name.includes("silver palms")) return "Kilifi";
     if (name.includes("malindi")) return "Malindi";
     if (name.includes("sgr")) return "SGR";
     if (name.includes("airport") || name.includes("mba") || name.includes("myd")) return "Airport";
@@ -378,8 +459,21 @@ export function ServicesPage() {
     const fromRegion = getRegion(fromLocation);
     const toRegion = getRegion(toLocation);
 
+    // If Lobby-to-Platform VIP Concierge calculations
+    if (selectedId === "lobby-concierge") {
+      const routeStr = [fromLocation, toLocation].join("-");
+      const routeRev = [toLocation, fromLocation].join("-");
+      const route = routeStr + "|" + routeRev;
+
+      if (route.includes("SGR Mombasa Terminus")) {
+        if (route.includes("Watamu") || route.includes("Hemingways") || route.includes("Medina")) basePrice = 5500;
+        else if (route.includes("Kilifi") || route.includes("Vipingo") || route.includes("Silver Palms")) basePrice = 4000;
+        else if (route.includes("Diani") || route.includes("Nomad") || route.includes("Baobab")) basePrice = 5000;
+        else if (route.includes("Mombasa") || route.includes("PrideInn") || route.includes("Whitesands")) basePrice = 2500;
+      }
+    }
     // If Hotel-to-Hotel dynamic calculations
-    if (selectedId === "hotel") {
+    else if (selectedId === "hotel") {
       if (fromRegion === toRegion) {
         basePrice = 1500; // Local inter-hotel transfers (e.g. Hemingways to Medina Palms)
       } else {
@@ -798,6 +892,68 @@ export function ServicesPage() {
                                   <ArrowRightLeft className="w-4 h-4" /> Return Trip
                                 </button>
                               </div>
+
+                              {/* VIP Concierge Widgets */}
+                              {selectedId === "lobby-concierge" && (
+                                <div className="space-y-4 bg-slate-50 border border-gray-150 p-4 rounded-2xl">
+                                  {/* Resort Quick Select */}
+                                  <div className="space-y-2">
+                                    <label className="text-xs font-bold text-gray-700 ml-1 block">🏨 VIP Partner Resort Handoff</label>
+                                    <div className="grid grid-cols-2 gap-2">
+                                      {[
+                                        { name: "Hemingways", loc: "Hemingways Watamu" },
+                                        { name: "Medina Palms", loc: "Medina Palms Watamu" },
+                                        { name: "PrideInn Shanzu", loc: "PrideInn Paradise Shanzu" },
+                                        { name: "Sands at Nomad", loc: "Sands at Nomad Diani" },
+                                      ].map((resort) => {
+                                        const isSelected = toLocation === resort.loc && fromLocation === "SGR Mombasa Terminus";
+                                        return (
+                                          <button
+                                            key={resort.name}
+                                            type="button"
+                                            onClick={() => {
+                                              setFromLocation("SGR Mombasa Terminus");
+                                              setToLocation(resort.loc);
+                                            }}
+                                            className={`p-2.5 rounded-xl border text-[11px] font-bold text-left transition-all hover:scale-[1.02] active:scale-95 ${
+                                              isSelected
+                                                ? "border-[#F9A03F] bg-amber-50 text-[#003B73] shadow-inner"
+                                                : "border-gray-200 bg-white hover:bg-slate-50 text-gray-700 shadow-sm"
+                                            }`}
+                                          >
+                                            <span className="mr-1">🏝️</span> {resort.name}
+                                          </button>
+                                        );
+                                      })}
+                                    </div>
+                                  </div>
+
+                                  {/* Train Coordination */}
+                                  <div className="space-y-2">
+                                    <label className="text-xs font-bold text-gray-700 ml-1 block">🚆 Train Arrival/Departure Sync</label>
+                                    <div className="grid grid-cols-3 gap-2 p-1 bg-white rounded-xl border border-gray-200">
+                                      {[
+                                        { name: "🌅 Morning", time: "8:00 AM" },
+                                        { name: "☀️ Afternoon", time: "3:00 PM" },
+                                        { name: "🌙 Night", time: "10:00 PM" },
+                                      ].map((trainOption) => (
+                                        <button
+                                          key={trainOption.name}
+                                          type="button"
+                                          className="py-2.5 rounded-lg text-[10px] font-bold text-center bg-slate-50 text-[#003B73] border border-gray-100 hover:border-[#F9A03F] transition-all"
+                                        >
+                                          <div className="font-black text-gray-800">{trainOption.name}</div>
+                                          <div className="text-[9px] text-[#F9A03F] font-bold mt-0.5">{trainOption.time}</div>
+                                        </button>
+                                      ))}
+                                    </div>
+                                    <p className="text-[10px] text-gray-500 italic mt-1 leading-normal ml-1 flex items-start gap-1">
+                                      <span>✨</span>
+                                      <span>VIP Chauffeur and concierge meet you on the platform 30 mins before arrival.</span>
+                                    </p>
+                                  </div>
+                                </div>
+                              )}
 
                               {/* Locations */}
                               <div className="space-y-3 relative bg-slate-50 p-4 border border-gray-100 rounded-2xl">

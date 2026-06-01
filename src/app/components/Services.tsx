@@ -3,6 +3,13 @@ import { Plane, Train, Hotel, Camera, MapPin, Users } from "lucide-react";
 
 const services = [
   {
+    icon: Hotel,
+    title: "Lobby-to-Platform VIP Concierge",
+    description: "The ultimate white-glove connection between your hotel lobby and the SGR train platform. Room-to-train baggage handling and key pickup.",
+    color: "from-blue-600 to-amber-500",
+    shadow: "shadow-blue-500/20"
+  },
+  {
     icon: Train,
     title: "SGR Transfers",
     description: "Comfortable transit from Mombasa Terminus. Kilifi (KES 1,000), Watamu (KES 1,300), Malindi (KES 1,200).",

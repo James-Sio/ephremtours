@@ -3,6 +3,7 @@ import { Train, Plane, Hotel, MapPin, Camera, Users, ArrowRight } from "lucide-r
 import { Link } from "react-router";
 
 const services = [
+  { id: "lobby-concierge", title: "VIP Concierge", icon: Hotel, color: "from-blue-600 to-amber-500", shadow: "shadow-blue-500/20" },
   { id: "sgr", title: "SGR Transfers", icon: Train, color: "from-orange-400 to-red-500", shadow: "shadow-orange-500/20" },
   { id: "airport", title: "VIP Airport", icon: Plane, color: "from-sky-400 to-blue-500", shadow: "shadow-sky-500/20" },
   { id: "hotel", title: "Hotel Shuttles", icon: Hotel, color: "from-green-400 to-emerald-500", shadow: "shadow-green-500/20" },
@@ -49,7 +50,7 @@ export function CoreServicesHome() {
           </motion.div>
         </div>
 
-        <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-4 sm:gap-6">
+        <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-7 gap-4 sm:gap-6">
           {services.map((service, idx) => (
             <motion.div
               key={service.id}

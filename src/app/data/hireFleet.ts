@@ -159,11 +159,24 @@ export function getHireVehicle(model: string): HireVehicleSpec | undefined {
   return HIRE_VEHICLES.find((v) => v.model === model);
 }
 
-export function estimateHirePrice(
-  vehicle: HireVehicleSpec,
-  purpose: HirePurposeId,
-  days: number
-): number | null {
+/** With professional Ephream chauffeur (default). */
+export type HireDriverOption = "with-driver" | "self-drive";
+
+export type HireEstimate = {
+  driverOption: HireDriverOption;
+  purpose: HirePurposeId;
+  days: number;
+  /** Amount guest pays (vehicle + driver if applicable). */
+  total: number;
+  /** Vehicle-only portion (self-drive total, or implied vehicle share when with driver). */
+  vehicleSubtotal: number;
+  /** Chauffeur fee (0 for self-drive). */
+  driverFee: number;
+  /** Suggested M-Pesa deposit for self-drive (refundable on return). */
+  mpesaDeposit?: number;
+};
+
+function withDriverTotal(vehicle: HireVehicleSpec, purpose: HirePurposeId, days: number): number {
   const d = Math.max(1, days);
 
   switch (purpose) {
@@ -184,8 +197,71 @@ export function estimateHirePrice(
     case "corporate":
       return Math.round(vehicle.hireDailyRate * d * (d >= 3 ? 0.93 : 1));
     default:
-      return null;
+      return 0;
   }
+}
+
+/** Self-drive = vehicle hire only (lower rate; valid licence required). */
+function selfDriveTotal(vehicle: HireVehicleSpec, purpose: HirePurposeId, days: number): number {
+  const withDriver = withDriverTotal(vehicle, purpose, days);
+  const d = Math.max(1, days);
+
+  const multiplier =
+    purpose === "transfer" ? 0.82 : purpose === "half-day" ? 0.78 : purpose === "wedding" ? 0.88 : 0.72;
+
+  if (purpose === "multi-day" || purpose === "safari" || purpose === "corporate") {
+    const dailySelf = Math.round(vehicle.hireDailyRate * 0.72);
+    const discount = d >= 5 ? 0.9 : d >= 3 ? 0.92 : 1;
+    const safariBump = purpose === "safari" ? 1.05 : 1;
+    return Math.round(dailySelf * d * discount * safariBump);
+  }
+
+  return Math.round(withDriver * multiplier);
+}
+
+export function estimateHirePrice(
+  vehicle: HireVehicleSpec,
+  purpose: HirePurposeId,
+  days: number,
+  driverOption: HireDriverOption = "with-driver"
+): HireEstimate | null {
+  const d = Math.max(1, days);
+  const withTotal = withDriverTotal(vehicle, purpose, d);
+  const selfTotal = selfDriveTotal(vehicle, purpose, d);
+
+  if (withTotal <= 0) return null;
+
+  if (driverOption === "self-drive") {
+    const deposit = Math.max(8000, Math.round(selfTotal * 0.35));
+    return {
+      driverOption,
+      purpose,
+      days: d,
+      total: selfTotal,
+      vehicleSubtotal: selfTotal,
+      driverFee: 0,
+      mpesaDeposit: deposit,
+    };
+  }
+
+  return {
+    driverOption,
+    purpose,
+    days: d,
+    total: withTotal,
+    vehicleSubtotal: selfTotal,
+    driverFee: Math.max(0, withTotal - selfTotal),
+  };
+}
+
+/** @deprecated Use estimateHirePrice — returns total only. */
+export function estimateHireTotal(
+  vehicle: HireVehicleSpec,
+  purpose: HirePurposeId,
+  days: number,
+  driverOption: HireDriverOption = "with-driver"
+): number | null {
+  return estimateHirePrice(vehicle, purpose, days, driverOption)?.total ?? null;
 }
 
 export function purposeNeedsEndDate(purpose: HirePurposeId): boolean {

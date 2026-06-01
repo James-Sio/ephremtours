@@ -73,14 +73,15 @@ export function CarHirePage() {
               </h1>
               <p className="text-lg text-sky-100/90 font-light max-w-xl leading-relaxed mb-6">
                 The same Toyota gallery as our partnership page — Alphard, Esquire, Voxy, Noah, Hiace, Prado &
-                Coaster. Choose your car type, browse every photo, book with chauffeur.
+                Coaster. Book <strong className="text-white font-semibold">with driver</strong> or{" "}
+                <strong className="text-white font-semibold">self-drive</strong> — instant price estimate & M-Pesa Till.
               </p>
               <div className="flex flex-wrap gap-3 mb-8">
                 <span className="flex items-center gap-1.5 bg-white/10 px-3 py-1.5 rounded-full text-white text-sm font-medium">
                   <ShieldCheck className="w-4 h-4 text-[#F9A03F]" /> Professional driver included
                 </span>
                 <span className="flex items-center gap-1.5 bg-white/10 px-3 py-1.5 rounded-full text-white text-sm font-medium">
-                  <Check className="w-4 h-4 text-emerald-300" /> Not the SGR booking form
+                  <Check className="w-4 h-4 text-emerald-300" /> With driver or self-drive
                 </span>
               </div>
               <button

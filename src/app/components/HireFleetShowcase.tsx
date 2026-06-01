@@ -11,6 +11,7 @@ import { FleetProgressiveImage } from "./FleetProgressiveImage";
 import { FleetThumbImage } from "./FleetThumbImage";
 import {
   HIRE_VEHICLES,
+  estimateHirePrice,
   getHireVehicle,
   type HireVehicleSpec,
 } from "../data/hireFleet";
@@ -57,7 +58,7 @@ export function HireFleetShowcase({
           </h2>
           <p className="text-gray-400 text-base sm:text-lg max-w-2xl mx-auto font-light leading-relaxed">
             The exact vehicles and photos from our partnership program — Alphard to Coaster.
-            Each model has {FLEET_IMAGE_COUNT} reference photos. Pick yours, then book with driver.
+            Each model has {FLEET_IMAGE_COUNT} reference photos. Hire with driver or self-drive — live pricing when you book.
           </p>
         </div>
 
@@ -185,10 +186,18 @@ export function HireFleetShowcase({
               <div className="grid grid-cols-2 gap-4">
                 <div className="bg-white/5 p-4 rounded-xl border border-white/10">
                   <span className="text-[10px] text-gray-400 font-bold uppercase tracking-widest block mb-1">
-                    Full day hire
+                    Full day · with driver
                   </span>
                   <span className="text-xl font-bold text-emerald-400">
-                    KES {vehicle.hireDailyRate.toLocaleString()}
+                    KES {estimateHirePrice(vehicle, "full-day", 1, "with-driver")?.total.toLocaleString()}
+                  </span>
+                </div>
+                <div className="bg-white/5 p-4 rounded-xl border border-white/10">
+                  <span className="text-[10px] text-gray-400 font-bold uppercase tracking-widest block mb-1">
+                    Full day · self-drive
+                  </span>
+                  <span className="text-xl font-bold text-sky-300">
+                    KES {estimateHirePrice(vehicle, "full-day", 1, "self-drive")?.total.toLocaleString()}
                   </span>
                 </div>
                 <div className="bg-white/5 p-4 rounded-xl border border-white/10">
@@ -244,7 +253,7 @@ export function HireFleetShowcase({
                 onClick={() => onBookVehicle(vehicle.model)}
                 className="touch-target inline-flex w-full items-center justify-center gap-2 bg-[#F9A03F] hover:bg-amber-400 text-gray-900 font-bold px-8 py-4 rounded-xl transition-all shadow-xl hover:-translate-y-0.5 active:scale-[0.98]"
               >
-                Book {vehicle.shortName} with driver
+                Book {vehicle.shortName}
                 <ArrowRight className="w-5 h-5" />
               </button>
             </div>
@@ -332,11 +341,17 @@ function FleetHireCard({
             5 photos
           </span>
         </div>
-        <p className="text-xs text-gray-500 mb-4 line-clamp-2">{vehicle.suitability}</p>
+          <p className="text-xs text-gray-500 mb-3 line-clamp-2">{vehicle.suitability}</p>
+        <div className="flex flex-wrap gap-2 text-[10px] font-bold mb-3">
+          <span className="bg-emerald-50 text-emerald-800 px-2 py-1 rounded-full">
+            Driver KES {estimateHirePrice(vehicle, "full-day", 1, "with-driver")?.total.toLocaleString()}
+          </span>
+          <span className="bg-sky-50 text-sky-800 px-2 py-1 rounded-full">
+            Self KES {estimateHirePrice(vehicle, "full-day", 1, "self-drive")?.total.toLocaleString()}
+          </span>
+        </div>
         <div className="flex items-center justify-between gap-3">
-          <p className="text-sm font-black text-[#003B73]">
-            From <span className="text-emerald-600">KES {vehicle.hireDailyRate.toLocaleString()}</span>/day
-          </p>
+          <p className="text-xs font-bold text-gray-500">Full day from</p>
           <button
             type="button"
             onClick={onSelect}

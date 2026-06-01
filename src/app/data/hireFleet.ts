@@ -7,14 +7,14 @@ export type HireVehicleSpec = {
   seats: string;
   maxPassengers: number;
   luggage: string;
-  /** Full-day with driver (derived from weekly where set). */
+  /** Per day with professional driver (KES). */
   hireDailyRate: number;
-  /** Official weekly rate with driver (KES). Null = quote on request. */
+  /** Per week with driver. Null = quote on request (Coaster weekly / lease). */
   hireWeeklyRate: number | null;
+  /** Multi-day / weekly hire needs custom quote (Coaster). */
+  quoteWeeklyOnRequest?: boolean;
   transferFrom: number;
   halfDayFrom: number;
-  /** Coaster & similar — no fixed calculator total. */
-  quoteOnRequest?: boolean;
   suitability: string;
   highlight: string;
   bestFor: string[];
@@ -28,11 +28,12 @@ const specs = [
     seats: "7 VIP seats",
     maxPassengers: 6,
     luggage: "4 large bags",
+    hireDailyRate: 16_000,
     hireWeeklyRate: 25_000,
-    transferFrom: 4500,
-    halfDayFrom: 5000,
+    halfDayFrom: 9000,
+    transferFrom: 6000,
     suitability: "VIP Airport Meet & Greets & Executive Corporate Transfers",
-    highlight: "Our most requested executive hire along the coast",
+    highlight: "KES 16,000/day · KES 25,000/week with driver",
     bestFor: ["VIP airport", "Executive meetings", "Luxury resort transfers"],
   },
   {
@@ -41,11 +42,12 @@ const specs = [
     seats: "7 premium seats",
     maxPassengers: 6,
     luggage: "4 large bags",
+    hireDailyRate: 12_000,
     hireWeeklyRate: 18_000,
-    transferFrom: 4000,
-    halfDayFrom: 4000,
+    halfDayFrom: 7000,
+    transferFrom: 4500,
     suitability: "Direct Resort Shuttles & Luxury Tourist Excursions",
-    highlight: "Extremely popular for Watamu and Diani boutique transfers",
+    highlight: "KES 12,000/day · KES 18,000/week with driver",
     bestFor: ["Watamu & Diani shuttles", "Boutique hotels", "Family groups"],
   },
   {
@@ -54,11 +56,12 @@ const specs = [
     seats: "7–8 seats",
     maxPassengers: 7,
     luggage: "5 bags",
+    hireDailyRate: 12_000,
     hireWeeklyRate: 18_000,
-    transferFrom: 3500,
-    halfDayFrom: 3500,
+    halfDayFrom: 7000,
+    transferFrom: 4000,
     suitability: "Coastal Day Trips & Family Hotel-to-Hotel Transfers",
-    highlight: "Consistent daily bookings for family coastal holidays",
+    highlight: "KES 12,000/day · KES 18,000/week with driver",
     bestFor: ["Coastal day trips", "Hotel hops", "Small families"],
   },
   {
@@ -67,11 +70,12 @@ const specs = [
     seats: "7–8 seats",
     maxPassengers: 7,
     luggage: "5 bags",
+    hireDailyRate: 12_000,
     hireWeeklyRate: 18_000,
-    transferFrom: 3200,
-    halfDayFrom: 3200,
+    halfDayFrom: 7000,
+    transferFrom: 3800,
     suitability: "SGR Terminus Shuttles & Local Mombasa Old Town Excursions",
-    highlight: "Excellent value for groups wanting comfort without premium MPV rates",
+    highlight: "KES 12,000/day · KES 18,000/week with driver",
     bestFor: ["SGR & city runs", "Old Town tours", "Value-conscious groups"],
   },
   {
@@ -80,11 +84,12 @@ const specs = [
     seats: "16 seats",
     maxPassengers: 16,
     luggage: "16 bags",
+    hireDailyRate: 18_000,
     hireWeeklyRate: 30_000,
-    transferFrom: 5000,
-    halfDayFrom: 4500,
+    halfDayFrom: 10_000,
+    transferFrom: 6000,
     suitability: "Tsavo East Safaris & High-Capacity Corporate Events",
-    highlight: "Toyota Hiace 9L — 16-seater weekly hire along the coast",
+    highlight: "16-seater from KES 18,000/day · KES 30,000/week with driver",
     bestFor: ["Group transfers", "Tsavo safaris", "Team outings"],
   },
   {
@@ -93,12 +98,12 @@ const specs = [
     seats: "7 seats (4×4)",
     maxPassengers: 6,
     luggage: "4 bags + gear",
+    hireDailyRate: 18_000,
     hireWeeklyRate: null,
-    hireDailyRate: 9000,
-    transferFrom: 5500,
-    halfDayFrom: 5500,
+    halfDayFrom: 10_000,
+    transferFrom: 6500,
     suitability: "Safari Game Drives & Rough Coastal Terrains (Tsavo/Amboseli)",
-    highlight: "Top choice for premium safari excursions departing the coast",
+    highlight: "KES 18,000/day with driver — safari ready 4×4",
     bestFor: ["Game drives", "Rough roads", "Safari packages"],
   },
   {
@@ -107,36 +112,22 @@ const specs = [
     seats: "23–30 seats",
     maxPassengers: 28,
     luggage: "Group cargo",
+    hireDailyRate: 30_000,
     hireWeeklyRate: null,
-    hireDailyRate: 0,
-    transferFrom: 8000,
-    halfDayFrom: 7000,
-    quoteOnRequest: true,
+    quoteWeeklyOnRequest: true,
+    halfDayFrom: 18_000,
+    transferFrom: 12_000,
     suitability: "School Trips, Church Events, Wedding Fleets & Large Corporate Groups",
-    highlight: "Rate depends on the job — contact us for Coaster availability & pricing",
+    highlight: "KES 30,000/day hire · weekly / car lease — price depends on the job",
     bestFor: ["Weddings", "Church & school trips", "Large corporate groups"],
   },
 ] as const;
 
-function dailyFromWeekly(weekly: number): number {
-  return Math.round(weekly / 6);
-}
-
-export const HIRE_VEHICLES: HireVehicleSpec[] = specs.map((s) => {
-  const hireDailyRate =
-    "hireDailyRate" in s && s.hireDailyRate != null
-      ? s.hireDailyRate
-      : s.hireWeeklyRate != null
-        ? dailyFromWeekly(s.hireWeeklyRate)
-        : 0;
-
-  return {
-    ...s,
-    hireDailyRate,
-    shortName: s.model.replace("Toyota ", ""),
-    gallery: fleetGalleryFor(s.model),
-  };
-});
+export const HIRE_VEHICLES: HireVehicleSpec[] = specs.map((s) => ({
+  ...s,
+  shortName: s.model.replace("Toyota ", ""),
+  gallery: fleetGalleryFor(s.model),
+}));
 
 export type HirePurposeId =
   | "transfer"
@@ -156,12 +147,12 @@ export type HirePurpose = {
 
 export const HIRE_PURPOSES: HirePurpose[] = [
   { id: "transfer", label: "Point-to-point", description: "Airport, SGR, hotel, or one-way transfer", emoji: "✈️" },
-  { id: "half-day", label: "Half day", description: "4 hours — weddings, meetings, city", emoji: "🕐" },
-  { id: "full-day", label: "Full day", description: "8 hours — full coastal itinerary", emoji: "☀️" },
-  { id: "multi-day", label: "Multi-day / weekly", description: "Weekly hire — best value for 7+ days", emoji: "📅" },
-  { id: "wedding", label: "Wedding & events", description: "Decor-ready fleet for your special day", emoji: "💒" },
-  { id: "safari", label: "Safari hire", description: "Tsavo, Shimba, or custom game-drive routes", emoji: "🦁" },
-  { id: "corporate", label: "Corporate / group", description: "Teams, conferences, and delegate transport", emoji: "💼" },
+  { id: "half-day", label: "Half day", description: "4 hours with chauffeur", emoji: "🕐" },
+  { id: "full-day", label: "Full day", description: "Per-day rate with professional driver", emoji: "☀️" },
+  { id: "multi-day", label: "Multi-day / weekly", description: "Daily or weekly rates — 7 days = 1 week", emoji: "📅" },
+  { id: "wedding", label: "Wedding & events", description: "Fleet for your special day", emoji: "💒" },
+  { id: "safari", label: "Safari hire", description: "Tsavo, Shimba, or custom routes", emoji: "🦁" },
+  { id: "corporate", label: "Corporate / group", description: "Teams, conferences, delegate transport", emoji: "💼" },
 ];
 
 export const HIRE_PICKUP_LOCATIONS = [
@@ -181,167 +172,100 @@ export function getHireVehicle(model: string): HireVehicleSpec | undefined {
   return HIRE_VEHICLES.find((v) => v.model === model);
 }
 
-export type HireDriverOption = "with-driver" | "self-drive";
-
 export type HireEstimate = {
-  driverOption: HireDriverOption;
   purpose: HirePurposeId;
   days: number;
   total: number;
-  vehicleSubtotal: number;
-  driverFee: number;
-  mpesaDeposit?: number;
   customQuote?: boolean;
   priceNote?: string;
-  weeksBilled?: number;
 };
 
-/** Bill by full weeks + extra days at weekly ÷ 6 (with driver). */
-export function weeklyHireTotal(weeklyRate: number, days: number): number {
+/** Full weeks at weekly rate + extra days at daily rate. */
+export function weeklyHireTotal(weeklyRate: number, dailyRate: number, days: number): number {
   const d = Math.max(1, days);
   const weeks = Math.floor(d / 7);
   const remainder = d % 7;
-  const dayRate = Math.round(weeklyRate / 6);
-  return weeks * weeklyRate + remainder * dayRate;
+  return weeks * weeklyRate + remainder * dailyRate;
 }
 
-function usesWeeklyPricing(purpose: HirePurposeId, days: number): boolean {
-  return (
-    purpose === "multi-day" ||
-    purpose === "safari" ||
-    purpose === "corporate" ||
-    (purpose === "wedding" && days >= 3)
+function usesWeeklyPricing(purpose: HirePurposeId): boolean {
+  return purpose === "multi-day" || purpose === "safari" || purpose === "corporate";
+}
+
+function needsCoasterCustomQuote(vehicle: HireVehicleSpec, purpose: HirePurposeId, days: number): boolean {
+  return Boolean(
+    vehicle.quoteWeeklyOnRequest &&
+      (usesWeeklyPricing(purpose) || (purpose === "wedding" && days >= 2))
   );
 }
 
-function withDriverTotal(vehicle: HireVehicleSpec, purpose: HirePurposeId, days: number): number | null {
-  if (vehicle.quoteOnRequest) return null;
-
+function calculateTotal(vehicle: HireVehicleSpec, purpose: HirePurposeId, days: number): number | null {
   const d = Math.max(1, days);
+
+  if (needsCoasterCustomQuote(vehicle, purpose, d)) return null;
+
   const weekly = vehicle.hireWeeklyRate;
 
-  if (weekly != null && usesWeeklyPricing(purpose, d)) {
-    if (purpose === "wedding") {
-      return Math.max(weeklyHireTotal(weekly, d), Math.round(weekly * 0.5));
-    }
-    if (purpose === "safari") {
-      return Math.round(weeklyHireTotal(weekly, d) * 1.05);
-    }
-    return weeklyHireTotal(weekly, d);
+  if (weekly != null && usesWeeklyPricing(purpose)) {
+    return weeklyHireTotal(weekly, vehicle.hireDailyRate, d);
   }
 
   switch (purpose) {
     case "transfer":
       return vehicle.transferFrom;
     case "half-day":
-      return Math.max(vehicle.halfDayFrom, Math.round(vehicle.hireDailyRate * 0.55));
+      return vehicle.halfDayFrom;
     case "full-day":
       return vehicle.hireDailyRate;
     case "multi-day":
     case "corporate":
-      if (weekly != null) return weeklyHireTotal(weekly, d);
-      return Math.round(vehicle.hireDailyRate * d * (d >= 3 ? 0.93 : 1));
+      if (weekly != null && d >= 7) return weeklyHireTotal(weekly, vehicle.hireDailyRate, d);
+      return vehicle.hireDailyRate * d;
     case "wedding":
-      return Math.round(vehicle.hireDailyRate * 1.15);
+      return Math.round(vehicle.hireDailyRate * Math.max(1, d) * 1.1);
     case "safari":
-      if (weekly != null) return Math.round(weeklyHireTotal(weekly, d) * 1.05);
-      return Math.round(vehicle.hireDailyRate * 1.1 * d);
+      if (weekly != null && d >= 7) return weeklyHireTotal(weekly, vehicle.hireDailyRate, d);
+      return Math.round(vehicle.hireDailyRate * d * 1.05);
     default:
-      return 0;
+      return vehicle.hireDailyRate;
   }
-}
-
-function selfDriveTotal(vehicle: HireVehicleSpec, purpose: HirePurposeId, days: number): number | null {
-  const withDriver = withDriverTotal(vehicle, purpose, days);
-  if (withDriver == null) return null;
-
-  const multiplier =
-    purpose === "transfer" ? 0.82 : purpose === "half-day" ? 0.78 : purpose === "wedding" ? 0.88 : 0.72;
-
-  if (usesWeeklyPricing(purpose, days) && vehicle.hireWeeklyRate != null) {
-    const weeklySelf = Math.round(vehicle.hireWeeklyRate * 0.72);
-    const base = weeklyHireTotal(weeklySelf, days);
-    return purpose === "safari" ? Math.round(base * 1.05) : base;
-  }
-
-  if (purpose === "multi-day" || purpose === "safari" || purpose === "corporate") {
-    const dailySelf = Math.round(vehicle.hireDailyRate * 0.72);
-    const discount = days >= 5 ? 0.9 : days >= 3 ? 0.92 : 1;
-    const safariBump = purpose === "safari" ? 1.05 : 1;
-    return Math.round(dailySelf * days * discount * safariBump);
-  }
-
-  return Math.round(withDriver * multiplier);
 }
 
 export function estimateHirePrice(
   vehicle: HireVehicleSpec,
   purpose: HirePurposeId,
-  days: number,
-  driverOption: HireDriverOption = "with-driver"
+  days: number
 ): HireEstimate | null {
   const d = Math.max(1, days);
 
-  if (vehicle.quoteOnRequest) {
+  if (needsCoasterCustomQuote(vehicle, purpose, d)) {
     return {
-      driverOption,
       purpose,
       days: d,
       total: 0,
-      vehicleSubtotal: 0,
-      driverFee: 0,
       customQuote: true,
       priceNote:
-        "Coaster pricing depends on the job, route, and dates. We will quote on WhatsApp once you submit this request.",
+        "Coaster weekly hire and car lease pricing depends on the job, route, and dates. Submit your request — we quote on WhatsApp. Day hire is KES 30,000 with driver.",
     };
   }
 
-  const withTotal = withDriverTotal(vehicle, purpose, d);
-  const selfTotal = selfDriveTotal(vehicle, purpose, d);
-
-  if (withTotal == null || selfTotal == null) return null;
-
-  const weeksBilled = vehicle.hireWeeklyRate != null && usesWeeklyPricing(purpose, d) ? Math.ceil(d / 7) : undefined;
+  const total = calculateTotal(vehicle, purpose, d);
+  if (total == null) return null;
 
   const priceNote =
-    vehicle.hireWeeklyRate != null && usesWeeklyPricing(purpose, d)
-      ? `Weekly rate KES ${vehicle.hireWeeklyRate.toLocaleString()}/week (with driver) · ${d} day(s) billed`
-      : undefined;
+    vehicle.hireWeeklyRate != null && usesWeeklyPricing(purpose)
+      ? `Listed KES ${vehicle.hireDailyRate.toLocaleString()}/day · KES ${vehicle.hireWeeklyRate.toLocaleString()}/week (all with driver) · ${d} day(s)`
+      : `KES ${vehicle.hireDailyRate.toLocaleString()}/day with professional driver`;
 
-  if (driverOption === "self-drive") {
-    const deposit = Math.max(8000, Math.round(selfTotal * 0.35));
-    return {
-      driverOption,
-      purpose,
-      days: d,
-      total: selfTotal,
-      vehicleSubtotal: selfTotal,
-      driverFee: 0,
-      mpesaDeposit: deposit,
-      weeksBilled,
-      priceNote,
-    };
-  }
-
-  return {
-    driverOption,
-    purpose,
-    days: d,
-    total: withTotal,
-    vehicleSubtotal: selfTotal,
-    driverFee: Math.max(0, withTotal - selfTotal),
-    weeksBilled,
-    priceNote,
-  };
+  return { purpose, days: d, total, priceNote };
 }
 
 export function estimateHireTotal(
   vehicle: HireVehicleSpec,
   purpose: HirePurposeId,
-  days: number,
-  driverOption: HireDriverOption = "with-driver"
+  days: number
 ): number | null {
-  const est = estimateHirePrice(vehicle, purpose, days, driverOption);
+  const est = estimateHirePrice(vehicle, purpose, days);
   if (!est || est.customQuote) return null;
   return est.total;
 }
@@ -350,8 +274,16 @@ export function purposeNeedsEndDate(purpose: HirePurposeId): boolean {
   return purpose === "multi-day" || purpose === "safari" || purpose === "corporate";
 }
 
+export function formatDailyRate(vehicle: HireVehicleSpec): string {
+  if (vehicle.hireDailyRate <= 0) return "On request";
+  const from = vehicle.model === "Toyota Hiace" ? "from " : "";
+  return `${from}KES ${vehicle.hireDailyRate.toLocaleString()}/day`;
+}
+
 export function formatWeeklyRate(vehicle: HireVehicleSpec): string | null {
-  if (vehicle.quoteOnRequest) return "Quote on request";
+  if (vehicle.quoteWeeklyOnRequest && vehicle.hireWeeklyRate == null) {
+    return "Quote on request (depends on job)";
+  }
   if (vehicle.hireWeeklyRate == null) return null;
   return `KES ${vehicle.hireWeeklyRate.toLocaleString()}/week`;
 }

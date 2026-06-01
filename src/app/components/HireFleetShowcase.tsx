@@ -12,6 +12,7 @@ import { FleetThumbImage } from "./FleetThumbImage";
 import {
   HIRE_VEHICLES,
   estimateHirePrice,
+  formatDailyRate,
   formatWeeklyRate,
   getHireVehicle,
   type HireVehicleSpec,
@@ -59,7 +60,7 @@ export function HireFleetShowcase({
           </h2>
           <p className="text-gray-400 text-base sm:text-lg max-w-2xl mx-auto font-light leading-relaxed">
             The exact vehicles and photos from our partnership program — Alphard to Coaster.
-            Each model has {FLEET_IMAGE_COUNT} reference photos. Hire with driver or self-drive — live pricing when you book.
+            Each model has {FLEET_IMAGE_COUNT} reference photos. All hires include a professional driver — no self-drive.
           </p>
         </div>
 
@@ -185,32 +186,18 @@ export function HireFleetShowcase({
               </div>
 
               <div className="grid grid-cols-2 gap-4">
-                <div className="bg-white/5 p-4 rounded-xl border border-white/10 col-span-2 sm:col-span-1">
+                <div className="bg-white/5 p-4 rounded-xl border border-white/10">
                   <span className="text-[10px] text-gray-400 font-bold uppercase tracking-widest block mb-1">
-                    Weekly · with driver
+                    Per day (with driver)
                   </span>
-                  <span className="text-xl font-bold text-[#F9A03F]">
-                    {formatWeeklyRate(vehicle) ?? "Contact for quote"}
-                  </span>
+                  <span className="text-xl font-bold text-emerald-400">{formatDailyRate(vehicle)}</span>
                 </div>
                 <div className="bg-white/5 p-4 rounded-xl border border-white/10">
                   <span className="text-[10px] text-gray-400 font-bold uppercase tracking-widest block mb-1">
-                    Full day · with driver
+                    Per week (with driver)
                   </span>
-                  <span className="text-xl font-bold text-emerald-400">
-                    {vehicle.quoteOnRequest
-                      ? "On request"
-                      : `KES ${estimateHirePrice(vehicle, "full-day", 1, "with-driver")?.total.toLocaleString()}`}
-                  </span>
-                </div>
-                <div className="bg-white/5 p-4 rounded-xl border border-white/10 sm:col-span-2">
-                  <span className="text-[10px] text-gray-400 font-bold uppercase tracking-widest block mb-1">
-                    Full day · self-drive
-                  </span>
-                  <span className="text-xl font-bold text-sky-300">
-                    {vehicle.quoteOnRequest
-                      ? "On request"
-                      : `KES ${estimateHirePrice(vehicle, "full-day", 1, "self-drive")?.total.toLocaleString()}`}
+                  <span className="text-xl font-bold text-[#F9A03F]">
+                    {formatWeeklyRate(vehicle) ?? "—"}
                   </span>
                 </div>
                 <div className="bg-white/5 p-4 rounded-xl border border-white/10">
@@ -356,23 +343,13 @@ function FleetHireCard({
         </div>
           <p className="text-xs text-gray-500 mb-3 line-clamp-2">{vehicle.suitability}</p>
         <div className="flex flex-wrap gap-2 text-[10px] font-bold mb-3">
-          {vehicle.quoteOnRequest ? (
-            <span className="bg-amber-50 text-amber-900 px-2 py-1 rounded-full">Price on request</span>
-          ) : (
-            <>
-              <span className="bg-[#F9A03F]/15 text-amber-900 px-2 py-1 rounded-full">
-                {formatWeeklyRate(vehicle)}/wk
-              </span>
-              <span className="bg-emerald-50 text-emerald-800 px-2 py-1 rounded-full">
-                Day w/ driver KES {vehicle.hireDailyRate.toLocaleString()}
-              </span>
-            </>
+          <span className="bg-emerald-50 text-emerald-800 px-2 py-1 rounded-full">{formatDailyRate(vehicle)}</span>
+          {formatWeeklyRate(vehicle) && (
+            <span className="bg-[#F9A03F]/15 text-amber-900 px-2 py-1 rounded-full">{formatWeeklyRate(vehicle)}</span>
           )}
         </div>
         <div className="flex items-center justify-between gap-3">
-          <p className="text-xs font-bold text-gray-500">
-            {vehicle.quoteOnRequest ? "Coaster" : "Weekly hire"}
-          </p>
+          <p className="text-xs font-bold text-gray-500">Chauffeur included</p>
           <button
             type="button"
             onClick={onSelect}

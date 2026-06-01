@@ -79,7 +79,7 @@ const vehicleSpecs = [
     baseDailyRate: 12000,
     seats: "23-30 Group Seats",
     suitability: "School Trips, Church Events, Wedding Fleets & Large Corporate Groups",
-    highlight: "Best yield for high-capacity group transport requirements",
+    highlight: "Car lease & weekly earnings depend on the job — we quote per Coaster placement",
   },
 ] as const;
 

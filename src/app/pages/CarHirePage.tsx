@@ -5,7 +5,7 @@ import { Car, ShieldCheck, Check, Handshake, ArrowRight } from "lucide-react";
 import { CarHireBookingForm } from "../components/CarHireBookingForm";
 import { HireFleetModelGrid, HireFleetShowcase } from "../components/HireFleetShowcase";
 import { FleetProgressiveImage } from "../components/FleetProgressiveImage";
-import { HIRE_VEHICLES, formatWeeklyRate, getHireVehicle } from "../data/hireFleet";
+import { HIRE_VEHICLES, formatDailyRate, formatWeeklyRate, getHireVehicle } from "../data/hireFleet";
 import { preloadAllFleetThumbs } from "../hooks/useFleetPreload";
 
 export function CarHirePage() {
@@ -72,16 +72,15 @@ export function CarHirePage() {
                 <span className="block text-[#F9A03F] mt-1">real fleet photos.</span>
               </h1>
               <p className="text-lg text-sky-100/90 font-light max-w-xl leading-relaxed mb-6">
-                The same Toyota gallery as our partnership page — Alphard, Esquire, Voxy, Noah, Hiace, Prado &
-                Coaster. Book <strong className="text-white font-semibold">with driver</strong> or{" "}
-                <strong className="text-white font-semibold">self-drive</strong> — instant price estimate & M-Pesa Till.
+                Official daily & weekly rates with a professional driver — Noah, Voxy, Esquire, Alphard, Hiace
+                16-seater, Prado & Coaster. We do not offer self-drive.
               </p>
               <div className="flex flex-wrap gap-3 mb-8">
                 <span className="flex items-center gap-1.5 bg-white/10 px-3 py-1.5 rounded-full text-white text-sm font-medium">
                   <ShieldCheck className="w-4 h-4 text-[#F9A03F]" /> Professional driver included
                 </span>
                 <span className="flex items-center gap-1.5 bg-white/10 px-3 py-1.5 rounded-full text-white text-sm font-medium">
-                  <Check className="w-4 h-4 text-emerald-300" /> With driver or self-drive
+                  <Check className="w-4 h-4 text-emerald-300" /> Chauffeur always included
                 </span>
               </div>
               <button
@@ -160,7 +159,8 @@ export function CarHirePage() {
               <div className="absolute bottom-0 inset-x-0 z-10 bg-gradient-to-t from-black/70 to-transparent p-4">
                 <p className="text-white font-bold text-sm">{vehicle.model}</p>
                 <p className="text-emerald-300 text-xs">
-                  {formatWeeklyRate(vehicle) ?? `KES ${vehicle.hireDailyRate.toLocaleString()}/day`}
+                  {formatDailyRate(vehicle)}
+                  {formatWeeklyRate(vehicle) ? ` · ${formatWeeklyRate(vehicle)}` : ""}
                 </p>
               </div>
             </div>

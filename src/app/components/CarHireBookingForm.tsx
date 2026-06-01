@@ -13,19 +13,17 @@ import {
   Users,
   Baby,
   MessageSquare,
-  Car,
   UserCircle,
   Smartphone,
-  IdCard,
 } from "lucide-react";
 import { toast } from "sonner";
 import { CONTACT_PHONES, MPESA_TILL } from "../data/siteContact";
 import {
   estimateHirePrice,
+  formatDailyRate,
   formatWeeklyRate,
   HIRE_PICKUP_LOCATIONS,
   HIRE_PURPOSES,
-  type HireDriverOption,
   type HirePurposeId,
   type HireVehicleSpec,
   purposeNeedsEndDate,
@@ -37,7 +35,6 @@ type CarHireBookingFormProps = {
 };
 
 export function CarHireBookingForm({ vehicle, className = "" }: CarHireBookingFormProps) {
-  const [driverOption, setDriverOption] = useState<HireDriverOption>("with-driver");
   const [purpose, setPurpose] = useState<HirePurposeId>("full-day");
   const [pickup, setPickup] = useState("");
   const [pickupDetail, setPickupDetail] = useState("");
@@ -49,7 +46,6 @@ export function CarHireBookingForm({ vehicle, className = "" }: CarHireBookingFo
   const [adults, setAdults] = useState(2);
   const [children, setChildren] = useState(0);
   const [childSeat, setChildSeat] = useState(false);
-  const [licenceConfirmed, setLicenceConfirmed] = useState(false);
   const [name, setName] = useState("");
   const [phone, setPhone] = useState("");
   const [email, setEmail] = useState("");
@@ -68,62 +64,33 @@ export function CarHireBookingForm({ vehicle, className = "" }: CarHireBookingFo
     return days;
   }, [needsEnd, startDate, endDate, days, purpose]);
 
-  const estimateWithDriver = useMemo(
-    () => estimateHirePrice(vehicle, purpose, effectiveDays, "with-driver"),
+  const estimate = useMemo(
+    () => estimateHirePrice(vehicle, purpose, effectiveDays),
     [vehicle, purpose, effectiveDays]
   );
-
-  const estimateSelfDrive = useMemo(
-    () => estimateHirePrice(vehicle, purpose, effectiveDays, "self-drive"),
-    [vehicle, purpose, effectiveDays]
-  );
-
-  const estimate = driverOption === "with-driver" ? estimateWithDriver : estimateSelfDrive;
   const purposeMeta = HIRE_PURPOSES.find((p) => p.id === purpose)!;
-
   const overCapacity = adults + children > vehicle.maxPassengers;
-  const selfDriveBlocked = driverOption === "self-drive" && !licenceConfirmed;
 
   const buildWhatsAppMessage = () => {
-    const driverLabel =
-      driverOption === "with-driver"
-        ? "With Ephream chauffeur"
-        : "Self-drive (no driver)";
-
     const lines = [
       `*Car hire request — Ephream Tours*`,
       ``,
       `Vehicle: ${vehicle.model} (${vehicle.type})`,
-      `Driver: ${driverLabel}`,
+      `Driver: Professional Ephream chauffeur (included)`,
+      `Listed: ${formatDailyRate(vehicle)}${formatWeeklyRate(vehicle) ? ` · ${formatWeeklyRate(vehicle)}` : ""}`,
       `Hire type: ${purposeMeta.label}`,
       `Pick-up: ${pickup}${pickupDetail ? ` — ${pickupDetail}` : ""}`,
       destination ? `Destination / itinerary: ${destination}` : null,
       `Date: ${startDate} at ${startTime}`,
       needsEnd && endDate ? `Until: ${endDate}` : null,
       effectiveDays > 1 ? `Duration: ${effectiveDays} day(s)` : null,
-      driverOption === "with-driver" && estimate
-        ? `Passengers: ${adults} adult(s)${children ? `, ${children} child(ren)` : ""}`
-        : null,
-      childSeat && driverOption === "with-driver" ? `Child seat: Yes` : null,
+      `Passengers: ${adults} adult(s)${children ? `, ${children} child(ren)` : ""}`,
+      childSeat ? `Child seat: Yes` : null,
       estimate?.customQuote
-        ? `Pricing: Custom quote — Coaster rate depends on the job`
+        ? `Pricing: Custom quote (Coaster weekly / lease depends on job)`
         : estimate
-          ? [
-              `Est. total: KES ${estimate.total.toLocaleString()}`,
-              estimate.driverFee > 0
-                ? `(Vehicle KES ${estimate.vehicleSubtotal.toLocaleString()} + Driver KES ${estimate.driverFee.toLocaleString()})`
-                : null,
-              estimate.mpesaDeposit
-                ? `Suggested deposit (self-drive): KES ${estimate.mpesaDeposit.toLocaleString()}`
-                : null,
-              estimate.priceNote,
-            ]
-              .filter(Boolean)
-              .join("\n")
+          ? [`Est. total: KES ${estimate.total.toLocaleString()}`, estimate.priceNote].filter(Boolean).join("\n")
           : null,
-      vehicle.hireWeeklyRate
-        ? `Weekly rate (with driver): KES ${vehicle.hireWeeklyRate.toLocaleString()}`
-        : null,
       `Pay via M-Pesa Till: *${MPESA_TILL}*`,
       notes ? `Notes: ${notes}` : null,
       ``,
@@ -136,12 +103,8 @@ export function CarHireBookingForm({ vehicle, className = "" }: CarHireBookingFo
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-    if (overCapacity && driverOption === "with-driver") {
+    if (overCapacity) {
       toast.error(`This vehicle fits up to ${vehicle.maxPassengers} passengers. Choose a larger model.`);
-      return;
-    }
-    if (selfDriveBlocked) {
-      toast.error("Please confirm you hold a valid Kenyan driving licence for self-drive hire.");
       return;
     }
     setState("submitting");
@@ -175,17 +138,11 @@ export function CarHireBookingForm({ vehicle, className = "" }: CarHireBookingFo
         </div>
         <h3 className="text-2xl font-bold text-gray-900 mb-2">Hire request received</h3>
         <p className="text-gray-600 text-sm mb-4 max-w-sm leading-relaxed">
-          We will confirm your {vehicle.shortName}
-          {driverOption === "with-driver" ? " with chauffeur" : " (self-drive)"} on WhatsApp shortly.
+          We will confirm your {vehicle.shortName} with chauffeur on WhatsApp shortly.
         </p>
         <div className="bg-green-50 border border-green-200 rounded-2xl px-5 py-4 mb-6 max-w-xs w-full">
           <p className="text-xs font-bold text-green-800 uppercase tracking-widest mb-1">M-Pesa Till</p>
           <p className="text-2xl font-black text-green-900 tracking-wider">{MPESA_TILL}</p>
-          {estimate?.mpesaDeposit && (
-            <p className="text-[11px] text-green-700 mt-2">
-              Suggested deposit: KES {estimate.mpesaDeposit.toLocaleString()}
-            </p>
-          )}
         </div>
         <button
           type="button"
@@ -202,90 +159,16 @@ export function CarHireBookingForm({ vehicle, className = "" }: CarHireBookingFo
     <form onSubmit={handleSubmit} className={`space-y-5 ${className}`}>
       <div>
         <h3 className="text-2xl font-extrabold text-gray-900 tracking-tight">Book this vehicle</h3>
-        <p className="text-xs text-gray-500 font-bold uppercase tracking-widest mt-1">
-          With driver or self-drive · Pay Till {MPESA_TILL}
+        <p className="text-xs text-gray-500 font-bold uppercase tracking-widest mt-1 flex items-center gap-1.5">
+          <UserCircle className="w-3.5 h-3.5 text-emerald-600" />
+          Chauffeur included · We do not offer self-drive
+        </p>
+        <p className="text-sm font-bold text-[#003B73] mt-2">
+          {formatDailyRate(vehicle)}
+          {formatWeeklyRate(vehicle) ? ` · ${formatWeeklyRate(vehicle)}` : ""}
         </p>
       </div>
 
-      {/* Driver vs self-drive */}
-      <div className="space-y-2">
-        <label className="text-xs font-bold text-gray-700 ml-1">Driver option</label>
-        <div className="grid grid-cols-2 gap-2 p-1 bg-slate-100 rounded-2xl">
-          <button
-            type="button"
-            onClick={() => setDriverOption("with-driver")}
-            className={`touch-target flex flex-col items-center gap-1.5 py-3.5 px-2 rounded-xl font-bold text-sm transition-all ${
-              driverOption === "with-driver"
-                ? "bg-white text-[#003B73] shadow-md ring-1 ring-emerald-500/30"
-                : "text-gray-500 hover:text-gray-800"
-            }`}
-          >
-            <UserCircle className="w-6 h-6 text-emerald-600" />
-            With driver
-            {vehicle.hireWeeklyRate != null ? (
-              <span className="text-[10px] font-black text-emerald-600">{formatWeeklyRate(vehicle)}/wk</span>
-            ) : (
-              estimateWithDriver &&
-              !estimateWithDriver.customQuote && (
-                <span className="text-[10px] font-black text-emerald-600">
-                  from KES {estimateWithDriver.total.toLocaleString()}
-                </span>
-              )
-            )}
-          </button>
-          <button
-            type="button"
-            onClick={() => setDriverOption("self-drive")}
-            className={`touch-target flex flex-col items-center gap-1.5 py-3.5 px-2 rounded-xl font-bold text-sm transition-all ${
-              driverOption === "self-drive"
-                ? "bg-white text-[#003B73] shadow-md ring-1 ring-sky-500/30"
-                : "text-gray-500 hover:text-gray-800"
-            }`}
-          >
-            <Car className="w-6 h-6 text-sky-600" />
-            No driver
-            {vehicle.quoteOnRequest ? (
-              <span className="text-[10px] font-black text-sky-600">Quote on request</span>
-            ) : (
-              estimateSelfDrive &&
-              !estimateSelfDrive.customQuote && (
-                <span className="text-[10px] font-black text-sky-600">
-                  from KES {estimateSelfDrive.total.toLocaleString()}
-                </span>
-              )
-            )}
-          </button>
-        </div>
-        <p className="text-[11px] text-gray-500 leading-relaxed px-1">
-          {driverOption === "with-driver"
-            ? "Professional Ephream chauffeur, fuel guidance & local route knowledge included."
-            : "You drive — valid licence & national ID required. Refundable deposit via M-Pesa Till."}
-        </p>
-      </div>
-
-      <AnimatePresence>
-        {driverOption === "self-drive" && (
-          <motion.label
-            initial={{ opacity: 0, height: 0 }}
-            animate={{ opacity: 1, height: "auto" }}
-            exit={{ opacity: 0, height: 0 }}
-            className="flex items-start gap-3 p-4 rounded-xl border-2 border-sky-200 bg-sky-50 cursor-pointer"
-          >
-            <input
-              type="checkbox"
-              checked={licenceConfirmed}
-              onChange={(e) => setLicenceConfirmed(e.target.checked)}
-              className="mt-1 rounded"
-            />
-            <span className="text-sm text-gray-800 leading-relaxed">
-              <IdCard className="w-4 h-4 inline mr-1 text-sky-600" />
-              I hold a <strong>valid Kenyan driving licence</strong> and will present it with my ID at pick-up.
-            </span>
-          </motion.label>
-        )}
-      </AnimatePresence>
-
-      {/* Hire purpose */}
       <div className="space-y-2">
         <label className="text-xs font-bold text-gray-700 ml-1">What do you need the car for?</label>
         <div className="grid grid-cols-2 gap-2">
@@ -308,7 +191,6 @@ export function CarHireBookingForm({ vehicle, className = "" }: CarHireBookingFo
         </div>
       </div>
 
-      {/* Pickup */}
       <div className="space-y-2">
         <label className="text-xs font-bold text-gray-700 ml-1">Pick-up location</label>
         <div className="relative">
@@ -417,11 +299,7 @@ export function CarHireBookingForm({ vehicle, className = "" }: CarHireBookingFo
         <div className="flex items-center justify-between bg-slate-50 border border-gray-100 rounded-xl p-4">
           <span className="text-sm font-bold text-gray-900">Number of days</span>
           <div className="flex items-center gap-2 bg-white rounded-lg border border-gray-200 p-1">
-            <button
-              type="button"
-              onClick={() => setDays((d) => Math.max(1, d - 1))}
-              className="w-8 h-8 rounded bg-slate-100 font-bold"
-            >
+            <button type="button" onClick={() => setDays((d) => Math.max(1, d - 1))} className="w-8 h-8 rounded bg-slate-100 font-bold">
               −
             </button>
             <span className="w-8 text-center font-bold">{days}</span>
@@ -432,46 +310,44 @@ export function CarHireBookingForm({ vehicle, className = "" }: CarHireBookingFo
         </div>
       )}
 
-      {driverOption === "with-driver" && (
-        <div className="bg-slate-50 border border-gray-100 rounded-2xl p-4 space-y-3">
-          <label className="text-xs font-bold text-gray-700 flex items-center gap-1">
-            <Users className="w-4 h-4 text-[#003B73]" /> Passengers (max {vehicle.maxPassengers})
-          </label>
-          <div className="flex items-center justify-between">
-            <span className="text-sm font-bold">Adults</span>
-            <div className="flex items-center gap-2 bg-white rounded-lg border p-1">
-              <button type="button" onClick={() => setAdults((n) => Math.max(1, n - 1))} className="w-7 h-7 rounded bg-slate-100 font-bold">
-                −
-              </button>
-              <span className="w-6 text-center font-bold">{adults}</span>
-              <button type="button" onClick={() => setAdults((n) => n + 1)} className="w-7 h-7 rounded bg-slate-100 font-bold">
-                +
-              </button>
-            </div>
+      <div className="bg-slate-50 border border-gray-100 rounded-2xl p-4 space-y-3">
+        <label className="text-xs font-bold text-gray-700 flex items-center gap-1">
+          <Users className="w-4 h-4 text-[#003B73]" /> Passengers (max {vehicle.maxPassengers})
+        </label>
+        <div className="flex items-center justify-between">
+          <span className="text-sm font-bold">Adults</span>
+          <div className="flex items-center gap-2 bg-white rounded-lg border p-1">
+            <button type="button" onClick={() => setAdults((n) => Math.max(1, n - 1))} className="w-7 h-7 rounded bg-slate-100 font-bold">
+              −
+            </button>
+            <span className="w-6 text-center font-bold">{adults}</span>
+            <button type="button" onClick={() => setAdults((n) => n + 1)} className="w-7 h-7 rounded bg-slate-100 font-bold">
+              +
+            </button>
           </div>
-          <div className="flex items-center justify-between">
-            <span className="text-sm font-bold flex items-center gap-1">
-              Children <Baby className="w-3 h-3 text-gray-400" />
-            </span>
-            <div className="flex items-center gap-2 bg-white rounded-lg border p-1">
-              <button type="button" onClick={() => setChildren((n) => Math.max(0, n - 1))} className="w-7 h-7 rounded bg-slate-100 font-bold">
-                −
-              </button>
-              <span className="w-6 text-center font-bold">{children}</span>
-              <button type="button" onClick={() => setChildren((n) => n + 1)} className="w-7 h-7 rounded bg-slate-100 font-bold">
-                +
-              </button>
-            </div>
-          </div>
-          <label className="flex items-center gap-2 text-sm cursor-pointer">
-            <input type="checkbox" checked={childSeat} onChange={(e) => setChildSeat(e.target.checked)} className="rounded" />
-            Request child safety seat (free)
-          </label>
-          {overCapacity && (
-            <p className="text-xs text-red-600 font-bold">Too many passengers for {vehicle.shortName}. Try Hiace or Coaster.</p>
-          )}
         </div>
-      )}
+        <div className="flex items-center justify-between">
+          <span className="text-sm font-bold flex items-center gap-1">
+            Children <Baby className="w-3 h-3 text-gray-400" />
+          </span>
+          <div className="flex items-center gap-2 bg-white rounded-lg border p-1">
+            <button type="button" onClick={() => setChildren((n) => Math.max(0, n - 1))} className="w-7 h-7 rounded bg-slate-100 font-bold">
+              −
+            </button>
+            <span className="w-6 text-center font-bold">{children}</span>
+            <button type="button" onClick={() => setChildren((n) => n + 1)} className="w-7 h-7 rounded bg-slate-100 font-bold">
+              +
+            </button>
+          </div>
+        </div>
+        <label className="flex items-center gap-2 text-sm cursor-pointer">
+          <input type="checkbox" checked={childSeat} onChange={(e) => setChildSeat(e.target.checked)} className="rounded" />
+          Request child safety seat (free)
+        </label>
+        {overCapacity && (
+          <p className="text-xs text-red-600 font-bold">Too many passengers for {vehicle.shortName}. Try Hiace or Coaster.</p>
+        )}
+      </div>
 
       <div className="space-y-3 pt-2 border-t border-gray-100">
         <div className="relative">
@@ -509,7 +385,7 @@ export function CarHireBookingForm({ vehicle, className = "" }: CarHireBookingFo
         <div className="relative">
           <MessageSquare className="absolute left-4 top-3 w-5 h-5 text-gray-400" />
           <textarea
-            placeholder="Special requests (flight number, licence class, etc.)"
+            placeholder="Special requests (flight number, stops, etc.)"
             rows={2}
             value={notes}
             onChange={(e) => setNotes(e.target.value)}
@@ -518,14 +394,11 @@ export function CarHireBookingForm({ vehicle, className = "" }: CarHireBookingFo
         </div>
       </div>
 
-      {/* Price breakdown */}
       {estimate && (
         <div className="space-y-3">
           <div
-            className={`rounded-2xl p-4 space-y-3 border ${
-              estimate.customQuote
-                ? "bg-amber-50 border-amber-200/80"
-                : "bg-emerald-50 border-emerald-200/60"
+            className={`rounded-2xl p-4 space-y-2 border ${
+              estimate.customQuote ? "bg-amber-50 border-amber-200/80" : "bg-emerald-50 border-emerald-200/60"
             }`}
           >
             <div className="flex items-start justify-between gap-4">
@@ -535,14 +408,8 @@ export function CarHireBookingForm({ vehicle, className = "" }: CarHireBookingFo
                 </h4>
                 <p className={`text-[11px] ${estimate.customQuote ? "text-amber-800/90" : "text-emerald-700/80"}`}>
                   {vehicle.shortName} · {purposeMeta.label}
-                  {effectiveDays > 1 ? ` · ${effectiveDays} days` : ""} ·{" "}
-                  {driverOption === "with-driver" ? "With driver" : "Self-drive"}
+                  {effectiveDays > 1 ? ` · ${effectiveDays} days` : ""} · Chauffeur included
                 </p>
-                {vehicle.hireWeeklyRate != null && !estimate.customQuote && (
-                  <p className="text-[11px] font-bold text-[#F9A03F] mt-1">
-                    Weekly list price: {formatWeeklyRate(vehicle)} (with driver)
-                  </p>
-                )}
               </div>
               {!estimate.customQuote && (
                 <span className="text-2xl font-black text-emerald-800 whitespace-nowrap">
@@ -550,45 +417,10 @@ export function CarHireBookingForm({ vehicle, className = "" }: CarHireBookingFo
                 </span>
               )}
             </div>
-
             {estimate.customQuote ? (
               <p className="text-sm text-amber-900 leading-relaxed">{estimate.priceNote}</p>
             ) : (
-              <div className="text-xs space-y-1.5 pt-2 border-t border-emerald-200/50">
-                <div className="flex justify-between text-emerald-900/90">
-                  <span>Vehicle hire</span>
-                  <span className="font-bold">KES {estimate.vehicleSubtotal.toLocaleString()}</span>
-                </div>
-                {estimate.driverFee > 0 && (
-                  <div className="flex justify-between text-emerald-900/90">
-                    <span>Professional driver</span>
-                    <span className="font-bold">KES {estimate.driverFee.toLocaleString()}</span>
-                  </div>
-                )}
-                {estimate.priceNote && (
-                  <p className="text-[10px] text-emerald-700 pt-1">{estimate.priceNote}</p>
-                )}
-                {estimateWithDriver &&
-                  estimateSelfDrive &&
-                  !estimateWithDriver.customQuote &&
-                  !estimateSelfDrive.customQuote &&
-                  driverOption === "with-driver" && (
-                    <p className="text-[10px] text-emerald-600 pt-1">
-                      Self-drive would be KES {estimateSelfDrive.total.toLocaleString()} (save KES{" "}
-                      {(estimateWithDriver.total - estimateSelfDrive.total).toLocaleString()})
-                    </p>
-                  )}
-                {estimateWithDriver &&
-                  estimateSelfDrive &&
-                  !estimateWithDriver.customQuote &&
-                  !estimateSelfDrive.customQuote &&
-                  driverOption === "self-drive" && (
-                    <p className="text-[10px] text-sky-600 pt-1">
-                      With driver would be KES {estimateWithDriver.total.toLocaleString()} (+KES{" "}
-                      {(estimateWithDriver.total - estimateSelfDrive.total).toLocaleString()} for chauffeur)
-                    </p>
-                  )}
-              </div>
+              estimate.priceNote && <p className="text-[11px] text-emerald-700">{estimate.priceNote}</p>
             )}
           </div>
 
@@ -596,14 +428,9 @@ export function CarHireBookingForm({ vehicle, className = "" }: CarHireBookingFo
             <div className="w-11 h-11 rounded-xl bg-white/15 flex items-center justify-center shrink-0">
               <Smartphone className="w-6 h-6 text-[#F9A03F]" />
             </div>
-            <div className="flex-grow min-w-0">
-              <p className="text-[10px] font-bold uppercase tracking-widest text-sky-200">M-Pesa Till (Ephream Tours)</p>
+            <div className="min-w-0 flex-grow">
+              <p className="text-[10px] font-bold uppercase tracking-widest text-sky-200">M-Pesa Till</p>
               <p className="text-xl font-black tracking-wider">{MPESA_TILL}</p>
-              {estimate.mpesaDeposit && (
-                <p className="text-[11px] text-sky-100/90 mt-0.5">
-                  Suggested deposit: KES {estimate.mpesaDeposit.toLocaleString()} · balance on return
-                </p>
-              )}
             </div>
           </div>
         </div>
@@ -611,22 +438,21 @@ export function CarHireBookingForm({ vehicle, className = "" }: CarHireBookingFo
 
       <button
         type="submit"
-        disabled={state === "submitting" || (driverOption === "with-driver" && overCapacity) || selfDriveBlocked}
+        disabled={state === "submitting" || overCapacity}
         className="touch-target w-full py-4 rounded-xl bg-emerald-600 hover:bg-emerald-700 text-white font-bold flex items-center justify-center gap-2 shadow-lg disabled:opacity-60"
       >
         {state === "submitting" ? (
           <div className="w-6 h-6 border-2 border-white/30 border-t-white rounded-full animate-spin" />
         ) : (
           <>
-            Request {vehicle.shortName}{" "}
-            {driverOption === "with-driver" ? "with driver" : "self-drive"}
+            Request {vehicle.shortName} with driver
             <Send className="w-4 h-4" />
           </>
         )}
       </button>
       <p className="text-center text-[11px] text-gray-500 leading-relaxed">
-        Final rate confirmed on WhatsApp. Pay to M-Pesa Till <strong className="text-gray-700">{MPESA_TILL}</strong> when
-        we confirm your booking.
+        All hires include a professional driver. Self-drive is not available. Pay to Till{" "}
+        <strong className="text-gray-700">{MPESA_TILL}</strong> when we confirm.
       </p>
     </form>
   );

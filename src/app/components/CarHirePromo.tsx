@@ -3,10 +3,10 @@ import { Link } from "react-router";
 import { Car, ArrowRight, Phone, Check } from "lucide-react";
 
 const hireHighlights = [
-  "Toyota MPVs, 4x4 Prado & Coaster buses",
-  "Professional chauffeur on every hire",
-  "Airport, SGR, safaris, weddings & events",
-  "Hourly, daily, or custom multi-day rates",
+  "Noah, Voxy, Esquire from KES 12,000/day",
+  "Alphard KES 16,000/day · weekly rates available",
+  "16-seater Hiace from KES 18,000/day",
+  "Chauffeur included — no self-drive",
 ];
 
 export function CarHirePromo() {

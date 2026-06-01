@@ -1,10 +1,12 @@
 import { motion, AnimatePresence } from "motion/react";
 import { useState, useEffect } from "react";
+import { Link } from "react-router";
 import { 
   Shield, Key, Award, Users, MapPin, 
   Phone, Mail, User, Send, CheckCircle2, 
   HelpCircle, Car, ArrowRight, DollarSign, 
-  Calendar, Check, ChevronDown, Sparkles
+  Calendar, Check, ChevronDown, Sparkles,
+  Handshake, Luggage
 } from "lucide-react";
 import { toast } from "sonner";
 import { fleetGalleryFor, type FleetImageSet } from "../data/fleetImages";
@@ -161,7 +163,7 @@ export function PartnershipPage() {
               transition={{ duration: 0.8, delay: 0.15 }}
               className="text-lg text-gray-600 font-light leading-relaxed mb-10 max-w-xl"
             >
-              Turn your idle premium Toyota vehicle into an exceptionally profitable asset. We lease luxury Voxys, Noahs, Esquires, Alphards, and Hiaces for high-end coastal tours and airport VIP transfers.
+              One professional Toyota fleet powers everything we do: owners can register their vehicles and earn, while travellers and companies hire the same vetted fleet for transfers, safaris, and events along the coast.
             </motion.p>
 
             <motion.div
@@ -172,6 +174,9 @@ export function PartnershipPage() {
             >
               <a href="#calculator" className="px-8 py-4 bg-[#003B73] hover:bg-[#002B54] text-white font-bold rounded-full transition-all shadow-lg hover:shadow-2xl">
                 Estimate Your Earnings
+              </a>
+              <a href="#how-it-works" className="px-8 py-4 bg-white border border-gray-200 hover:border-[#003B73] text-gray-700 hover:text-[#003B73] font-bold rounded-full transition-all shadow-sm">
+                How it works
               </a>
               <a href="#apply" className="px-8 py-4 bg-white border border-[#F9A03F] hover:bg-[#F9A03F] hover:text-white text-[#F9A03F] font-bold rounded-full transition-all shadow-sm">
                 Apply to Lease
@@ -222,6 +227,194 @@ export function PartnershipPage() {
         </div>
       </section>
 
+      {/* --- TWO AUDIENCES: OWNERS + HIRERS --- */}
+      <section id="how-it-works" className="relative z-10 py-16 md:py-24 px-4 sm:px-6 lg:px-8">
+        <div className="max-w-7xl mx-auto">
+          <motion.div
+            initial={{ opacity: 0, y: 24 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            className="text-center mb-12 md:mb-16"
+          >
+            <span className="text-xs font-bold uppercase tracking-widest text-[#F9A03F]">Complete picture</span>
+            <h2 className="text-3xl sm:text-4xl md:text-5xl font-black text-gray-900 mt-3 mb-4 tracking-tight">
+              Two Ways to Use Our Fleet
+            </h2>
+            <p className="text-gray-600 text-base sm:text-lg max-w-3xl mx-auto font-light leading-relaxed">
+              Ephream Tours is not only for car owners. The same professionally managed vehicles that owners place with us are what guests book for coastal travel — everyone wins.
+            </p>
+          </motion.div>
+
+          {/* 3-step ecosystem */}
+          <div className="grid md:grid-cols-3 gap-6 mb-14 md:mb-16">
+            {[
+              {
+                step: "1",
+                title: "You give us your Toyota",
+                desc: "Owners register a 2016+ Alphard, Voxy, Noah, Esquire, Hiace, Prado, or Coaster. We inspect it and sign a transparent lease agreement.",
+              },
+              {
+                step: "2",
+                title: "We run it professionally",
+                desc: "Ephream handles driving, cleaning, scheduling, and coastal logistics. Your car joins our active tour and transfer fleet — you do not drive for guests yourself.",
+              },
+              {
+                step: "3",
+                title: "Guests hire our fleet",
+                desc: "Tourists, hotels, and companies book those same vehicles for SGR transfers, airport VIP, safaris, weddings, and group travel. Demand keeps owners earning.",
+              },
+            ].map((item, i) => (
+              <motion.div
+                key={item.step}
+                initial={{ opacity: 0, y: 20 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true }}
+                transition={{ delay: i * 0.08 }}
+                className="relative bg-white border border-gray-200 rounded-2xl p-6 shadow-sm"
+              >
+                <span className="inline-flex w-10 h-10 rounded-full bg-[#003B73] text-white font-black text-sm items-center justify-center mb-4">
+                  {item.step}
+                </span>
+                <h3 className="text-lg font-bold text-gray-900 mb-2">{item.title}</h3>
+                <p className="text-sm text-gray-600 leading-relaxed font-light">{item.desc}</p>
+                {i < 2 && (
+                  <ArrowRight className="hidden md:block absolute -right-3 top-1/2 -translate-y-1/2 w-6 h-6 text-[#F9A03F] z-10" />
+                )}
+              </motion.div>
+            ))}
+          </div>
+
+          {/* Owner vs Hirer cards */}
+          <div className="grid lg:grid-cols-2 gap-8">
+            <motion.div
+              initial={{ opacity: 0, x: -20 }}
+              whileInView={{ opacity: 1, x: 0 }}
+              viewport={{ once: true }}
+              className="bg-gradient-to-br from-[#003B73] to-[#002244] text-white rounded-3xl p-8 shadow-xl border border-sky-500/20"
+            >
+              <div className="flex items-center gap-3 mb-4">
+                <div className="w-12 h-12 rounded-2xl bg-white/10 flex items-center justify-center">
+                  <Handshake className="w-6 h-6 text-[#F9A03F]" />
+                </div>
+                <div>
+                  <p className="text-[10px] font-bold uppercase tracking-widest text-sky-200">For car owners</p>
+                  <h3 className="text-2xl font-black">Give your car — we pay you</h3>
+                </div>
+              </div>
+              <ul className="space-y-3 text-sm text-sky-100/90 mb-8">
+                {[
+                  "Register your premium Toyota (2016 or newer)",
+                  "Weekly or monthly lease payouts to M-Pesa or bank",
+                  "We manage drivers, maintenance, and bookings",
+                  "Earn from coastal tourist demand without daily hassle",
+                ].map((line) => (
+                  <li key={line} className="flex gap-2">
+                    <Check className="w-4 h-4 text-[#F9A03F] shrink-0 mt-0.5" />
+                    <span>{line}</span>
+                  </li>
+                ))}
+              </ul>
+              <div className="flex flex-col sm:flex-row gap-3">
+                <a
+                  href="#apply"
+                  className="touch-target flex-1 text-center px-6 py-3.5 bg-[#F9A03F] hover:bg-amber-400 text-gray-900 font-bold rounded-xl transition-all"
+                >
+                  Apply to lease your car
+                </a>
+                <a
+                  href="#calculator"
+                  className="touch-target flex-1 text-center px-6 py-3.5 border border-white/20 hover:bg-white/10 font-bold rounded-xl transition-all"
+                >
+                  Estimate earnings
+                </a>
+              </div>
+            </motion.div>
+
+            <motion.div
+              initial={{ opacity: 0, x: 20 }}
+              whileInView={{ opacity: 1, x: 0 }}
+              viewport={{ once: true }}
+              className="bg-white border-2 border-[#F9A03F]/30 rounded-3xl p-8 shadow-xl"
+            >
+              <div className="flex items-center gap-3 mb-4">
+                <div className="w-12 h-12 rounded-2xl bg-amber-50 flex items-center justify-center">
+                  <Luggage className="w-6 h-6 text-[#F9A03F]" />
+                </div>
+                <div>
+                  <p className="text-[10px] font-bold uppercase tracking-widest text-amber-600">For travellers & companies</p>
+                  <h3 className="text-2xl font-black text-gray-900">Hire our fleet</h3>
+                </div>
+              </div>
+              <ul className="space-y-3 text-sm text-gray-600 mb-8">
+                {[
+                  "Book owner-managed & company-owned vehicles in one place",
+                  "Airport & SGR transfers, hotel shuttles, safaris, weddings",
+                  "Toyota MPVs, 4x4 Prado, and Coaster buses with pro drivers",
+                  "Transparent rates — pay per trip, day, or custom package",
+                ].map((line) => (
+                  <li key={line} className="flex gap-2">
+                    <Check className="w-4 h-4 text-emerald-500 shrink-0 mt-0.5" />
+                    <span>{line}</span>
+                  </li>
+                ))}
+              </ul>
+              <div className="flex flex-col sm:flex-row gap-3">
+                <Link
+                  to="/services"
+                  className="touch-target flex-1 text-center px-6 py-3.5 bg-[#003B73] hover:bg-[#002B54] text-white font-bold rounded-xl transition-all"
+                >
+                  View hire services
+                </Link>
+                <Link
+                  to="/contact"
+                  className="touch-target flex-1 text-center px-6 py-3.5 border-2 border-[#003B73] text-[#003B73] hover:bg-sky-50 font-bold rounded-xl transition-all"
+                >
+                  Book / enquire now
+                </Link>
+              </div>
+            </motion.div>
+          </div>
+
+          {/* FAQ — both audiences */}
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            className="mt-14 md:mt-16 bg-sky-50 border border-sky-100 rounded-3xl p-6 sm:p-10"
+          >
+            <h3 className="text-xl font-bold text-gray-900 mb-6 flex items-center gap-2">
+              <HelpCircle className="w-5 h-5 text-[#003B73]" />
+              Common questions
+            </h3>
+            <div className="grid md:grid-cols-2 gap-6">
+              {[
+                {
+                  q: "I want to give Ephream my car. Is this the right page?",
+                  a: "Yes. Use the earnings calculator and lease application below. We only accept premium Toyota models from 2016 onwards.",
+                },
+                {
+                  q: "I only want to hire a car — do I apply here?",
+                  a: "No application needed. Go to Services to see transfers and safaris, or Contact to book a specific vehicle and date.",
+                },
+                {
+                  q: "Who drives the car when I lease it to you?",
+                  a: "Our licensed professional drivers operate your vehicle for Ephream Tours guests. You receive lease income; we handle operations.",
+                },
+                {
+                  q: "Can I hire the same cars shown on this page?",
+                  a: "Yes. The fleet gallery shows the Toyota models we recruit and operate. Availability depends on dates and route — contact us to confirm.",
+                },
+              ].map((faq) => (
+                <div key={faq.q} className="bg-white rounded-2xl p-5 border border-gray-100 shadow-sm">
+                  <h4 className="font-bold text-gray-900 text-sm mb-2">{faq.q}</h4>
+                  <p className="text-xs sm:text-sm text-gray-600 leading-relaxed">{faq.a}</p>
+                </div>
+              ))}
+            </div>
+          </motion.div>
+        </div>
+      </section>
+
       {/* --- TARGET TOYOTA FLEET SECTION --- */}
       <section className="py-20 bg-gray-900 text-white relative overflow-hidden">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
@@ -231,7 +424,7 @@ export function PartnershipPage() {
               Wanted <span className="bg-gradient-to-r from-[#F9A03F] to-orange-400 bg-clip-text text-transparent">Toyota Vehicles</span>
             </h2>
             <p className="text-gray-400 text-lg max-w-2xl mx-auto font-light leading-relaxed">
-              We operate exclusively with premium-grade Toyota models to maintain high standards of mechanical reliability and passenger luxury.
+              These are the Toyota models we recruit from owners and offer for hire to guests — same vehicles, professionally managed end to end.
             </p>
           </div>
 

@@ -6,6 +6,7 @@ import {
   HelpCircle, Car, ArrowRight, DollarSign, 
   Calendar, Check, ChevronDown, Sparkles
 } from "lucide-react";
+import { toast } from "sonner";
 
 // Gallery image imports to use as beautiful vehicle representations
 import gallery9 from "../../imports/gallery-9.jpg";   // Voxy
@@ -78,6 +79,26 @@ const targetVehicles: ToyotaVehicle[] = [
     seats: "14 Group Seats",
     suitability: "Tsavo East Safaris & High-Capacity Corporate Events",
     highlight: "High demand during safari peak seasons (Watamu/Diani departures)"
+  },
+  {
+    model: "Toyota Prado",
+    type: "Premium 4x4 Safari SUV",
+    image: gallery14,
+    gallery: [gallery14, gallery15, gallery16],
+    baseDailyRate: 9000,
+    seats: "7 Seats (4x4)",
+    suitability: "Safari Game Drives & Rough Coastal Terrains (Tsavo/Amboseli packages)",
+    highlight: "Highly requested for premium safari excursions departing Watamu/Diani"
+  },
+  {
+    model: "Toyota Coaster",
+    type: "High-Capacity Group Bus",
+    image: gallery16,
+    gallery: [gallery16, gallery14, gallery15],
+    baseDailyRate: 12000,
+    seats: "23-30 Group Seats",
+    suitability: "School Trips, Church Events, Wedding Fleets & Large Corporate Groups",
+    highlight: "Best yield for high-capacity group transport requirements"
   }
 ];
 
@@ -97,6 +118,13 @@ export function PartnershipPage() {
 
   const handleFormSubmit = (e: React.FormEvent) => {
     e.preventDefault();
+    if (parseInt(carYear) < 2016) {
+      toast.error("Ephream Tours only partners with Toyota vehicles from model year 2016 or newer to guarantee maximum guest reliability.", {
+        description: "Please register a vehicle manufactured in 2016 or later.",
+        duration: 8000
+      });
+      return;
+    }
     setSubmitState("submitting");
     setTimeout(() => {
       setSubmitState("success");
@@ -563,8 +591,8 @@ export function PartnershipPage() {
                       <input 
                         type="number" 
                         required 
-                        placeholder="Year of Manufacture" 
-                        min="2010"
+                        placeholder="Year (From 2016)" 
+                        min="2016"
                         max="2027"
                         value={carYear} 
                         onChange={e => setCarYear(e.target.value)} 

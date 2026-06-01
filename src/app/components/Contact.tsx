@@ -80,11 +80,11 @@ export function Contact() {
               </div>
               <div>
                 <h3 className="font-bold text-base sm:text-lg mb-1">Call Us</h3>
-                <a href="tel:+254701738725" className="text-sm sm:text-base text-gray-600 hover:text-sky-600 transition-colors block">+254 701 738725</a>
-                <a href="tel:+254701738725" className="text-sm sm:text-base text-gray-600 hover:text-sky-600 transition-colors block">Office No: +254 701 738725</a>
+                <a href="tel:+254701738725" className="text-sm sm:text-base text-gray-600 hover:text-sky-600 transition-colors block">+254 701 738 725</a>
+                <a href="tel:+254736070030" className="text-sm sm:text-base text-gray-600 hover:text-sky-600 transition-colors block">+254 736 070 030</a>
               </div>
             </motion.div>
-
+ 
             <motion.div
               whileHover={{ x: 10 }}
               className="flex items-start gap-3 sm:gap-4 p-3 sm:p-4 rounded-xl hover:bg-sky-50 transition-colors"
@@ -94,10 +94,11 @@ export function Contact() {
               </div>
               <div>
                 <h3 className="font-bold text-base sm:text-lg mb-1">Email Us</h3>
-                <a href="mailto:ephreamtours@gmail.com" className="text-sm sm:text-base text-gray-600 hover:text-sky-600 transition-colors break-all block">ephreamtours@gmail.com</a>
+                <a href="mailto:info@ephremtours.co.ke" className="text-sm sm:text-base text-gray-600 hover:text-sky-600 transition-colors break-all block">info@ephremtours.co.ke</a>
+                <p className="text-xs text-sky-600 font-semibold">www.ephremtours.co.ke</p>
               </div>
             </motion.div>
-
+ 
             <motion.div
               whileHover={{ x: 10 }}
               className="flex items-start gap-3 sm:gap-4 p-3 sm:p-4 rounded-xl hover:bg-sky-50 transition-colors"
@@ -110,7 +111,7 @@ export function Contact() {
                 <p className="text-sm sm:text-base text-gray-600 font-semibold">Buy Goods Till No: 5669756</p>
               </div>
             </motion.div>
-
+ 
             <motion.div
               whileHover={{ x: 10 }}
               className="flex items-start gap-3 sm:gap-4 p-3 sm:p-4 rounded-xl hover:bg-sky-50 transition-colors"
@@ -120,7 +121,7 @@ export function Contact() {
               </div>
               <div>
                 <h3 className="font-bold text-base sm:text-lg mb-1">Location</h3>
-                <p className="text-sm sm:text-base text-gray-600">Malindi, Serving All of Kenya</p>
+                <p className="text-sm sm:text-base text-gray-600">Malindi, Kenya (Serving Coastal Strip)</p>
               </div>
             </motion.div>
           </motion.div>

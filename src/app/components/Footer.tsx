@@ -98,22 +98,26 @@ export function Footer() {
                 <div className="w-8 h-8 rounded-full bg-white/5 flex items-center justify-center shrink-0">
                   <Phone className="w-4 h-4 text-[#F9A03F]" />
                 </div>
-                <div className="pt-1.5">
-                  <p className="hover:text-white transition-colors cursor-pointer">+254 701 738725</p>
-                  <p className="text-xs text-sky-100/50 mt-1">Till No: 5669756</p>
+                <div className="pt-1">
+                  <p className="hover:text-white transition-colors cursor-pointer block">+254 701 738 725</p>
+                  <p className="hover:text-white transition-colors cursor-pointer block">+254 736 070 030</p>
+                  <p className="text-[10px] text-sky-100/40 mt-1">Till No: 5669756</p>
                 </div>
               </li>
               <li className="flex items-center gap-3 text-sky-100/70 hover:text-white transition-colors">
                 <div className="w-8 h-8 rounded-full bg-white/5 flex items-center justify-center shrink-0">
                   <Mail className="w-4 h-4 text-[#F9A03F]" />
                 </div>
-                <p className="break-all cursor-pointer">ephreamtours@gmail.com</p>
+                <div>
+                  <p className="break-all cursor-pointer">info@ephremtours.co.ke</p>
+                  <p className="text-xs text-sky-100/40">www.ephremtours.co.ke</p>
+                </div>
               </li>
               <li className="flex items-center gap-3 text-sky-100/70">
                 <div className="w-8 h-8 rounded-full bg-white/5 flex items-center justify-center shrink-0">
                   <MapPin className="w-4 h-4 text-[#F9A03F]" />
                 </div>
-                <p>Malindi, Serving All of Kenya</p>
+                <p>Malindi, Kenya (Serving Coastal Strip)</p>
               </li>
             </ul>
 

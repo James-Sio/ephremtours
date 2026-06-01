@@ -34,7 +34,7 @@ export function Navigation() {
         initial={{ y: -100 }}
         animate={{ y: 0 }}
         transition={{ duration: 0.6 }}
-        className="fixed top-0 left-0 right-0 z-50 bg-white shadow-sm border-b border-gray-100"
+        className="fixed top-0 left-0 right-0 z-50 bg-white shadow-sm border-b border-gray-100 safe-top"
       >
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="grid grid-cols-3 md:flex md:justify-between items-center h-16 sm:h-20">
@@ -89,8 +89,9 @@ export function Navigation() {
                 animate={{ opacity: 1 }}
                 transition={{ delay: 0.3 }}
                 onClick={() => setIsOpen(!isOpen)}
-                className="p-2 text-gray-700 hover:bg-gray-100 rounded-full transition-colors relative z-50"
+                className="touch-target p-2.5 text-gray-700 hover:bg-gray-100 rounded-full transition-colors relative z-50"
                 aria-label="Toggle Menu"
+                aria-expanded={isOpen}
               >
                 <AnimatePresence mode="wait">
                   {isOpen ? (
@@ -125,13 +126,13 @@ export function Navigation() {
              
              {/* Menu Slide Down */}
              <motion.div
-               initial={{ opacity: 0, y: -20 }}
+               initial={{ opacity: 0, y: -16 }}
                animate={{ opacity: 1, y: 0 }}
-               exit={{ opacity: 0, y: -20 }}
+               exit={{ opacity: 0, y: -16 }}
                transition={{ duration: 0.3, ease: "easeOut" }}
-               className="fixed top-16 left-0 right-0 z-40 bg-white shadow-2xl rounded-b-3xl border-t border-gray-100 md:hidden overflow-hidden"
+               className="fixed inset-x-0 top-16 bottom-0 z-40 bg-white md:hidden overflow-y-auto overscroll-contain safe-x"
              >
-               <div className="px-4 py-6 flex flex-col gap-2">
+               <div className="px-4 py-6 pb-safe flex flex-col gap-2 min-h-full">
                  {navItems.map((item, index) => {
                    const isActive = location.pathname === item.path || (item.path !== "/" && location.pathname.startsWith(item.path));
                    return (
@@ -144,7 +145,7 @@ export function Navigation() {
                        <Link
                          to={item.path}
                          onClick={() => setIsOpen(false)}
-                         className={`block w-full px-6 py-4 text-center rounded-2xl font-semibold transition-all active:scale-95 ${
+                         className={`touch-target block w-full px-6 py-4 text-center rounded-2xl text-base font-semibold transition-all active:scale-[0.98] ${
                            isActive
                              ? "bg-gradient-to-r from-sky-500 to-blue-600 text-white shadow-md shadow-sky-200"
                              : "text-gray-700 bg-gray-50 hover:bg-sky-50 hover:text-sky-700"

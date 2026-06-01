@@ -1,0 +1,82 @@
+/* Mobile-first polish: safe areas, touch targets, no horizontal bleed */
+
+html {
+  -webkit-text-size-adjust: 100%;
+  scroll-behavior: smooth;
+}
+
+body {
+  overflow-x: clip;
+}
+
+@supports (padding: env(safe-area-inset-bottom)) {
+  .safe-bottom {
+    padding-bottom: max(1rem, env(safe-area-inset-bottom));
+  }
+
+  .safe-top {
+    padding-top: max(0px, env(safe-area-inset-top));
+  }
+
+  .safe-x {
+    padding-left: max(0px, env(safe-area-inset-left));
+    padding-right: max(0px, env(safe-area-inset-right));
+  }
+
+  .inset-safe-bottom {
+    bottom: max(1rem, env(safe-area-inset-bottom));
+  }
+
+  .inset-safe-right {
+    right: max(1rem, env(safe-area-inset-right));
+  }
+
+  .fab-position {
+    bottom: max(1.25rem, env(safe-area-inset-bottom));
+    right: max(1.25rem, env(safe-area-inset-right));
+  }
+}
+
+@supports not (padding: env(safe-area-inset-bottom)) {
+  .safe-bottom {
+    padding-bottom: 1rem;
+  }
+
+  .fab-position {
+    bottom: 1.25rem;
+    right: 1.25rem;
+  }
+}
+
+/* Hide scrollbars for horizontal chip rows */
+.scrollbar-none {
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+}
+
+.scrollbar-none::-webkit-scrollbar {
+  display: none;
+}
+
+/* Minimum touch target (Apple HIG / Material) */
+@media (pointer: coarse) {
+  .touch-target {
+    min-height: 44px;
+    min-width: 44px;
+  }
+}
+
+/* Reduce motion for accessibility */
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+}

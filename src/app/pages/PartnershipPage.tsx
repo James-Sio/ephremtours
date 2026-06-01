@@ -124,7 +124,7 @@ export function PartnershipPage() {
   };
 
   return (
-    <div className="bg-slate-50 min-h-screen pt-24 font-sans relative overflow-hidden">
+    <div className="bg-slate-50 min-h-screen min-h-[100dvh] pt-20 sm:pt-24 font-sans relative overflow-x-clip">
       
       {/* Background Orbs */}
       <div className="absolute top-0 right-0 w-[500px] h-[500px] bg-sky-100 rounded-full blur-[120px] opacity-60 pointer-events-none" />
@@ -236,14 +236,15 @@ export function PartnershipPage() {
           </div>
 
           {/* Vehicle Navigation Buttons */}
-          <div className="flex flex-wrap justify-center gap-3 mb-12">
+          <div className="-mx-4 px-4 sm:mx-0 overflow-x-auto scrollbar-none mb-10 sm:mb-12">
+            <div className="flex gap-2 sm:flex-wrap sm:justify-center sm:gap-3 min-w-max sm:min-w-0 pb-1">
             {targetVehicles.map((veh) => (
               <button
                 key={veh.model}
                 onClick={() => setActiveTab(veh.model)}
                 onMouseEnter={() => preloadFleetModel(veh.model)}
                 onFocus={() => preloadFleetModel(veh.model)}
-                className={`px-5 py-3 rounded-full font-bold text-xs sm:text-sm transition-all ${
+                className={`touch-target shrink-0 px-4 sm:px-5 py-3 rounded-full font-bold text-xs sm:text-sm transition-all active:scale-[0.98] ${
                   activeTab === veh.model
                     ? "bg-[#F9A03F] text-gray-900 shadow-lg shadow-orange-500/20"
                     : "bg-white/5 hover:bg-white/10 text-white border border-white/10"
@@ -252,6 +253,7 @@ export function PartnershipPage() {
                 {veh.model.replace("Toyota ", "")}
               </button>
             ))}
+            </div>
           </div>
 
           {/* Display Details of Selected Vehicle */}
@@ -267,7 +269,7 @@ export function PartnershipPage() {
                   animate={{ opacity: 1, y: 0 }}
                   exit={{ opacity: 0, y: -20 }}
                   transition={{ duration: 0.4 }}
-                  className="grid lg:grid-cols-2 gap-12 items-center bg-white/5 backdrop-blur-xl border border-white/10 rounded-3xl p-8 lg:p-12 shadow-2xl"
+                  className="grid lg:grid-cols-2 gap-8 lg:gap-12 items-center bg-white/5 backdrop-blur-xl border border-white/10 rounded-2xl sm:rounded-3xl p-5 sm:p-8 lg:p-12 shadow-2xl"
                 >
                   {/* Left: authentic model photo gallery */}
                   <div className="space-y-4">
@@ -299,7 +301,7 @@ export function PartnershipPage() {
                       </div>
                     </div>
 
-                    <div className="grid grid-cols-5 gap-2 sm:gap-3">
+                    <div className="flex gap-2.5 overflow-x-auto snap-x snap-mandatory scrollbar-none pb-1 sm:grid sm:grid-cols-5 sm:gap-3 sm:overflow-visible sm:pb-0">
                       {veh.gallery.map((img, index) => (
                         <button
                           key={img.hero}
@@ -310,7 +312,7 @@ export function PartnershipPage() {
                           }}
                           aria-label={`View ${shortName} photo ${index + 1}`}
                           aria-pressed={galleryIndex === index}
-                          className={`rounded-xl overflow-hidden aspect-[4/3] bg-gray-800 border-2 transition-all focus:outline-none focus-visible:ring-2 focus-visible:ring-[#F9A03F] ${
+                          className={`touch-target snap-start shrink-0 w-[4.75rem] sm:w-auto rounded-xl overflow-hidden aspect-[4/3] bg-gray-800 border-2 transition-all focus:outline-none focus-visible:ring-2 focus-visible:ring-[#F9A03F] active:scale-[0.98] ${
                             galleryIndex === index
                               ? "border-[#F9A03F] ring-2 ring-[#F9A03F]/40 scale-[1.02]"
                               : "border-white/10 opacity-80 hover:opacity-100 hover:border-white/30"

@@ -174,7 +174,7 @@ export function PackageDetailPage() {
     <div className="bg-gray-950 text-white min-h-screen relative overflow-hidden font-sans selection:bg-amber-400 selection:text-black">
       
       {/* Cinematic Full-Width Hero Header (Go2Africa Layout) */}
-      <section className="relative h-[80vh] w-full bg-gray-900 overflow-hidden flex items-end">
+      <section className="relative h-[52svh] min-h-[320px] sm:h-[62svh] lg:h-[80vh] w-full bg-gray-900 overflow-hidden flex items-end">
         
         {/* Massive full screen dynamic background image */}
         <div className="absolute inset-0 bg-gray-950">
@@ -204,7 +204,7 @@ export function PackageDetailPage() {
         {/* Back navigation button */}
         <Link 
           to="/packages"
-          className="absolute top-28 left-6 sm:left-10 inline-flex items-center gap-2 px-5 py-2.5 rounded-full bg-black/60 backdrop-blur-md border border-white/10 hover:border-amber-400/40 text-xs font-bold uppercase tracking-widest text-white hover:text-amber-400 transition-all hover:scale-105 z-30"
+          className="touch-target absolute top-[4.75rem] sm:top-28 left-4 sm:left-10 inline-flex items-center gap-2 px-4 sm:px-5 py-2.5 rounded-full bg-black/60 backdrop-blur-md border border-white/10 text-[10px] sm:text-xs font-bold uppercase tracking-widest text-white active:scale-[0.98] z-30"
         >
           <ArrowLeft className="w-4 h-4" />
           Back to Catalog
@@ -213,7 +213,7 @@ export function PackageDetailPage() {
         {/* Floating Favorite Button */}
         <button
           onClick={() => toggleFavorite(pkg.id)}
-          className="absolute top-28 right-6 sm:right-10 w-11 h-11 rounded-full bg-black/60 backdrop-blur-md border border-white/10 hover:border-amber-400/40 flex items-center justify-center text-white hover:text-red-500 transition-all hover:scale-110 z-30 cursor-pointer"
+          className="touch-target absolute top-[4.75rem] sm:top-28 right-4 sm:right-10 w-11 h-11 rounded-full bg-black/60 backdrop-blur-md border border-white/10 flex items-center justify-center text-white active:scale-95 z-30 cursor-pointer"
         >
           <Heart className={`w-5 h-5 ${favorites.includes(pkg.id) ? "fill-red-500 text-red-500" : ""}`} />
         </button>
@@ -236,7 +236,7 @@ export function PackageDetailPage() {
             </span>
 
             {/* Headline Title */}
-            <h1 className="text-4xl sm:text-6xl md:text-7xl font-black mb-4 tracking-tight leading-[1.05] text-white">
+            <h1 className="text-3xl sm:text-5xl md:text-6xl lg:text-7xl font-black mb-4 tracking-tight leading-[1.08] text-white">
               {pkg.name}
             </h1>
 
@@ -832,13 +832,13 @@ export function PackageDetailPage() {
               {/* Navigation arrows inside Lightbox */}
               <button
                 onClick={() => setActiveGalleryIndex(prev => (prev - 1 + pkg.images.length) % pkg.images.length)}
-                className="absolute left-4 top-1/2 -translate-y-1/2 w-12 h-12 rounded-full bg-black/60 border border-white/10 hover:border-amber-400/40 flex items-center justify-center text-white hover:text-amber-400 hover:scale-110 transition-all z-20 cursor-pointer shadow-lg"
+                className="touch-target absolute left-2 sm:left-4 top-1/2 -translate-y-1/2 w-11 h-11 sm:w-12 sm:h-12 rounded-full bg-black/60 border border-white/10 flex items-center justify-center text-white active:scale-95 z-20 cursor-pointer shadow-lg"
               >
                 <ChevronLeft className="w-6 h-6" />
               </button>
               <button
                 onClick={() => setActiveGalleryIndex(prev => (prev + 1) % pkg.images.length)}
-                className="absolute right-4 top-1/2 -translate-y-1/2 w-12 h-12 rounded-full bg-black/60 border border-white/10 hover:border-amber-400/40 flex items-center justify-center text-white hover:text-amber-400 hover:scale-110 transition-all z-20 cursor-pointer shadow-lg"
+                className="touch-target absolute right-2 sm:right-4 top-1/2 -translate-y-1/2 w-11 h-11 sm:w-12 sm:h-12 rounded-full bg-black/60 border border-white/10 flex items-center justify-center text-white active:scale-95 z-20 cursor-pointer shadow-lg"
               >
                 <ChevronRight className="w-6 h-6" />
               </button>
@@ -848,14 +848,14 @@ export function PackageDetailPage() {
       </AnimatePresence>
 
       {/* Dynamic Sticky Mobile Booking Bar */}
-      <div className="lg:hidden fixed bottom-0 left-0 right-0 p-4 bg-gray-950/90 backdrop-blur-xl border-t border-white/10 z-45 flex items-center justify-between shadow-2xl safe-bottom">
+      <div className="lg:hidden fixed bottom-0 left-0 right-0 px-4 pt-3 pb-safe bg-gray-950/95 backdrop-blur-xl border-t border-white/10 z-50 flex items-center justify-between gap-3 shadow-2xl safe-x">
         <div>
           <span className="block text-[8px] uppercase tracking-wider text-gray-400 font-extrabold">All-Inclusive Starting</span>
           <span className="text-base font-black text-amber-400">KES {pkg.price.toLocaleString()}</span>
         </div>
         <button
           onClick={() => scrollToSection(bookingRef)}
-          className="px-6 py-3 bg-amber-400 hover:bg-amber-300 text-black text-xs font-black uppercase tracking-widest rounded-xl transition-all shadow-lg active:scale-95 cursor-pointer"
+          className="touch-target shrink-0 px-5 sm:px-6 py-3.5 bg-amber-400 hover:bg-amber-300 text-black text-xs font-black uppercase tracking-widest rounded-xl transition-all shadow-lg active:scale-[0.98] cursor-pointer"
         >
           Enquire Now
         </button>

@@ -21,8 +21,8 @@ export default function App() {
     <>
       <Loader />
       <CustomCursor />
-      <Toaster richColors position="top-right" />
-      <div className="min-h-screen bg-gradient-to-b from-sky-50 to-white flex flex-col">
+      <Toaster richColors position="top-right" offset={16} mobileOffset={16} />
+      <div className="min-h-screen min-h-[100dvh] bg-gradient-to-b from-sky-50 to-white flex flex-col overflow-x-clip">
         <Navigation />
         <main className="flex-grow">
           <Routes>

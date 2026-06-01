@@ -608,7 +608,7 @@ export function Packages() {
             <span className="text-xs sm:text-sm font-bold text-amber-300 uppercase tracking-widest">ONE OF A KIND EXPERIENCES</span>
           </div>
           
-          <h2 className="text-4xl sm:text-6xl md:text-8xl font-black mb-6 tracking-tight leading-[1.05]">
+          <h2 className="text-3xl sm:text-5xl md:text-6xl lg:text-7xl font-black mb-6 tracking-tight leading-[1.05]">
             Explore Kenya <span className="bg-gradient-to-r from-amber-400 via-[#F9A03F] to-sky-400 bg-clip-text text-transparent">VIP Packages</span>
           </h2>
           
@@ -622,12 +622,12 @@ export function Packages() {
           <div className="flex flex-col lg:flex-row gap-6 justify-between items-center">
             
             {/* Category tabs */}
-            <div className="flex flex-wrap gap-2.5 w-full lg:w-auto">
+            <div className="-mx-2 px-2 flex gap-2 overflow-x-auto scrollbar-none w-full lg:mx-0 lg:px-0 lg:flex-wrap lg:overflow-visible lg:w-auto pb-1 lg:pb-0">
               {categories.map(cat => (
                 <button
                   key={cat}
                   onClick={() => setSelectedCategory(cat)}
-                  className={`px-6 py-3 rounded-2xl text-xs sm:text-sm font-bold transition-all relative cursor-pointer ${
+                  className={`touch-target shrink-0 px-5 sm:px-6 py-3 rounded-2xl text-xs sm:text-sm font-bold transition-all relative cursor-pointer active:scale-[0.98] ${
                     selectedCategory === cat
                       ? "text-white bg-[#003B73] border border-sky-500/30 shadow-lg shadow-sky-950/55"
                       : "text-gray-400 hover:text-white hover:bg-white/5 bg-white/5 border border-white/5"

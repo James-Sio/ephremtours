@@ -1,9 +1,8 @@
 import { motion } from "motion/react";
-import { Train, Plane, Hotel, MapPin, Camera, Users, ArrowRight, Car } from "lucide-react";
+import { Train, Plane, Hotel, MapPin, Camera, Users, ArrowRight } from "lucide-react";
 import { Link } from "react-router";
 
 const services = [
-  { id: "car-hire", title: "Car Hire", icon: Car, color: "from-emerald-500 to-teal-600", shadow: "shadow-emerald-500/20", path: "/car-hire" },
   { id: "lobby-concierge", title: "VIP Concierge", icon: Hotel, color: "from-blue-600 to-amber-500", shadow: "shadow-blue-500/20" },
   { id: "sgr", title: "SGR Transfers", icon: Train, color: "from-orange-400 to-red-500", shadow: "shadow-orange-500/20" },
   { id: "airport", title: "VIP Airport", icon: Plane, color: "from-sky-400 to-blue-500", shadow: "shadow-sky-500/20" },
@@ -51,7 +50,7 @@ export function CoreServicesHome() {
           </motion.div>
         </div>
 
-        <div className="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-8 gap-4 sm:gap-6">
+        <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-7 gap-4 sm:gap-6">
           {services.map((service, idx) => (
             <motion.div
               key={service.id}
@@ -61,7 +60,7 @@ export function CoreServicesHome() {
               transition={{ delay: idx * 0.1 }}
             >
               <Link 
-                to={"path" in service && service.path ? service.path : "/services"} 
+                to="/services"
                 className="group block h-full bg-white/5 hover:bg-white/10 border border-white/10 hover:border-white/20 rounded-2xl p-6 transition-all duration-300 hover:-translate-y-2 hover:shadow-2xl text-center"
               >
                 <div className={`w-12 h-12 mx-auto bg-gradient-to-br ${service.color} ${service.shadow} rounded-xl flex items-center justify-center shadow-lg mb-4 transform transition-transform group-hover:rotate-12`}>

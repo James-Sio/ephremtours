@@ -285,12 +285,12 @@ export function PartnershipPage() {
           </div>
 
           {/* Owner vs Hirer cards */}
-          <div className="grid lg:grid-cols-2 gap-8">
+          <div className="grid lg:grid-cols-2 gap-6 lg:gap-8">
             <motion.div
               initial={{ opacity: 0, x: -20 }}
               whileInView={{ opacity: 1, x: 0 }}
               viewport={{ once: true }}
-              className="bg-gradient-to-br from-[#003B73] to-[#002244] text-white rounded-3xl p-8 shadow-xl border border-sky-500/20"
+              className="bg-gradient-to-br from-[#003B73] to-[#002244] text-white rounded-2xl sm:rounded-3xl p-6 sm:p-8 shadow-xl border border-sky-500/20 min-w-0"
             >
               <div className="flex items-center gap-3 mb-4">
                 <div className="w-12 h-12 rounded-2xl bg-white/10 flex items-center justify-center">
@@ -334,15 +334,15 @@ export function PartnershipPage() {
               initial={{ opacity: 0, x: 20 }}
               whileInView={{ opacity: 1, x: 0 }}
               viewport={{ once: true }}
-              className="bg-white border-2 border-[#F9A03F]/30 rounded-3xl p-8 shadow-xl"
+              className="bg-white border-2 border-[#F9A03F]/30 rounded-2xl sm:rounded-3xl p-6 sm:p-8 shadow-xl min-w-0"
             >
-              <div className="flex items-center gap-3 mb-4">
-                <div className="w-12 h-12 rounded-2xl bg-amber-50 flex items-center justify-center">
+              <div className="flex items-start gap-3 mb-4 min-w-0">
+                <div className="w-12 h-12 rounded-2xl bg-amber-50 flex items-center justify-center shrink-0">
                   <Luggage className="w-6 h-6 text-[#F9A03F]" />
                 </div>
-                <div>
-                  <p className="text-[10px] font-bold uppercase tracking-widest text-amber-600">For travellers & companies</p>
-                  <h3 className="text-2xl font-black text-gray-900">Need a car? Car hire</h3>
+                <div className="min-w-0">
+                  <p className="text-[10px] font-bold uppercase tracking-widest text-amber-600">For travellers</p>
+                  <h3 className="text-xl sm:text-2xl font-black text-gray-900 text-balance break-words">Hire a vehicle</h3>
                 </div>
               </div>
               <ul className="space-y-3 text-sm text-gray-600 mb-8">
@@ -363,7 +363,7 @@ export function PartnershipPage() {
                   to="/car-hire"
                   className="touch-target flex-1 text-center px-6 py-3.5 bg-[#003B73] hover:bg-[#002B54] text-white font-bold rounded-xl transition-all"
                 >
-                  Car hire services
+                  View Car Hire page
                 </Link>
                 <Link
                   to="/contact"
@@ -672,11 +672,11 @@ export function PartnershipPage() {
       </section>
 
       {/* --- APPLICATION FORM SECTION --- */}
-      <section id="apply" className="py-20 bg-slate-50 relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 border-t border-gray-200">
-        <div className="grid lg:grid-cols-[1fr_450px] gap-12 lg:gap-20 items-start">
+      <section id="apply" className="py-16 sm:py-20 bg-slate-50 relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 border-t border-gray-200">
+        <div className="grid lg:grid-cols-[1fr_450px] gap-10 lg:gap-20 items-start">
           
           {/* Left Column: Visual details / checklist */}
-          <div className="space-y-12">
+          <div className="space-y-10 sm:space-y-12 min-w-0">
             <div>
               <h2 className="text-4xl font-extrabold text-gray-900 mb-4 tracking-tight">Lease Registration</h2>
               <p className="text-gray-600 font-light text-lg leading-relaxed">
@@ -691,12 +691,12 @@ export function PartnershipPage() {
                 { title: "National Safari Drives", desc: "Long-term group bookings driving high Hiace safari yields." },
                 { title: "Weekly Audits", desc: "Full reports of odometer, mechanical health, and cleanings." }
               ].map((item, idx) => (
-                <div key={idx} className="bg-white border border-gray-150 p-6 rounded-2xl shadow-sm">
+                <div key={idx} className="bg-white border border-gray-100 p-5 sm:p-6 rounded-2xl shadow-sm min-w-0">
                   <div className="w-10 h-10 bg-sky-50 rounded-xl flex items-center justify-center mb-4">
                     <CheckCircle2 className="w-5 h-5 text-[#F9A03F]" />
                   </div>
-                  <h4 className="font-bold text-gray-900 mb-1">{item.title}</h4>
-                  <p className="text-xs text-gray-500 leading-normal">{item.desc}</p>
+                  <h4 className="font-bold text-gray-900 mb-2 text-base sm:text-lg text-balance break-words">{item.title}</h4>
+                  <p className="text-xs sm:text-sm text-gray-600 leading-relaxed text-pretty break-words">{item.desc}</p>
                 </div>
               ))}
             </div>

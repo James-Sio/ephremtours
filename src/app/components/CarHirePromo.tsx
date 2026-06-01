@@ -51,7 +51,7 @@ export function CarHirePromo() {
 
             <div className="flex flex-col sm:flex-row gap-3">
               <Link
-                to="/services#car-hire"
+                to="/car-hire"
                 className="touch-target inline-flex items-center justify-center gap-2 px-8 py-4 bg-[#F9A03F] hover:bg-amber-400 text-gray-900 font-bold rounded-full transition-all shadow-lg"
               >
                 View car hire options

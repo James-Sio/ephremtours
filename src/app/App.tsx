@@ -15,6 +15,7 @@ import { GalleryPage } from "./pages/GalleryPage";
 import { AboutPage } from "./pages/AboutPage";
 import { ContactPage } from "./pages/ContactPage";
 import { PartnershipPage } from "./pages/PartnershipPage";
+import { CarHirePage } from "./pages/CarHirePage";
 
 export default function App() {
   return (
@@ -28,6 +29,7 @@ export default function App() {
           <Routes>
             <Route path="/" element={<Home />} />
             <Route path="/services" element={<ServicesPage />} />
+            <Route path="/car-hire" element={<CarHirePage />} />
             <Route path="/packages" element={<PackagesPage />} />
             <Route path="/packages/:id" element={<PackageDetailPage />} />
             <Route path="/gallery" element={<GalleryPage />} />

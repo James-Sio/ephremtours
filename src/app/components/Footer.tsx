@@ -80,7 +80,7 @@ export function Footer() {
             <h3 className="font-bold text-lg mb-6 text-white tracking-wide">Our Services</h3>
             <ul className="space-y-3">
               {[
-                { name: "Car & Van Hire (with driver)", path: "/services#car-hire" },
+                { name: "Car & Van Hire (with driver)", path: "/car-hire" },
                 { name: "SGR Terminus Transfers", path: "/services" },
                 { name: "VIP Airport Meet & Greet", path: "/services" },
                 { name: "Hotel-to-Hotel Shuttles", path: "/services" },

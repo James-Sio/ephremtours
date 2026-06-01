@@ -360,7 +360,7 @@ export function PartnershipPage() {
               </ul>
               <div className="flex flex-col sm:flex-row gap-3">
                 <Link
-                  to="/services#car-hire"
+                  to="/car-hire"
                   className="touch-target flex-1 text-center px-6 py-3.5 bg-[#003B73] hover:bg-[#002B54] text-white font-bold rounded-xl transition-all"
                 >
                   Car hire services
@@ -394,7 +394,7 @@ export function PartnershipPage() {
                 },
                 {
                   q: "I only want to hire a car — do I apply here?",
-                  a: "No application needed. Go to Services to see transfers and safaris, or Contact to book a specific vehicle and date.",
+                  a: "No application needed. Use our Car Hire page to pick a Toyota, choose hire type, and book — or Contact us for a custom itinerary.",
                 },
                 {
                   q: "Who drives the car when I lease it to you?",

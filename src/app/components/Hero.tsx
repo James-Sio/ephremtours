@@ -4,7 +4,7 @@ import { Link } from "react-router";
 import companyLogo from "../../imports/image.png";
 
 const quickServices = [
-  { id: "car-hire", icon: Car, label: "Car Hire", color: "text-emerald-700", bg: "bg-emerald-100", path: "/services#car-hire" },
+  { id: "car-hire", icon: Car, label: "Car Hire", color: "text-emerald-700", bg: "bg-emerald-100", path: "/car-hire" },
   { id: "sgr", icon: Train, label: "SGR Transfer", color: "text-orange-600", bg: "bg-orange-100", path: "/services" },
   { id: "airport", icon: Plane, label: "Airport VIP", color: "text-sky-600", bg: "bg-sky-100", path: "/services" },
   { id: "safari", icon: Camera, label: "Safaris", color: "text-amber-600", bg: "bg-amber-100", path: "/packages" },
@@ -78,7 +78,7 @@ export function Hero() {
               className="flex flex-col sm:flex-row gap-4 w-full sm:w-auto max-w-md sm:max-w-none"
             >
               <Link 
-                to="/services#car-hire" 
+                to="/car-hire" 
                 className="px-8 py-4 bg-emerald-600 hover:bg-emerald-700 text-white font-bold rounded-full transition-colors flex items-center justify-center gap-2 shadow-lg"
               >
                 <Car className="w-5 h-5" />

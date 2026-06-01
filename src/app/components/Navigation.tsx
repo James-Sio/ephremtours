@@ -11,7 +11,7 @@ export function Navigation() {
   const navItems = [
     { name: "Home", path: "/" },
     { name: "Services", path: "/services" },
-    { name: "Car Hire", path: "/services#car-hire" },
+    { name: "Car Hire", path: "/car-hire" },
     { name: "Packages", path: "/packages" },
     { name: "Gallery", path: "/gallery" },
     { name: "Partnership", path: "/partnership" },

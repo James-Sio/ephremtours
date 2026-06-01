@@ -3,7 +3,7 @@ import { Train, Plane, Hotel, MapPin, Camera, Users, ArrowRight, Car } from "luc
 import { Link } from "react-router";
 
 const services = [
-  { id: "car-hire", title: "Car Hire", icon: Car, color: "from-emerald-500 to-teal-600", shadow: "shadow-emerald-500/20", path: "/services#car-hire" },
+  { id: "car-hire", title: "Car Hire", icon: Car, color: "from-emerald-500 to-teal-600", shadow: "shadow-emerald-500/20", path: "/car-hire" },
   { id: "lobby-concierge", title: "VIP Concierge", icon: Hotel, color: "from-blue-600 to-amber-500", shadow: "shadow-blue-500/20" },
   { id: "sgr", title: "SGR Transfers", icon: Train, color: "from-orange-400 to-red-500", shadow: "shadow-orange-500/20" },
   { id: "airport", title: "VIP Airport", icon: Plane, color: "from-sky-400 to-blue-500", shadow: "shadow-sky-500/20" },

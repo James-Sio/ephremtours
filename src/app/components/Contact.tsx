@@ -2,6 +2,16 @@ import { motion } from "motion/react";
 import { Phone, Mail, MapPin, Send, CreditCard } from "lucide-react";
 import { useState } from "react";
 import { toast } from "sonner";
+import { OfficeMap } from "./OfficeMap";
+import {
+  CONTACT_EMAIL,
+  CONTACT_PHONES,
+  CONTACT_WEBSITE,
+  MPESA_TILL,
+  MAIN_OFFICE,
+  officeAddressLines,
+  googleMapsDirectionsUrl,
+} from "../data/siteContact";
 
 export function Contact() {
   const [name, setName] = useState("");
@@ -80,8 +90,15 @@ export function Contact() {
               </div>
               <div>
                 <h3 className="font-bold text-base sm:text-lg mb-1">Call Us</h3>
-                <a href="tel:+254701738725" className="text-sm sm:text-base text-gray-600 hover:text-sky-600 transition-colors block">+254 701 738 725</a>
-                <a href="tel:+254736070030" className="text-sm sm:text-base text-gray-600 hover:text-sky-600 transition-colors block">+254 736 070 030</a>
+                {CONTACT_PHONES.map((p) => (
+                  <a
+                    key={p.tel}
+                    href={`tel:${p.tel}`}
+                    className="text-sm sm:text-base text-gray-600 hover:text-sky-600 transition-colors block"
+                  >
+                    {p.display}
+                  </a>
+                ))}
               </div>
             </motion.div>
  
@@ -94,8 +111,20 @@ export function Contact() {
               </div>
               <div>
                 <h3 className="font-bold text-base sm:text-lg mb-1">Email Us</h3>
-                <a href="mailto:info@ephremtours.co.ke" className="text-sm sm:text-base text-gray-600 hover:text-sky-600 transition-colors break-all block">info@ephremtours.co.ke</a>
-                <p className="text-xs text-sky-600 font-semibold">www.ephremtours.co.ke</p>
+                <a
+                  href={`mailto:${CONTACT_EMAIL}`}
+                  className="text-sm sm:text-base text-gray-600 hover:text-sky-600 transition-colors break-all block"
+                >
+                  {CONTACT_EMAIL}
+                </a>
+                <a
+                  href={`https://${CONTACT_WEBSITE}`}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="text-xs text-sky-600 font-semibold hover:underline"
+                >
+                  {CONTACT_WEBSITE}
+                </a>
               </div>
             </motion.div>
  
@@ -108,7 +137,7 @@ export function Contact() {
               </div>
               <div>
                 <h3 className="font-bold text-base sm:text-lg mb-1">Lipa Na M-PESA</h3>
-                <p className="text-sm sm:text-base text-gray-600 font-semibold">Buy Goods Till No: 5669756</p>
+                <p className="text-sm sm:text-base text-gray-600 font-semibold">Buy Goods Till No: {MPESA_TILL}</p>
               </div>
             </motion.div>
  
@@ -120,8 +149,22 @@ export function Contact() {
                 <MapPin className="w-5 h-5 sm:w-6 sm:h-6 text-white" />
               </div>
               <div>
-                <h3 className="font-bold text-base sm:text-lg mb-1">Location</h3>
-                <p className="text-sm sm:text-base text-gray-600">Malindi, Kenya (Serving Coastal Strip)</p>
+                <h3 className="font-bold text-base sm:text-lg mb-1">Main Office</h3>
+                <p className="text-sm font-semibold text-gray-800">{MAIN_OFFICE.name}</p>
+                {officeAddressLines().map((line) => (
+                  <p key={line} className="text-sm text-gray-600">
+                    {line}
+                  </p>
+                ))}
+                <p className="text-xs text-sky-600 font-medium mt-1">{MAIN_OFFICE.serviceArea}</p>
+                <a
+                  href={googleMapsDirectionsUrl()}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="inline-block mt-2 text-sm font-bold text-sky-600 hover:text-sky-800"
+                >
+                  Get directions →
+                </a>
               </div>
             </motion.div>
           </motion.div>
@@ -175,6 +218,8 @@ export function Contact() {
             </form>
           </motion.div>
         </div>
+
+        <OfficeMap variant="light" className="mt-12 sm:mt-16" />
       </div>
     </section>
   );
